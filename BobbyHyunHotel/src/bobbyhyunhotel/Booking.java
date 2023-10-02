@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 /**
  *
- * @author junhy
+ * @author junhy test
  */
 public class Booking {
 
