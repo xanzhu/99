@@ -22,11 +22,13 @@ public class UserDashboardView extends JFrame {
     private String loginEmail;
 
     private BookingView bookingView;
+    private RoomServiceView roomServiceView;
 
     UserDashboardView(String userName, String userEmail) {
         loginEmail = userEmail;
         
         bookingView = new BookingView();
+        roomServiceView = new RoomServiceView();
         
         setBounds(100, 80, 1280, 720);
         setResizable(false);
@@ -69,6 +71,7 @@ public class UserDashboardView extends JFrame {
 
         // Display Menu Options GUI
         BookingGUI();
+        RoomServiceGUI();
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
@@ -79,6 +82,7 @@ public class UserDashboardView extends JFrame {
     }
 
     private JButton BookingBtn;
+    private JButton ServiceBtn;
 
     private void btnState(boolean isVisible, Component... button) {
         for (Component b : button) {
@@ -127,7 +131,6 @@ public class UserDashboardView extends JFrame {
         add(ReturnBtn);
         ReturnBtn.setVisible(false);
 
-        // TO:DO Action Listeners for GUI
         AddBookingBtn.addActionListener((ActionEvent e) -> {
             bookingView.addBookingGUI();
         });
@@ -142,13 +145,65 @@ public class UserDashboardView extends JFrame {
 
         // Button Visibility
         ReturnBtn.addActionListener((ActionEvent e) -> {
-            btnState(true, BookingBtn);
+            btnState(true, BookingBtn, ServiceBtn);
             btnState(false, AddBookingBtn, ViewBookingBtn, CancelBookingBtn, ReturnBtn);
         });
 
         BookingBtn.addActionListener((ActionEvent e) -> {
             btnState(true, AddBookingBtn, ViewBookingBtn, CancelBookingBtn, ReturnBtn);
-            btnState(false, BookingBtn);
+            btnState(false, BookingBtn, ServiceBtn);
+        });
+    }
+    
+    private void RoomServiceGUI(){
+        ServiceBtn = new JButton("Room Service");
+        ServiceBtn.setBounds(550, 160, 150, 150);
+        ServiceBtn.setFont(new Font("sans serif", Font.PLAIN, 16));
+        ServiceBtn.setLayout(null);
+        add(ServiceBtn);
+        
+        // View Menu
+        JButton ViewMenu = new JButton("View Room Services");
+        ViewMenu.setLayout(null);
+        ViewMenu.setBounds(350, 160, 200, 100);
+        ViewMenu.setFont(new Font("sans serif", Font.PLAIN, 16));
+        add(ViewMenu);
+        ViewMenu.setVisible(false);
+        
+        // Order Menu
+        JButton OrderMenu = new JButton("Order Room Services");
+        OrderMenu.setLayout(null);
+        OrderMenu.setBounds(570, 160, 200, 100);
+        OrderMenu.setFont(new Font("sans serif", Font.PLAIN, 16));
+        add(OrderMenu);
+        OrderMenu.setVisible(false);
+        
+        // Return 
+        JButton SReturnBtn = new JButton("Return");
+        SReturnBtn.setLayout(null);
+        SReturnBtn.setBounds(350, 70, 150, 50);
+        SReturnBtn.setFont(new Font("sans serif", Font.PLAIN, 15));
+        add(SReturnBtn);
+        SReturnBtn.setVisible(false);
+        
+        // Listeners:
+        ViewMenu.addActionListener((ActionEvent e) -> { 
+            roomServiceView.viewRoomServicesGUI();
+        });
+        
+        OrderMenu.addActionListener((ActionEvent e) -> { 
+            roomServiceView.OrderFoodGUI(loginEmail);
+        });
+        
+        // Button Visibility
+        SReturnBtn.addActionListener((ActionEvent e) -> {
+            btnState(true, BookingBtn, ServiceBtn);
+            btnState(false, ViewMenu, OrderMenu, SReturnBtn);
+        });
+
+        ServiceBtn.addActionListener((ActionEvent e) -> {
+            btnState(true, ViewMenu, OrderMenu, SReturnBtn);
+            btnState(false, BookingBtn, ServiceBtn);
         });
     }
 

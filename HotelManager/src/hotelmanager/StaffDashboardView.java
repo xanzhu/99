@@ -218,7 +218,7 @@ public class StaffDashboardView extends JFrame {
         // View Menu
         JButton menuDisplay = new JButton("View Menu");
         menuDisplay.setLayout(null);
-        menuDisplay.setBounds(550, 240, 150, 150);
+        menuDisplay.setBounds(550, 340, 150, 150);
         menuDisplay.setFont(new Font("sans serif", Font.PLAIN, 16));
         add(menuDisplay);
         menuDisplay.setVisible(false);
@@ -248,17 +248,17 @@ public class StaffDashboardView extends JFrame {
             roomService.updateFoodStatusGUI();
         });
 
-//        menuStatus.addActionListener((ActionEvent e) -> {
-//            roomService.displayMenuGUI();
-//        });
+        menuDisplay.addActionListener((ActionEvent e) -> {
+            roomService.viewRoomServicesGUI();
+        });
 
         ReturnBtn.addActionListener((ActionEvent e) -> {
             btnState(true, RoomServiceBtn, ManageRoomBtn, ManageUserBtn, BookingsBtn);
-            btnState(false, addFood, removeFood, ReturnBtn, menuStatus, menuPrice);
+            btnState(false, addFood, removeFood, ReturnBtn, menuStatus, menuPrice, menuDisplay);
         });
 
         RoomServiceBtn.addActionListener((ActionEvent e) -> {
-            btnState(true, addFood, removeFood, ReturnBtn, menuStatus, menuPrice);
+            btnState(true, addFood, removeFood, ReturnBtn, menuStatus, menuPrice, menuDisplay);
             btnState(false, RoomServiceBtn, ManageRoomBtn, ManageUserBtn, BookingsBtn);
         });
     }
