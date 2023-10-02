@@ -206,6 +206,33 @@ public final class DBManager {
         }
     }
 
+    public void createOrderData() {
+        try {
+            try (Statement statement = conn.createStatement()) {
+                ResultSet tables = conn.getMetaData().getTables(null, null, "ORDERRECORDS", null);
+                if (!tables.next()) {
+                    String createOrderData = "CREATE TABLE OrderRecords ("
+                            + "OrderID INT NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
+                            + "UserID INT, "
+                            + "RoomNumber INT, "
+                            + "FoodName VARCHAR(255), "
+                            + "Price DECIMAL(10, 2), "
+                            + "FOREIGN KEY (UserID) REFERENCES UserData(ID), "
+                            + "FOREIGN KEY (RoomNumber) REFERENCES RoomRecords(RoomNumber), "
+                            + "PRIMARY KEY (OrderID))";
+
+                    statement.execute(createOrderData);
+
+                    System.out.println("Table 'Order Records' created successfully.");
+                } else {
+                    System.out.println("Table 'Order Records' already exists.");
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL error occurred: " + e.getMessage());
+        }
+    }
+
     //
     public void saveUserData(String name, int age, String address, String phone, String email, String password) {
         try {
