@@ -1,15 +1,20 @@
 package hotelmanager;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
+import java.util.Map;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 /**
@@ -259,4 +264,93 @@ public class RoomServiceView {
         FoodStatusFrame.add(optionsPanel);
         FoodStatusFrame.setVisible(true);
     }
+
+    public void OrderFoodGUI(String userEmail) {
+
+        String Email = userEmail;
+        int selectedRoomNumber = rs.matchRoomEmail(Email);
+
+        JFrame orderFrame = new JFrame("Order Room Service");
+        orderFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        orderFrame.setBounds(450, 250, 600, 350);
+        orderFrame.setResizable(false);
+
+        JPanel optionsPanel = new JPanel();
+        optionsPanel.setLayout(null);
+
+        // Retrieve food items and prices
+        Map<String, Double> foodItemsWithPrices = rs.getItemsPrice();
+
+        // ComboBox
+        JComboBox<String> foodComboBox = new JComboBox<>(foodItemsWithPrices.keySet().toArray(new String[0]));
+        foodComboBox.setBounds(160, 10, 250, 200);
+
+        // Label
+        JLabel selectedItem = new JLabel("Selected Food: ");
+        selectedItem.setBounds(160, 50, 400, 30);
+        selectedItem.setFont(new Font("sans serif", Font.PLAIN, 15));
+
+        // Order Button 
+        JButton orderBtn = new JButton("Place Order");
+        orderBtn.setBounds(160, 220, 250, 40);
+        orderBtn.setBackground(Color.decode("#0047AB"));
+        orderBtn.setForeground(Color.WHITE);
+        orderBtn.setOpaque(true);
+        orderBtn.setBorderPainted(false);
+
+        optionsPanel.add(orderBtn);
+        optionsPanel.add(selectedItem);
+        optionsPanel.add(foodComboBox);
+
+        foodComboBox.addActionListener((ActionEvent e) -> {
+            String selectedFood = (String) foodComboBox.getSelectedItem();
+            double selectedPrice = foodItemsWithPrices.get(selectedFood);
+
+            selectedItem.setText("Selected Food: " + selectedFood + ", Price: $" + selectedPrice);
+        });
+
+        orderBtn.addActionListener((ActionEvent e) -> {
+            String selectedFood = (String) foodComboBox.getSelectedItem();
+            double selectedPrice = foodItemsWithPrices.get(selectedFood);
+
+            rs.orderRoomServices(Email, selectedRoomNumber, selectedFood, selectedPrice);
+
+            orderFrame.dispose();
+        });
+
+        orderFrame.add(optionsPanel);
+        orderFrame.setVisible(true);
+    }
+
+    public void viewRoomServicesGUI() {
+        JFrame viewFrame = new JFrame("View Room Services");
+        viewFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        viewFrame.setBounds(450, 250, 600, 350);
+        viewFrame.setResizable(false);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+
+        // TODO: Apply Refactor!
+        Font textFont = new Font("Arial", Font.PLAIN, 14);
+        
+        // Add Title Label ("MENU");
+        
+        JTextArea textArea = new JTextArea();
+        textArea.setEditable(false);
+        textArea.setFont(textFont);
+        JScrollPane scrollPane = new JScrollPane(textArea);
+
+        StringBuilder details = new StringBuilder();
+
+        rs.viewFoodPriceItem(details);
+
+        textArea.setText(details.toString());
+
+        panel.add(scrollPane, BorderLayout.CENTER);
+
+        viewFrame.add(panel);
+        viewFrame.setVisible(true);
+    }
+
 }
