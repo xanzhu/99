@@ -15,6 +15,7 @@ public class HotelManager {
         dbManager.createHotelData();
         dbManager.createRoomData();
         dbManager.createRoomServiceData();
+        dbManager.createBookingData();
 
         // Load in default view
         WelcomeView welcomeView = new WelcomeView();

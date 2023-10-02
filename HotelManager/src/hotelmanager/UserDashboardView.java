@@ -18,10 +18,13 @@ public class UserDashboardView extends JFrame {
 
     private final JButton logoutBtn;
     private final JLabel nameField;
+   
+    private String loginEmail;
 
     private BookingView bookingView;
 
     UserDashboardView(String userName, String userEmail) {
+        loginEmail = userEmail;
         
         bookingView = new BookingView();
         
@@ -129,8 +132,14 @@ public class UserDashboardView extends JFrame {
             bookingView.addBookingGUI();
         });
 
-//        ViewBookingBtn.addActionListener((ActionEvent e) -> { });
-//        CancelBookingBtn.addActionListener((ActionEvent e) -> { });
+        ViewBookingBtn.addActionListener((ActionEvent e) -> { 
+            bookingView.viewBookingGUI(loginEmail);
+        });
+        
+        CancelBookingBtn.addActionListener((ActionEvent e) -> { 
+            bookingView.cancelBookingGUI(loginEmail);
+        });
+
         // Button Visibility
         ReturnBtn.addActionListener((ActionEvent e) -> {
             btnState(true, BookingBtn);

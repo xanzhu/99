@@ -185,14 +185,14 @@ public final class DBManager {
             try (Statement statement = conn.createStatement()) {
                 ResultSet tables = conn.getMetaData().getTables(null, null, "BOOKINGRECORDS", null);
                 if (!tables.next()) {
-                    String BookingRecords = "CREATE TABLE BookingRecords (" +
-                    "BookingID INT NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), " +
-                    "UserID INT, " +
-                    "RoomNumber INT, " +
-                    "BookingDate DATE, " +
-                    "FOREIGN KEY (UserID) REFERENCES UserData(ID), " +
-                    "FOREIGN KEY (RoomNumber) REFERENCES RoomRecords(RoomNumber), " +
-                    "PRIMARY KEY (BookingID))";
+                    String BookingRecords = "CREATE TABLE BookingRecords ("
+                            + "BookingID INT NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
+                            + "UserID INT, "
+                            + "RoomNumber INT, "
+                            + "BookingDate DATE, "
+                            + "FOREIGN KEY (UserID) REFERENCES UserData(ID), "
+                            + "FOREIGN KEY (RoomNumber) REFERENCES RoomRecords(RoomNumber), "
+                            + "PRIMARY KEY (BookingID))";
 
                     statement.execute(BookingRecords);
 
