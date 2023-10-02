@@ -19,7 +19,12 @@ public class UserDashboardView extends JFrame {
     private final JButton logoutBtn;
     private final JLabel nameField;
 
+    private BookingView bookingView;
+
     UserDashboardView(String userName, String userEmail) {
+        
+        bookingView = new BookingView();
+        
         setBounds(100, 80, 1280, 720);
         setResizable(false);
         setLayout(null);
@@ -53,40 +58,40 @@ public class UserDashboardView extends JFrame {
         logoutBtn = new JButton("Logout");
         logoutBtn.setBounds(35, 620, 170, 40);
         Sidebar.add(logoutBtn);
-        
+
         ImageIcon profileImg = new ImageIcon(ClassLoader.getSystemResource("Assets/profile.png"));
         JLabel profileLabel = new JLabel(profileImg);
         profileLabel.setBounds(75, 60, 100, 100);
         Sidebar.add(profileLabel);
-        
+
         // Display Menu Options GUI
         BookingGUI();
-  
+
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
     }
 
     public JButton getLogoutButton() {
         return logoutBtn;
     }
-    
+
     private JButton BookingBtn;
-    
+
     private void btnState(boolean isVisible, Component... button) {
         for (Component b : button) {
             b.setVisible(isVisible);
         }
     }
-    
-    private void BookingGUI(){
-        
+
+    private void BookingGUI() {
+
         // TODO: Add logic to display / My Bookings / Book room?
-        
         BookingBtn = new JButton("My Booking");
         BookingBtn.setBounds(350, 160, 150, 150);
         BookingBtn.setFont(new Font("sans serif", Font.PLAIN, 16));
         BookingBtn.setLayout(null);
         add(BookingBtn);
-        
+
         // Add Booking
         JButton AddBookingBtn = new JButton("Add Booking");
         AddBookingBtn.setLayout(null);
@@ -94,7 +99,7 @@ public class UserDashboardView extends JFrame {
         AddBookingBtn.setFont(new Font("sans serif", Font.PLAIN, 16));
         add(AddBookingBtn);
         AddBookingBtn.setVisible(false);
-        
+
         // View Booking
         JButton ViewBookingBtn = new JButton("View Booking");
         ViewBookingBtn.setLayout(null);
@@ -102,7 +107,7 @@ public class UserDashboardView extends JFrame {
         ViewBookingBtn.setFont(new Font("sans serif", Font.PLAIN, 16));
         add(ViewBookingBtn);
         ViewBookingBtn.setVisible(false);
-        
+
         // Cancel Booking
         JButton CancelBookingBtn = new JButton("Cancel Booking");
         CancelBookingBtn.setLayout(null);
@@ -110,7 +115,7 @@ public class UserDashboardView extends JFrame {
         CancelBookingBtn.setFont(new Font("sans serif", Font.PLAIN, 16));
         add(CancelBookingBtn);
         CancelBookingBtn.setVisible(false);
-        
+
         // Return Button
         JButton ReturnBtn = new JButton("Return");
         ReturnBtn.setLayout(null);
@@ -118,12 +123,14 @@ public class UserDashboardView extends JFrame {
         ReturnBtn.setFont(new Font("sans serif", Font.PLAIN, 15));
         add(ReturnBtn);
         ReturnBtn.setVisible(false);
-        
+
         // TO:DO Action Listeners for GUI
-//        AddBookingBtn.addActionListener((ActionEvent e) -> { });
+        AddBookingBtn.addActionListener((ActionEvent e) -> {
+            bookingView.addBookingGUI();
+        });
+
 //        ViewBookingBtn.addActionListener((ActionEvent e) -> { });
 //        CancelBookingBtn.addActionListener((ActionEvent e) -> { });
-        
         // Button Visibility
         ReturnBtn.addActionListener((ActionEvent e) -> {
             btnState(true, BookingBtn);
@@ -133,11 +140,10 @@ public class UserDashboardView extends JFrame {
         BookingBtn.addActionListener((ActionEvent e) -> {
             btnState(true, AddBookingBtn, ViewBookingBtn, CancelBookingBtn, ReturnBtn);
             btnState(false, BookingBtn);
-        });    
+        });
     }
-   
+
     public static void main(String[] args) {
-        UserDashboardView userDashboardView = new UserDashboardView("Yuhwan", "example@example.com");
-        userDashboardView.setVisible(true);
+        UserDashboardView userDash = new UserDashboardView("Yuhwan Kim", "example@example.com");
     }
 }
