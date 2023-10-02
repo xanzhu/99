@@ -126,17 +126,11 @@ public class UserDashboard extends JFrame {
                 roomServicesGUI.orderRoomServicesGUI(loggedInUserEmail);
             }
         });
-        JButton cancelRoomServicesButton = new JButton("Cancel Room Services");
-//        cancelRoomServicesButton.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                roomServicesGUI.cancelRoomServicesGUI();
-//            }
-//        });
+       
 
         buttonPanel.add(viewRoomServicesButton);
         buttonPanel.add(orderRoomServicesButton);
-        buttonPanel.add(cancelRoomServicesButton);
+        //buttonPanel.add(cancelRoomServicesButton);
 
         roomServicesFrame.add(buttonPanel);
         roomServicesFrame.setVisible(true);
