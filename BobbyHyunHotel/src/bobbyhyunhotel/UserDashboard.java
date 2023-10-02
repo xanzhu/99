@@ -8,13 +8,14 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class UserDashboard extends JFrame {
+
     private BookingGUI bookingGUI;
     private RoomServicesGUI roomServicesGUI;
     private static String loggedInUserEmail;
     private JFrame bookingActionsFrame;
 
     public UserDashboard(String userEmail) {
-        this.loggedInUserEmail = userEmail; 
+        this.loggedInUserEmail = userEmail;
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             @Override
@@ -31,9 +32,8 @@ public class UserDashboard extends JFrame {
         setBounds(100, 100, 1000, 560);
         bookingGUI = new BookingGUI();
         roomServicesGUI = new RoomServicesGUI();
-        //roomServicesGUI = new RoomServicesGUI();
 
-        // Create a button for "My Booking"
+        
         JButton myBookingButton = new JButton("My Booking");
         myBookingButton.addActionListener(new ActionListener() {
             @Override
@@ -51,11 +51,29 @@ public class UserDashboard extends JFrame {
             }
         });
 
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        buttonPanel.add(myBookingButton);
-        buttonPanel.add(roomServicesButton);
+        // Create a tool bar for the buttons
+        JToolBar toolBar = new JToolBar(JToolBar.HORIZONTAL);
+        toolBar.setFloatable(false); // Prevent the toolbar from being moved
 
-        add(buttonPanel, BorderLayout.NORTH);
+        // Add buttons to the toolbar
+        toolBar.add(Box.createHorizontalGlue()); 
+        toolBar.add(myBookingButton);
+        toolBar.add(roomServicesButton);
+
+        // Create a billing button
+        JButton billingButton = new JButton("Billing");
+//        billingButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                // Handle billing actions here
+//            }
+//        });
+
+        // Add the billing button to the toolbar
+        toolBar.add(billingButton);
+
+        // Add the toolbar to the frame's north position
+        add(toolBar, BorderLayout.NORTH);
 
         setVisible(true);
     }
@@ -126,7 +144,6 @@ public class UserDashboard extends JFrame {
                 roomServicesGUI.orderRoomServicesGUI(loggedInUserEmail);
             }
         });
-       
 
         buttonPanel.add(viewRoomServicesButton);
         buttonPanel.add(orderRoomServicesButton);
@@ -137,9 +154,8 @@ public class UserDashboard extends JFrame {
     }
 
     public static void main(String[] args) {
-    
-    // Pass the email address to the UserDashboard constructor
-    new UserDashboard(loggedInUserEmail);
+
+        // Pass the email address to the UserDashboard constructor
+        new UserDashboard(loggedInUserEmail);
     }
 }
-
