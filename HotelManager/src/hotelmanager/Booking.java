@@ -53,7 +53,7 @@ public class Booking {
                     System.out.println("Failed to Book room.");
                 }
             } catch (SQLException ex) {
-                System.err.println("Errorrrrrrr Booking room: " + ex.getMessage());
+                System.err.println("Error Booking room: " + ex.getMessage());
             }
         }
     }
@@ -66,27 +66,25 @@ public class Booking {
 
         Connection connection = dbManager.getConnection();
 
-        if (connection != null) {
-            try (PreparedStatement updateAvailabilityStatement = connection.prepareStatement(updateRoomAvailabilitySQL); PreparedStatement deleteBookingStatement = connection.prepareStatement(deleteBookingSQL)) {
+        try (PreparedStatement updateAvailabilityStatement = connection.prepareStatement(updateRoomAvailabilitySQL); PreparedStatement deleteBookingStatement = connection.prepareStatement(deleteBookingSQL)) {
 
-                connection.setAutoCommit(false); // Start a transaction
+            connection.setAutoCommit(false); // Start a transaction
 
-                updateAvailabilityStatement.setInt(1, selectedBookingId);
-                int availabilityUpdated = updateAvailabilityStatement.executeUpdate();
+            updateAvailabilityStatement.setInt(1, selectedBookingId);
+            int availabilityUpdated = updateAvailabilityStatement.executeUpdate();
 
-                deleteBookingStatement.setInt(1, selectedBookingId);
-                int rowsDeleted = deleteBookingStatement.executeUpdate();
+            deleteBookingStatement.setInt(1, selectedBookingId);
+            int rowsDeleted = deleteBookingStatement.executeUpdate();
 
-                if (availabilityUpdated > 0 && rowsDeleted > 0) {
-                    connection.commit();
-                    showSuccessMessage("Booking with ID " + selectedBookingId + " has been canceled.");
-                } else {
-                    connection.rollback();
-                    showErrorMessage("Booking with ID " + selectedBookingId + " not found.");
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
+            if (availabilityUpdated > 0 && rowsDeleted > 0) {
+                connection.commit();
+                showSuccessMessage("Booking with ID " + selectedBookingId + " has been canceled.");
+            } else {
+                connection.rollback();
+                showErrorMessage("Booking with ID " + selectedBookingId + " not found.");
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 

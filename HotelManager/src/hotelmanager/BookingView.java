@@ -193,8 +193,10 @@ public class BookingView {
             }
 
             String selectBookingSQL = "SELECT * FROM BookingRecords WHERE UserID = ?";
+            
+            Connection connection = db.getConnection();
 
-            try (Connection connection = db.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(selectBookingSQL,
+            try (PreparedStatement preparedStatement = connection.prepareStatement(selectBookingSQL,
                     ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
 
                 preparedStatement.setInt(1, userId);
