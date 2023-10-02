@@ -87,7 +87,7 @@ public class StaffDashboardView extends JFrame {
     public static void main(String[] args) {
         StaffDashboardView staffDash = new StaffDashboardView("Jon Kim", "example@gmail.com");
     }
-    
+
     private JButton ManageRoomBtn;
     private JButton RoomServiceBtn;
     private JButton ManageUserBtn;
@@ -192,7 +192,7 @@ public class StaffDashboardView extends JFrame {
         addFood.setVisible(false);
 
         // Remove Menu Item
-        JButton removeFood = new JButton("Remove Foods");
+        JButton removeFood = new JButton("Remove Food");
         removeFood.setLayout(null);
         removeFood.setBounds(550, 160, 150, 150);
         removeFood.setFont(new Font("sans serif", Font.PLAIN, 16));
@@ -208,12 +208,20 @@ public class StaffDashboardView extends JFrame {
         menuPrice.setVisible(false);
 
         // Menu Status
-        JButton menuStatus = new JButton("Food Availability");
+        JButton menuStatus = new JButton("Menu Availability");
         menuStatus.setLayout(null);
         menuStatus.setBounds(350, 340, 150, 150);
         menuStatus.setFont(new Font("sans serif", Font.PLAIN, 16));
         add(menuStatus);
         menuStatus.setVisible(false);
+
+        // View Menu
+        JButton menuDisplay = new JButton("View Menu");
+        menuDisplay.setLayout(null);
+        menuDisplay.setBounds(550, 240, 150, 150);
+        menuDisplay.setFont(new Font("sans serif", Font.PLAIN, 16));
+        add(menuDisplay);
+        menuDisplay.setVisible(false);
 
         // Return button
         JButton ReturnBtn = new JButton("Return");
@@ -227,19 +235,23 @@ public class StaffDashboardView extends JFrame {
         addFood.addActionListener((ActionEvent e) -> {
             roomService.addFoodGUI();
         });
-        
+
         removeFood.addActionListener((ActionEvent e) -> {
             roomService.removeFoodGUI();
         });
-        
+
         menuPrice.addActionListener((ActionEvent e) -> {
             roomService.updateFoodPriceGUI();
         });
-        
+
         menuStatus.addActionListener((ActionEvent e) -> {
             roomService.updateFoodStatusGUI();
         });
-        
+
+//        menuStatus.addActionListener((ActionEvent e) -> {
+//            roomService.displayMenuGUI();
+//        });
+
         ReturnBtn.addActionListener((ActionEvent e) -> {
             btnState(true, RoomServiceBtn, ManageRoomBtn, ManageUserBtn, BookingsBtn);
             btnState(false, addFood, removeFood, ReturnBtn, menuStatus, menuPrice);
@@ -250,36 +262,36 @@ public class StaffDashboardView extends JFrame {
             btnState(false, RoomServiceBtn, ManageRoomBtn, ManageUserBtn, BookingsBtn);
         });
     }
-    
-    private void BookingsGUI(){
+
+    private void BookingsGUI() {
         BookingsBtn = new JButton("Bookings");
         BookingsBtn.setBounds(750, 160, 150, 150);
         BookingsBtn.setFont(new Font("sans serif", Font.PLAIN, 16));
         BookingsBtn.setLayout(null);
         add(BookingsBtn);
     }
-    
-    private void ManageUserGUI(){
+
+    private void ManageUserGUI() {
         ManageUserBtn = new JButton("Manage Users");
         ManageUserBtn.setBounds(950, 160, 150, 150);
         ManageUserBtn.setFont(new Font("sans serif", Font.PLAIN, 16));
         ManageUserBtn.setLayout(null);
         add(ManageUserBtn);
-        
+
         JButton AddUser = new JButton("Add User");
         AddUser.setLayout(null);
         AddUser.setBounds(350, 160, 150, 150);
         AddUser.setFont(new Font("sans serif", Font.PLAIN, 16));
         add(AddUser);
         AddUser.setVisible(false);
-        
+
         JButton RemoveUser = new JButton("Remove User");
         RemoveUser.setLayout(null);
         RemoveUser.setBounds(550, 160, 150, 150);
         RemoveUser.setFont(new Font("sans serif", Font.PLAIN, 16));
         add(RemoveUser);
         RemoveUser.setVisible(false);
-       
+
         JButton ReturnBtn = new JButton("Return");
         ReturnBtn.setLayout(null);
         ReturnBtn.setBounds(350, 70, 150, 50);

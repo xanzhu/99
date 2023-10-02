@@ -106,16 +106,13 @@ public class BookingView {
 
             try {
                 int roomNumber = Integer.parseInt(RoomNum);
-
+                
                 if (bk.validateAddRoom(roomNumber)) {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     Date parsedDate = dateFormat.parse(Date);
                     java.sql.Date bookingDate = new java.sql.Date(parsedDate.getTime());
-
+                                    
                     bk.addBooking(Email, roomNumber, bookingDate);
-
-                    // Debugging
-                    System.out.println("Added Room!");
                 }
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(null, "Invalid room number format.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -126,7 +123,7 @@ public class BookingView {
             BookingFrame.dispose();
         });
     }
-
+   
     public void viewBookingGUI(String email) {
         try {
             int userId = bk.userEmailID(email);
@@ -183,6 +180,7 @@ public class BookingView {
             e.printStackTrace();
         }
     }
+    
     public void cancelBookingGUI(String userEmail) {
         try {
             int userId = bk.userEmailID(userEmail);
@@ -203,8 +201,8 @@ public class BookingView {
 
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     if (!resultSet.isBeforeFirst()) {
-                        JOptionPane.showMessageDialog(null, "No bookings found for this user.", "Information",
-                                JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "No bookings found for this user.", "Booking Cancel Menu",
+                                JOptionPane.ERROR_MESSAGE);
                         return;
                     }
 
@@ -239,9 +237,7 @@ public class BookingView {
 
                     if (option == JOptionPane.OK_OPTION) {
                         int selectedBookingId = (int) bookingComboBox.getSelectedItem();
-                        bk.cancelBooking(selectedBookingId); // Implement cancellation logic
-                        JOptionPane.showMessageDialog(null, "Booking with ID " + selectedBookingId + " canceled.",
-                                "Information", JOptionPane.INFORMATION_MESSAGE);
+                        bk.cancelBooking(selectedBookingId);
                     }
                 }
             } catch (SQLException ex) {

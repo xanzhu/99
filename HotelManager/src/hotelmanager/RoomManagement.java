@@ -171,34 +171,36 @@ public class RoomManagement {
             }
         }
     }
+    
+    public void roomStatus(int roomNumber, boolean isAvailable, boolean staffView) {
+        
+    String query = "UPDATE RoomRecords SET IsAvailable = ? WHERE RoomNumber = ?";
 
-    public void roomStatus(int roomNumber, boolean isAvailable) {
+    Connection connection = dbManager.getConnection();
 
-        String query = "UPDATE RoomRecords SET IsAvailable = ? WHERE RoomNumber = ?";
+    if (connection != null) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setBoolean(1, isAvailable);
+            preparedStatement.setInt(2, roomNumber);
 
-        Connection connection = dbManager.getConnection();
+            int updatedRows = preparedStatement.executeUpdate();
 
-        if (connection != null) {
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-
-                preparedStatement.setBoolean(1, isAvailable);
-                preparedStatement.setInt(2, roomNumber);
-
-                int updatedRows = preparedStatement.executeUpdate();
-
-                if (updatedRows > 0) {
-                    if (isAvailable) {
-                        showSuccessMessage("Room: " + roomNumber + " is now available.");
-                    } else {
-                        showSuccessMessage("Room: " + roomNumber + " is now unavailable.");
-                    }
+            if (updatedRows > 0) {
+                if (isAvailable) {
+                    if (staffView) {
+                        showSuccessMessage("Room: " + roomNumber + " is now available in Staff Dashboard.");
+                    } 
                 } else {
-                    showErrorMessage("Room: " + roomNumber + " does not exist.");
+                    if (staffView) {
+                        showSuccessMessage("Room: " + roomNumber + " is now unavailable in Staff Dashboard.");
+                    }
                 }
-
-            } catch (SQLException ex) {
-                System.err.println("Failed to update status: " + ex.getMessage());
+            } else {
+                showErrorMessage("Room: " + roomNumber + " does not exist.");
             }
+        } catch (SQLException ex) {
+            System.err.println("Failed to update status: " + ex.getMessage());
         }
     }
+}
 }

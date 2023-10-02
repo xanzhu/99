@@ -21,13 +21,15 @@ public class Booking {
     }
 
     private void showErrorMessage(String message) {
-        JOptionPane.showMessageDialog(null, message, "Room Service Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(null, message, "Booking Menu Error", JOptionPane.ERROR_MESSAGE);
     }
 
     private void showSuccessMessage(String message) {
-        JOptionPane.showMessageDialog(null, message, "Room Service", JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(null, message, "Booking Menu", JOptionPane.PLAIN_MESSAGE);
     }
+    
 
+  // TODO: User Booking Re-write // Handle only room number and date when booking // Email for Staff Management
     public void addBooking(String userEmail, int roomNumber, java.sql.Date bookingDate) {
 
         int userId = userEmailID(userEmail);
@@ -46,18 +48,17 @@ public class Booking {
                 int lines = preparedStatement.executeUpdate();
 
                 if (lines > 0) {
-                    // Set Room Status to false
-                    rm.roomStatus(roomNumber, false);
-                    System.out.println("Booking added successfully!");
+                    rm.roomStatus(roomNumber, false, false);
+                    showSuccessMessage("Room:" + roomNumber + " has added successfully booked!");
                 } else {
-                    System.out.println("Failed to Book room.");
+                    showErrorMessage("Failed to Book room\nPlease Try again.");
                 }
             } catch (SQLException ex) {
                 System.err.println("Error Booking room: " + ex.getMessage());
             }
         }
     }
-
+    
     public void cancelBooking(int selectedBookingId) {
         String updateRoomAvailabilitySQL = "UPDATE RoomRecords SET IsAvailable = TRUE WHERE RoomNumber = "
                 + "(SELECT RoomNumber FROM BookingRecords WHERE BookingID = ?)";
@@ -68,7 +69,7 @@ public class Booking {
 
         try (PreparedStatement updateAvailabilityStatement = connection.prepareStatement(updateRoomAvailabilitySQL); PreparedStatement deleteBookingStatement = connection.prepareStatement(deleteBookingSQL)) {
 
-            connection.setAutoCommit(false); // Start a transaction
+            connection.setAutoCommit(false);
 
             updateAvailabilityStatement.setInt(1, selectedBookingId);
             int availabilityUpdated = updateAvailabilityStatement.executeUpdate();

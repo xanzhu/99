@@ -259,7 +259,7 @@ public class RoomManagementView {
             boolean isAvailable = availableRadio.isSelected();
 
             if (rm.checkRoom(roomNumber)) {
-                rm.roomStatus(roomNumber, isAvailable);
+                rm.roomStatus(roomNumber, isAvailable, true);
 
                 roomStatusFrame.dispose();
             }
