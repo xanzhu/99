@@ -353,5 +353,47 @@ public class RoomServicesGUI {
             return -1; // Return -1 to indicate an error
         }
     }
+        public void viewRoomServicesGUI() {
+        JFrame viewFrame = new JFrame("View Room Services");
+        viewFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        viewFrame.setBounds(200, 200, 400, 300);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+
+        JTextArea textArea = new JTextArea();
+        textArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(textArea);
+
+        StringBuilder roomServiceDetails = new StringBuilder();
+
+        String jdbcUrl = "jdbc:derby:HotelRecords;create=true"; 
+        try (Connection connection = DriverManager.getConnection(jdbcUrl);
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT FoodName, FoodType, Price FROM RoomServicesRecords WHERE IsAvailable = true");
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            while (resultSet.next()) {
+                String foodName = resultSet.getString("FoodName");
+                String foodType = resultSet.getString("FoodType");
+                double price = resultSet.getDouble("Price");
+
+                roomServiceDetails.append("Food Name: ").append(foodName).append("\n");
+                roomServiceDetails.append("Food Type: ").append(foodType).append("\n");
+                roomServiceDetails.append("Price: $").append(price).append("\n");
+                roomServiceDetails.append("-----------------------\n");
+            }
+        } catch (SQLException ex) {
+            System.err.println("SQL error occurred:");
+            ex.printStackTrace();
+        }
+
+        textArea.setText(roomServiceDetails.toString());
+
+       
+        panel.add(scrollPane, BorderLayout.CENTER);
+
+        viewFrame.add(panel);
+        viewFrame.setVisible(true);
+    }
 
 }

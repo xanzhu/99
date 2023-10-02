@@ -113,12 +113,12 @@ public class UserDashboard extends JFrame {
         JPanel buttonPanel = new JPanel(new GridLayout(2, 2, 10, 10));
 
         JButton viewRoomServicesButton = new JButton("View Room Services");
-//        viewRoomServicesButton.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                roomServicesGUI.viewRoomServicesGUI();
-//            }
-//        });
+        viewRoomServicesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                roomServicesGUI.viewRoomServicesGUI();
+            }
+        });
         JButton orderRoomServicesButton = new JButton("Order Room Services");
         orderRoomServicesButton.addActionListener(new ActionListener() {
             @Override
