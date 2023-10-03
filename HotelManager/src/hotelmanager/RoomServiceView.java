@@ -329,11 +329,17 @@ public class RoomServiceView {
         viewFrame.setBounds(450, 250, 600, 350);
         viewFrame.setResizable(false);
 
-        JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout());
-
-        // TODO: Add Title Label ("MENU") and some design tweaks?;
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        JPanel titlePanel = new JPanel();
         
+        titlePanel.setBackground(u.userColour());
+        JLabel titleLabel = new JLabel("MENU");
+        titleLabel.setFont(u.formatText(20, true));
+        titleLabel.setForeground(Color.WHITE);
+        titlePanel.add(titleLabel);
+
+        mainPanel.add(titlePanel, BorderLayout.NORTH);
+
         JTextArea textArea = new JTextArea();
         textArea.setEditable(false);
         textArea.setFont(u.formatText(14));
@@ -345,10 +351,9 @@ public class RoomServiceView {
 
         textArea.setText(details.toString());
 
-        panel.add(scrollPane, BorderLayout.CENTER);
+        mainPanel.add(scrollPane, BorderLayout.CENTER);
 
-        viewFrame.add(panel);
+        viewFrame.add(mainPanel);
         viewFrame.setVisible(true);
     }
-
 }
