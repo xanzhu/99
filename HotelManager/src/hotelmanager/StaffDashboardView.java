@@ -16,8 +16,9 @@ import javax.swing.JPanel;
 public class StaffDashboardView extends JFrame {
 
     private final JButton logoutBtn;
+    private final String emailField; 
     private final JLabel nameField;
-    
+
     private JButton manageRoomBtn;
     private JButton roomServiceBtn;
     private JButton manageUserBtn;
@@ -25,12 +26,16 @@ public class StaffDashboardView extends JFrame {
 
     private final RoomManagementView roomManagement;
     private final RoomServiceView roomService;
+    private final BookingView bookingView;
     private final AppUtils u;
 
     StaffDashboardView(String userName, String userEmail) {
 
+        this.emailField = userEmail;
+        
         this.roomManagement = new RoomManagementView();
         this.roomService = new RoomServiceView();
+        this.bookingView = new BookingView();
         this.u = new AppUtils();
 
         setBounds(100, 80, 1280, 720);
@@ -79,7 +84,6 @@ public class StaffDashboardView extends JFrame {
         ManageRoomGUI();
         RoomServiceGUI();
         BookingsGUI();
-        ManageUserGUI();
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
@@ -96,6 +100,7 @@ public class StaffDashboardView extends JFrame {
     }
 
     private void ManageRoomGUI() {
+        
         manageRoomBtn = new JButton("Manage Rooms");
         manageRoomBtn.setBounds(350, 160, 150, 150);
         manageRoomBtn.setFont(u.formatText(16));
@@ -265,52 +270,63 @@ public class StaffDashboardView extends JFrame {
         bookingsBtn.setFont(u.formatText(16));
         bookingsBtn.setLayout(null);
         add(bookingsBtn);
-        
-        JButton AddBooking = new JButton("Add Booking");
-        
-        
-    }
 
-    // Remove this?
-    private void ManageUserGUI() {
-        manageUserBtn = new JButton("Manage Users");
-        manageUserBtn.setBounds(950, 160, 150, 150);
-        manageUserBtn.setFont(u.formatText(16));
-        manageUserBtn.setLayout(null);
-        add(manageUserBtn);
+        // Add Booking
+        JButton addBooking = new JButton("Add Booking");
+        addBooking.setLayout(null);
+        addBooking.setBounds(350, 160, 150, 150);
+        addBooking.setFont(u.formatText(16));
+        add(addBooking);
+        addBooking.setVisible(false);
 
-        JButton AddUser = new JButton("Add User");
-        AddUser.setLayout(null);
-        AddUser.setBounds(350, 160, 150, 150);
-        AddUser.setFont(u.formatText(16));
-        add(AddUser);
-        AddUser.setVisible(false);
+        // Remove Button
+        JButton removeBooking = new JButton("Remove Booking");
+        removeBooking.setLayout(null);
+        removeBooking.setBounds(550, 160, 150, 150);
+        removeBooking.setFont(u.formatText(16));
+        add(removeBooking);
+        removeBooking.setVisible(false);
 
-        JButton RemoveUser = new JButton("Remove User");
-        RemoveUser.setLayout(null);
-        RemoveUser.setBounds(550, 160, 150, 150);
-        RemoveUser.setFont(u.formatText(16, false));
-        add(RemoveUser);
-        RemoveUser.setVisible(false);
+        // TODO: View Button
+        JButton viewBooking = new JButton("View Booking");
+        viewBooking.setLayout(null);
+        viewBooking.setBounds(750, 160, 150, 150);
+        viewBooking.setFont(u.formatText(16));
+        add(viewBooking);
+        viewBooking.setVisible(false);
 
+        // Return Button
         JButton ReturnBtn = new JButton("Return");
         ReturnBtn.setLayout(null);
         ReturnBtn.setBounds(350, 70, 150, 50);
-        ReturnBtn.setFont(u.formatText(15, false));
+        ReturnBtn.setFont(u.formatText(15));
         add(ReturnBtn);
         ReturnBtn.setVisible(false);
 
-        ReturnBtn.addActionListener((ActionEvent e) -> {
-            btnState(true, roomServiceBtn, manageRoomBtn, manageUserBtn, bookingsBtn);
-            btnState(false, AddUser, RemoveUser, ReturnBtn);
+        addBooking.addActionListener((ActionEvent e) -> {
+            bookingView.addBookingGUI();
         });
 
-        manageUserBtn.addActionListener((ActionEvent e) -> {
-            btnState(true, AddUser, RemoveUser, ReturnBtn);
+        removeBooking.addActionListener((ActionEvent e) -> {
+            bookingView.staffCancelBookingGUI();
+        });
+        
+//      viewBooking.addActionListener((ActionEvent e) -> {
+//          bookingView.viewBookingGUI(emailField);
+//      });
+        
+        ReturnBtn.addActionListener((ActionEvent e) -> {
+            btnState(true, roomServiceBtn, manageRoomBtn, manageUserBtn, bookingsBtn);
+            btnState(false, addBooking, removeBooking, ReturnBtn, viewBooking);
+        });
+
+        bookingsBtn.addActionListener((ActionEvent e) -> {
+            btnState(true, addBooking, removeBooking, ReturnBtn, viewBooking);
             btnState(false, roomServiceBtn, manageRoomBtn, manageUserBtn, bookingsBtn);
         });
+
     }
-    
+
     // Testing
     public static void main(String[] args) {
         StaffDashboardView staffDash = new StaffDashboardView("Jon Kim", "example@gmail.com");
