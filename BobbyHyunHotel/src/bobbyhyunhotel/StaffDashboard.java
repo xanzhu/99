@@ -8,6 +8,7 @@ public class StaffDashboard extends JFrame {
     private RoomManagementGUI roomManagement;
     private RoomServicesGUI roomServices;
     private JFrame roomActionsFrame;
+    private BillingGUI billingGUI;
 
     public StaffDashboard() {
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -26,6 +27,7 @@ public class StaffDashboard extends JFrame {
         setBounds(100, 100, 1000, 560);
         roomManagement = new RoomManagementGUI();
         roomServices = new RoomServicesGUI();
+        billingGUI = new BillingGUI();
 
 
         // Create a button in the top left corner for Room Actions
@@ -45,11 +47,27 @@ public class StaffDashboard extends JFrame {
                 openRoomServicesDialog();
             }
         });
+        
+        JButton roomBookingRecordsButton = new JButton("room booking Records");
+        roomBookingRecordsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                billingGUI.displayBookingRecordsGUI();
+            }
+        });
+        JButton roomServicesRecordsButton = new JButton("room services Records");
+        roomServicesRecordsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                billingGUI.displayRoomServicesRecordsGUI();
+            }
+        });
 
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.add(roomButton);
         buttonPanel.add(roomServicesButton); // Add the Room Services button
-
+        buttonPanel.add(roomBookingRecordsButton);
+        buttonPanel.add(roomServicesRecordsButton);
         add(buttonPanel, BorderLayout.NORTH);
 
         setVisible(true);
