@@ -83,8 +83,8 @@ public class Booking {
                 connection.rollback();
                 showErrorMessage("Booking with ID " + selectedBookingId + " not found.");
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException ex) {
+            System.err.println("Error deleting ID from email: " + ex.getMessage());
         }
     }
 
@@ -105,7 +105,7 @@ public class Booking {
                     }
                 }
             } catch (SQLException ex) {
-                System.err.println("Error adding room: " + ex.getMessage());
+                System.err.println("Error selecting ID from email: " + ex.getMessage());
             }
         }
         return userId;
@@ -122,12 +122,11 @@ public class Booking {
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     if (resultSet.next()) {
                         int bookingCount = resultSet.getInt(1);
-                        System.out.println("DB: NOT FOUND");
                         return bookingCount > 0;
                     }
                 }
             } catch (SQLException ex) {
-                System.err.println("SQL error occurred while checking booking: " + ex.getMessage());
+                System.err.println("Error while checking booking status: " + ex.getMessage());
             }
         }
 
@@ -153,10 +152,87 @@ public class Booking {
                     }
                 }
             } catch (SQLException ex) {
-                System.err.println("SQL error occurred:");
-                ex.printStackTrace();
+                System.err.println("Error validating room: " + ex.getMessage());
             }
         }
         return false;
+    }
+
+    public void staffAddBooking(String guestEmail, int roomNumber, java.sql.Date bookingDate) {
+
+        String query = "INSERT INTO BookingRecords (UserID, RoomNumber, BookingDate) VALUES (?, ?, ?)";
+
+        Connection connection = dbManager.getConnection();
+
+        if (connection != null) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+                int userId = userEmailID(guestEmail);
+
+                preparedStatement.setInt(1, userId);
+                preparedStatement.setInt(2, roomNumber);
+                preparedStatement.setDate(3, bookingDate);
+
+                int lines = preparedStatement.executeUpdate();
+
+                if (lines > 0) {
+                    rm.roomStatus(roomNumber, false, false);
+                    showSuccessMessage("Room:" + roomNumber + " has been successfully booked for " + guestEmail + "!");
+                } else {
+                    showErrorMessage("Failed to book room for " + guestEmail + "\nPlease try again.");
+                }
+            } catch (SQLException ex) {
+                System.err.println("Error booking room: " + ex.getMessage());
+            }
+        }
+    }
+
+    public void staffCancelBooking(int bookID) {
+        String selectRoomNumberSQL = "SELECT RoomNumber FROM BookingRecords WHERE BookingID = ?";
+        String deleteBookingSQL = "DELETE FROM BookingRecords WHERE BookingID = ?";
+        String updateRoomStatusSQL = "UPDATE RoomRecords SET IsAvailable = true WHERE RoomNumber = ?";
+
+        Connection connection = dbManager.getConnection();
+
+        try {
+            connection.setAutoCommit(false);
+
+            int roomNumber = -1;
+
+            try (PreparedStatement selectRoomNumberStatement = connection.prepareStatement(selectRoomNumberSQL)) {
+                selectRoomNumberStatement.setInt(1, bookID);
+
+                try (ResultSet resultSet = selectRoomNumberStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        roomNumber = resultSet.getInt("RoomNumber");
+                    } else {
+                        showErrorMessage("Booking not found.");
+                        return;
+                    }
+                }
+            }
+
+            try (PreparedStatement updateRoomStatusStatement = connection.prepareStatement(updateRoomStatusSQL)) {
+                updateRoomStatusStatement.setInt(1, roomNumber);
+                int updateRowsAffected = updateRoomStatusStatement.executeUpdate();
+
+                if (updateRowsAffected > 0) {
+                    try (PreparedStatement deleteBookingStatement = connection.prepareStatement(deleteBookingSQL)) {
+                        deleteBookingStatement.setInt(1, bookID);
+                        int deleteRowsAffected = deleteBookingStatement.executeUpdate();
+
+                        if (deleteRowsAffected > 0) {
+                            showSuccessMessage("Booking: " + bookID + "has been successfully removed.");
+                        } else {
+                            showErrorMessage("Failed to delete booking, try again.");
+                        }
+                    }
+                } else {
+                    showErrorMessage("Failed to update Room status.");
+                }
+            }
+        } catch (SQLException ex) {
+            System.err.println("Error during cancellation: " + ex.getMessage());
+        }
     }
 }

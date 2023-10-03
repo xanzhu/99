@@ -101,29 +101,38 @@ public class BookingView {
         BookingFrame.setVisible(true);
 
         SubmitBtn.addActionListener((ActionEvent e) -> {
-            String Email = EmailField.getText();
-            String RoomNum = RoomField.getText();
-            String Date = DateField.getText();
-            
-            // TODO Improve this
-            try {
-                int roomNumber = Integer.parseInt(RoomNum);
+        String Email = EmailField.getText();
+        String RoomNum = RoomField.getText();
+        String Date = DateField.getText();
 
-                if (bk.validateAddRoom(roomNumber)) {
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                    Date parsedDate = dateFormat.parse(Date);
-                    java.sql.Date bookingDate = new java.sql.Date(parsedDate.getTime());
+        // Validate Staff !
+        boolean isStaffBooking = Email.contains("@hotel.com");
 
+        try {
+            int roomNumber = Integer.parseInt(RoomNum);
+
+            if (bk.validateAddRoom(roomNumber)) {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Date parsedDate = dateFormat.parse(Date);
+                java.sql.Date bookingDate = new java.sql.Date(parsedDate.getTime());
+
+                if (isStaffBooking) {
+                    bk.staffAddBooking(Email, roomNumber, bookingDate);
+                } else {
                     bk.addBooking(Email, roomNumber, bookingDate);
                 }
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(null, "Invalid room number format.", "Error", JOptionPane.ERROR_MESSAGE);
-            } catch (ParseException ex) {
-                JOptionPane.showMessageDialog(null, "Invalid date format. Use yyyy-MM-dd.", "Error", JOptionPane.ERROR_MESSAGE);
+                   
             }
+        // TODO: Fix error messages
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Invalid room number format.", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (ParseException ex) {
+            JOptionPane.showMessageDialog(null, "Invalid date format. Use yyyy-MM-dd.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
 
-            BookingFrame.dispose();
-        });
+        BookingFrame.dispose();
+    });
+
     }
 
     // TODO Reimplement db logic -> booking
@@ -260,4 +269,51 @@ public class BookingView {
     }
 
     // TODO: Validation methods
+    
+    public void staffCancelBookingGUI(){
+        JFrame staffCancelFrame = new JFrame("Staff Booking Remove");
+        staffCancelFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        staffCancelFrame.setBounds(450, 250, 600, 400);
+        staffCancelFrame.setResizable(false);
+
+        JPanel optionsPanel = new JPanel();
+        optionsPanel.setLayout(null);
+        
+        JLabel BookingLabel = new JLabel("Enter Booking ID:");
+        BookingLabel.setFont(u.formatText(15));
+        BookingLabel.setBounds(120, 70, 150, 40);
+        
+        JTextField BookingField = new JTextField();
+        BookingField.setBounds(300, 70, 150, 40);
+        
+        JLabel BookingWarning = new JLabel("Warning: This will delete a users booking.");
+        BookingWarning.setFont(u.formatText(12));
+        BookingWarning.setForeground(Color.red);
+        BookingWarning.setBounds(180, 240, 200, 40);
+        
+        JButton removeBtn = new JButton("Remove Booking");
+        removeBtn.setBounds(180, 290, 250, 40);
+        removeBtn.setHorizontalAlignment(JButton.CENTER);
+        removeBtn.setBackground(u.staffColour());
+        removeBtn.setForeground(Color.WHITE);
+        removeBtn.setOpaque(true);
+        removeBtn.setBorderPainted(false);
+        
+        optionsPanel.add(BookingLabel);
+        optionsPanel.add(BookingField);
+        optionsPanel.add(BookingWarning);
+        optionsPanel.add(removeBtn);
+        
+        staffCancelFrame.add(optionsPanel);
+        staffCancelFrame.setVisible(true);
+        
+        removeBtn.addActionListener((ActionEvent e) -> {
+
+            int bookingID = Integer.parseInt(BookingField.getText());
+            
+            bk.staffCancelBooking(bookingID);
+
+            staffCancelFrame.dispose();
+        });
+    }
 }
