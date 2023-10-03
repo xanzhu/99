@@ -104,7 +104,8 @@ public class BookingView {
             String Email = EmailField.getText();
             String RoomNum = RoomField.getText();
             String Date = DateField.getText();
-
+            
+            // TODO Improve this
             try {
                 int roomNumber = Integer.parseInt(RoomNum);
 
@@ -252,21 +253,9 @@ public class BookingView {
         }
     }
 
-    // Check for new user booking!
+    // Check for Existing Booking
     public boolean NewBookingCheck(String userEmail) {
-        if (bk == null || userEmail == null) {
-            System.out.println("BookingView: Null");
-            return false; // Handle the case where bk or userEmail is null
-        }
-
         int userId = bk.userEmailID(userEmail);
-        if (userId < 0) {
-            System.out.println("BookingView: Invalid user ID");
-            return false;
-        }
-
-        // DEBUG
-        System.out.println("BookingView: User email" + userEmail);
         return bk.hasBooking(userId);
     }
 

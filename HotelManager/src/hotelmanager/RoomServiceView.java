@@ -32,7 +32,6 @@ public class RoomServiceView {
     }
 
     public void addFoodGUI() {
-        // TODO: Add ToolTips
         JFrame FoodFrame = new JFrame("Add Food Item");
         FoodFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         FoodFrame.setBounds(450, 250, 600, 400);
@@ -106,7 +105,6 @@ public class RoomServiceView {
 
     public void removeFoodGUI() {
 
-        // TODO: Add Tooltips
         JFrame removeFoodFrame = new JFrame("Remove Food Item");
         removeFoodFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         removeFoodFrame.setBounds(450, 250, 600, 350);
