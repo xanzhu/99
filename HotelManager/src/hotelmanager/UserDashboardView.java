@@ -102,6 +102,10 @@ public class UserDashboardView extends JFrame {
         BookingBtn.setLayout(null);
         add(BookingBtn);
         BookingBtn.setVisible(hasBooking);
+        
+        if(!hasBooking){
+            ServiceBtn.setVisible(false);
+        }
 
         NewBookingBtn.setBounds(350, 160, 150, 150);
         NewBookingBtn.setFont(u.formatText(16));
@@ -149,7 +153,7 @@ public class UserDashboardView extends JFrame {
                 btnState(false, AddBookingBtn, ViewBookingBtn, CancelBookingBtn, ReturnBtn);
             } else {
                 btnState(true, NewBookingBtn);
-                btnState(false, AddBookingBtn, ReturnBtn, CancelBookingBtn, ViewBookingBtn);
+                btnState(false, AddBookingBtn, ReturnBtn, CancelBookingBtn, ViewBookingBtn, ServiceBtn);
             }
         });
 
@@ -174,7 +178,7 @@ public class UserDashboardView extends JFrame {
         // New Bookings
         NewBookingBtn.addActionListener((ActionEvent e) -> {
             btnState(true, AddBookingBtn, ReturnBtn);
-            btnState(false, NewBookingBtn);
+            btnState(false, NewBookingBtn, ServiceBtn, NewBookingBtn);
         });
     }
 
@@ -183,7 +187,6 @@ public class UserDashboardView extends JFrame {
         ServiceBtn.setFont(u.formatText(16));
         ServiceBtn.setLayout(null);
         add(ServiceBtn);
-        ServiceBtn.setVisible(false);
 
         // View Menu
         JButton ViewMenu = new JButton("View Room Services");
@@ -226,7 +229,7 @@ public class UserDashboardView extends JFrame {
 
         ServiceBtn.addActionListener((ActionEvent e) -> {
             btnState(true, ViewMenu, OrderMenu, SReturnBtn);
-            btnState(false, BookingBtn, ServiceBtn);
+            btnState(false, BookingBtn, ServiceBtn, NewBookingBtn);
         });
     }
 
