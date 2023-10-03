@@ -11,6 +11,7 @@ public class UserDashboard extends JFrame {
 
     private BookingGUI bookingGUI;
     private RoomServicesGUI roomServicesGUI;
+    private BillingGUI billingGUI;
     private static String loggedInUserEmail;
     private JFrame bookingActionsFrame;
 
@@ -32,6 +33,7 @@ public class UserDashboard extends JFrame {
         setBounds(100, 100, 1000, 560);
         bookingGUI = new BookingGUI();
         roomServicesGUI = new RoomServicesGUI();
+        billingGUI = new BillingGUI();
 
         
         JButton myBookingButton = new JButton("My Booking");
@@ -62,12 +64,12 @@ public class UserDashboard extends JFrame {
 
         // Create a billing button
         JButton billingButton = new JButton("Billing");
-//        billingButton.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                // Handle billing actions here
-//            }
-//        });
+        billingButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                billingGUI.getUserBillingGUI(loggedInUserEmail);
+            }
+        });
 
         // Add the billing button to the toolbar
         toolBar.add(billingButton);
