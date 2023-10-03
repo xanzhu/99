@@ -3,7 +3,6 @@ package hotelmanager;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -108,12 +107,12 @@ public class BookingView {
 
             try {
                 int roomNumber = Integer.parseInt(RoomNum);
-                
+
                 if (bk.validateAddRoom(roomNumber)) {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     Date parsedDate = dateFormat.parse(Date);
                     java.sql.Date bookingDate = new java.sql.Date(parsedDate.getTime());
-                                    
+
                     bk.addBooking(Email, roomNumber, bookingDate);
                 }
             } catch (NumberFormatException ex) {
@@ -125,7 +124,7 @@ public class BookingView {
             BookingFrame.dispose();
         });
     }
-   
+
     // TODO Reimplement db logic -> booking
     public void viewBookingGUI(String email) {
         try {
@@ -139,7 +138,7 @@ public class BookingView {
             String viewBookingSQL = "SELECT * FROM BookingRecords WHERE UserID = ?";
 
             Connection connection = db.getConnection();
-            
+
             try (PreparedStatement preparedStatement = connection.prepareStatement(viewBookingSQL,
                     ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
 
@@ -183,7 +182,7 @@ public class BookingView {
             e.printStackTrace();
         }
     }
-    
+
     // TODO Reimplement db logic -> booking
     public void cancelBookingGUI(String userEmail) {
         try {
@@ -195,7 +194,7 @@ public class BookingView {
             }
 
             String selectBookingSQL = "SELECT * FROM BookingRecords WHERE UserID = ?";
-            
+
             Connection connection = db.getConnection();
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(selectBookingSQL,
@@ -252,5 +251,24 @@ public class BookingView {
             e.printStackTrace();
         }
     }
+
+    // Check for new user booking!
+    public boolean NewBookingCheck(String userEmail) {
+        if (bk == null || userEmail == null) {
+            System.out.println("BookingView: Null");
+            return false; // Handle the case where bk or userEmail is null
+        }
+
+        int userId = bk.userEmailID(userEmail);
+        if (userId < 0) {
+            System.out.println("BookingView: Invalid user ID");
+            return false;
+        }
+
+        // DEBUG
+        System.out.println("BookingView: User email" + userEmail);
+        return bk.hasBooking(userId);
+    }
+
     // TODO: Validation methods
 }

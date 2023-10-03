@@ -17,22 +17,22 @@ public class UserDashboardView extends JFrame {
 
     private final JButton logoutBtn;
     private final JLabel nameField;
-   
+
     private final String loginEmail;
 
     private final BookingView bookingView;
     private final RoomServiceView roomServiceView;
-    
+
     private final AppUtils u;
 
     UserDashboardView(String userName, String userEmail) {
         this.loginEmail = userEmail;
-        this.bookingView = new BookingView(); 
+        this.bookingView = new BookingView();
         this.roomServiceView = new RoomServiceView();
-        
+
         // Load in reusable elements
         this.u = new AppUtils();
-                
+
         setBounds(100, 80, 1280, 720);
         setResizable(false);
         setLayout(null);
@@ -86,22 +86,28 @@ public class UserDashboardView extends JFrame {
 
     private JButton BookingBtn;
     private JButton ServiceBtn;
-
-    private void btnState(boolean isVisible, Component... button) {
-        for (Component b : button) {
-            b.setVisible(isVisible);
-        }
-    }
+    private JButton NewBookingBtn;
 
     private void BookingGUI() {
 
-        // TODO: Add logic to display / My Bookings / Book room?
+        boolean hasBooking = bookingView.NewBookingCheck(loginEmail);
+
+        // Define buttons for use
+        ServiceBtn = new JButton("Room Service");
+        NewBookingBtn = new JButton("Book a room");
         BookingBtn = new JButton("My Booking");
+        
         BookingBtn.setBounds(350, 160, 150, 150);
         BookingBtn.setFont(u.formatText(16));
         BookingBtn.setLayout(null);
         add(BookingBtn);
+        BookingBtn.setVisible(hasBooking);
 
+        NewBookingBtn.setBounds(350, 160, 150, 150);
+        NewBookingBtn.setFont(u.formatText(16));
+        NewBookingBtn.setLayout(null);
+        add(NewBookingBtn);
+        
         // Add Booking
         JButton AddBookingBtn = new JButton("Add Booking");
         AddBookingBtn.setLayout(null);
@@ -134,37 +140,52 @@ public class UserDashboardView extends JFrame {
         add(ReturnBtn);
         ReturnBtn.setVisible(false);
 
+        // TODO RETURN
+        ReturnBtn.addActionListener((ActionEvent e) -> {
+
+            boolean returnCheck = bookingView.NewBookingCheck(loginEmail);
+
+            if (returnCheck) {
+                btnState(true, BookingBtn, ServiceBtn);
+                btnState(false, AddBookingBtn, ViewBookingBtn, CancelBookingBtn, ReturnBtn);
+            } else {
+                btnState(true, NewBookingBtn);
+                btnState(false, AddBookingBtn, ReturnBtn, CancelBookingBtn, ViewBookingBtn);
+            }
+        });
+
         AddBookingBtn.addActionListener((ActionEvent e) -> {
             bookingView.addBookingGUI();
         });
 
-        ViewBookingBtn.addActionListener((ActionEvent e) -> { 
+        ViewBookingBtn.addActionListener((ActionEvent e) -> {
             bookingView.viewBookingGUI(loginEmail);
         });
-        
-        CancelBookingBtn.addActionListener((ActionEvent e) -> { 
+
+        CancelBookingBtn.addActionListener((ActionEvent e) -> {
             bookingView.cancelBookingGUI(loginEmail);
         });
 
-        // Button Visibility
-        ReturnBtn.addActionListener((ActionEvent e) -> {
-            btnState(true, BookingBtn, ServiceBtn);
-            btnState(false, AddBookingBtn, ViewBookingBtn, CancelBookingBtn, ReturnBtn);
+        // Existing Bookings
+        BookingBtn.addActionListener((ActionEvent e) -> {
+            btnState(false, BookingBtn, ServiceBtn);
+            btnState(true, AddBookingBtn, ViewBookingBtn, CancelBookingBtn, ReturnBtn);
         });
 
-        BookingBtn.addActionListener((ActionEvent e) -> {
-            btnState(true, AddBookingBtn, ViewBookingBtn, CancelBookingBtn, ReturnBtn);
-            btnState(false, BookingBtn, ServiceBtn);
+        // New Bookings
+        NewBookingBtn.addActionListener((ActionEvent e) -> {
+            btnState(true, AddBookingBtn, ReturnBtn);
+            btnState(false, NewBookingBtn);
         });
     }
-    
-    private void RoomServiceGUI(){
-        ServiceBtn = new JButton("Room Service");
+
+    private void RoomServiceGUI() {
         ServiceBtn.setBounds(550, 160, 150, 150);
         ServiceBtn.setFont(u.formatText(16));
         ServiceBtn.setLayout(null);
         add(ServiceBtn);
-        
+        ServiceBtn.setVisible(false);
+
         // View Menu
         JButton ViewMenu = new JButton("View Room Services");
         ViewMenu.setLayout(null);
@@ -172,7 +193,7 @@ public class UserDashboardView extends JFrame {
         ViewMenu.setFont(u.formatText(16));
         add(ViewMenu);
         ViewMenu.setVisible(false);
-        
+
         // Order Menu
         JButton OrderMenu = new JButton("Order Room Services");
         OrderMenu.setLayout(null);
@@ -180,7 +201,7 @@ public class UserDashboardView extends JFrame {
         OrderMenu.setFont(u.formatText(16));
         add(OrderMenu);
         OrderMenu.setVisible(false);
-        
+
         // Return 
         JButton SReturnBtn = new JButton("Return");
         SReturnBtn.setLayout(null);
@@ -188,16 +209,16 @@ public class UserDashboardView extends JFrame {
         SReturnBtn.setFont(u.formatText(15));
         add(SReturnBtn);
         SReturnBtn.setVisible(false);
-        
+
         // Listeners:
-        ViewMenu.addActionListener((ActionEvent e) -> { 
+        ViewMenu.addActionListener((ActionEvent e) -> {
             roomServiceView.viewRoomServicesGUI();
         });
-        
-        OrderMenu.addActionListener((ActionEvent e) -> { 
+
+        OrderMenu.addActionListener((ActionEvent e) -> {
             roomServiceView.OrderFoodGUI(loginEmail);
         });
-        
+
         // Button Visibility
         SReturnBtn.addActionListener((ActionEvent e) -> {
             btnState(true, BookingBtn, ServiceBtn);
@@ -208,6 +229,12 @@ public class UserDashboardView extends JFrame {
             btnState(true, ViewMenu, OrderMenu, SReturnBtn);
             btnState(false, BookingBtn, ServiceBtn);
         });
+    }
+
+    private void btnState(boolean isVisible, Component... buttons) {
+        for (Component button : buttons) {
+            button.setVisible(isVisible);
+        }
     }
 
     public static void main(String[] args) {

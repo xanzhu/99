@@ -27,9 +27,8 @@ public class Booking {
     private void showSuccessMessage(String message) {
         JOptionPane.showMessageDialog(null, message, "Booking Menu", JOptionPane.PLAIN_MESSAGE);
     }
-    
 
-  // TODO: User Booking Re-write // Handle only room number and date when booking // Email for Staff Management
+    // TODO: User Booking Re-write // Handle only room number and date when booking // Email for Staff Management
     public void addBooking(String userEmail, int roomNumber, java.sql.Date bookingDate) {
 
         int userId = userEmailID(userEmail);
@@ -58,7 +57,7 @@ public class Booking {
             }
         }
     }
-    
+
     public void cancelBooking(int selectedBookingId) {
         String updateRoomAvailabilitySQL = "UPDATE RoomRecords SET IsAvailable = TRUE WHERE RoomNumber = "
                 + "(SELECT RoomNumber FROM BookingRecords WHERE BookingID = ?)";
@@ -110,6 +109,29 @@ public class Booking {
             }
         }
         return userId;
+    }
+
+    public boolean hasBooking(int userId) {
+        String selectBookingSQL = "SELECT COUNT(*) FROM BookingRecords WHERE UserID = ?";
+
+        Connection connection = dbManager.getConnection();
+        if (connection != null) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(selectBookingSQL)) {
+                preparedStatement.setInt(1, userId);
+
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        int bookingCount = resultSet.getInt(1);
+                        System.out.println("DB: NOT FOUND");
+                        return bookingCount > 0;
+                    }
+                }
+            } catch (SQLException ex) {
+                System.err.println("SQL error occurred while checking booking: " + ex.getMessage());
+            }
+        }
+
+        return false;
     }
 
 // Validation Methods
