@@ -140,7 +140,6 @@ public class UserDashboardView extends JFrame {
         add(ReturnBtn);
         ReturnBtn.setVisible(false);
 
-        // TODO RETURN
         ReturnBtn.addActionListener((ActionEvent e) -> {
 
             boolean returnCheck = bookingView.NewBookingCheck(loginEmail);
