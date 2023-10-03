@@ -30,7 +30,7 @@ public class WelcomeController {
     private void addRegisterButtonListener() {
         welcomeView.getRegisterButton().addActionListener((ActionEvent e) -> {
             RegisterView registerView = new RegisterView();
-//            RegisterController registerController = new RegisterController();
+            RegisterController registerController = new RegisterController();
             registerView.setVisible(true);
 
             welcomeView.dispose();
