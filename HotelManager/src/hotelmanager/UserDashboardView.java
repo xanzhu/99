@@ -167,7 +167,7 @@ public class UserDashboardView extends JFrame {
 
         // Existing Bookings
         BookingBtn.addActionListener((ActionEvent e) -> {
-            btnState(false, BookingBtn, ServiceBtn);
+            btnState(false, BookingBtn, ServiceBtn, NewBookingBtn);
             btnState(true, AddBookingBtn, ViewBookingBtn, CancelBookingBtn, ReturnBtn);
         });
 

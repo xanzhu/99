@@ -2,7 +2,6 @@ package hotelmanager;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.util.Map;
 import javax.swing.ButtonGroup;
@@ -295,7 +294,7 @@ public class RoomServiceView {
         // Order Button 
         JButton orderBtn = new JButton("Place Order");
         orderBtn.setBounds(160, 220, 250, 40);
-        orderBtn.setBackground(u.staffColour());
+        orderBtn.setBackground(u.userColour());
         orderBtn.setForeground(Color.WHITE);
         orderBtn.setOpaque(true);
         orderBtn.setBorderPainted(false);
