@@ -1,7 +1,6 @@
 package hotelmanager;
 
 import java.awt.Color;
-import java.awt.Font;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -21,8 +20,13 @@ public class LoginView extends JFrame {
     private JTextField email;
     private JPasswordField password;
     private JTextField name;
+    
+    private final AppUtils u;
 
     LoginView() {
+        
+        this.u = new AppUtils();
+        
         setBounds(100, 80, 1280, 720);
         setResizable(false);
         getContentPane().setBackground(Color.WHITE);
@@ -30,12 +34,13 @@ public class LoginView extends JFrame {
 
         JLabel text = new JLabel("Hotel Login");
         text.setBounds(148, 70, 1000, 80);
-        text.setFont(new Font("sans serif", Font.BOLD, 50));
+        text.setFont(u.formatText(50, true));
+        
         text.setForeground(Color.BLACK);
         add(text);
 
         JLabel userEmail = new JLabel("EMAIL");
-        userEmail.setFont(new Font("sans serif", Font.PLAIN, 12));
+        userEmail.setFont(u.formatText(12));
         userEmail.setBounds(150, 200, 100, 35);
         add(userEmail);
 
@@ -46,7 +51,7 @@ public class LoginView extends JFrame {
         add(email);
 
         JLabel pass = new JLabel("PASSWORD");
-        pass.setFont(new Font("sans serif", Font.PLAIN, 12));
+        pass.setFont(u.formatText(12));
         pass.setBounds(150, 300, 100, 40);
         add(pass);
 

@@ -1,7 +1,6 @@
 package hotelmanager;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -18,11 +17,13 @@ import javax.swing.JTextField;
  */
 public class RoomManagementView {
 
-    private RoomManagement rm;
+    private final RoomManagement rm;
+    private final AppUtils u;
 
     public RoomManagementView() {
         DBManager dbManager = new DBManager();
-        rm = new RoomManagement(dbManager);
+        this.rm = new RoomManagement(dbManager);
+        this.u = new AppUtils();
     }
 
     public void addRoomGUI() {
@@ -38,21 +39,21 @@ public class RoomManagementView {
 
         // Room options
         JLabel roomNumberLabel = new JLabel("Enter Room Number:");
-        roomNumberLabel.setFont(new Font("sans serif", Font.PLAIN, 15));
+        roomNumberLabel.setFont(u.formatText(15));
         roomNumberLabel.setBounds(100, 50, 150, 40);
 
         JTextField roomNumberField = new JTextField();
         roomNumberField.setBounds(280, 50, 200, 40);
 
         JLabel roomTypeLabel = new JLabel("Enter Room Type:");
-        roomTypeLabel.setFont(new Font("sans serif", Font.PLAIN, 15));
+        roomTypeLabel.setFont(u.formatText(15));
         roomTypeLabel.setBounds(100, 110, 150, 40);
 
         JTextField roomTypeField = new JTextField();
         roomTypeField.setBounds(280, 110, 200, 40);
 
         JLabel priceLabel = new JLabel("Enter Room Price:");
-        priceLabel.setFont(new Font("sans serif", Font.PLAIN, 15));
+        priceLabel.setFont(u.formatText(15));
         priceLabel.setBounds(100, 170, 150, 40);
 
         JTextField priceField = new JTextField();
@@ -67,7 +68,7 @@ public class RoomManagementView {
         JButton createRoomBtn = new JButton("Create Room");
         createRoomBtn.setBounds(180, 300, 250, 40);
         createRoomBtn.setHorizontalAlignment(JButton.CENTER);
-        createRoomBtn.setBackground(Color.decode("#0047AB"));
+        createRoomBtn.setBackground(u.staffColour());
         createRoomBtn.setForeground(Color.WHITE);
         createRoomBtn.setOpaque(true);
         createRoomBtn.setBorderPainted(false);
@@ -115,22 +116,22 @@ public class RoomManagementView {
 
         // Removal Options
         JLabel roomNumberLabel = new JLabel("Enter Room Number:");
-        roomNumberLabel.setFont(new Font("sans serif", Font.PLAIN, 15));
+        roomNumberLabel.setFont(u.formatText(15));
         roomNumberLabel.setBounds(120, 70, 150, 40);
 
         JTextField roomNumberField = new JTextField();
-        roomNumberField.setFont(new Font("sans serif", Font.PLAIN, 15));
+        roomNumberField.setFont(u.formatText(15));
         roomNumberField.setBounds(300, 70, 150, 40);
 
         JLabel note = new JLabel("* Warning this will delete a room!");
-        note.setFont(new Font("sans serif", Font.PLAIN, 12));
+        note.setFont(u.formatText(12));
         note.setForeground(Color.red);
         note.setBounds(180, 240, 200, 40);
 
         JButton deleteBtn = new JButton("Delete Room");
         deleteBtn.setBounds(120, 190, 330, 40);
         deleteBtn.setHorizontalAlignment(JButton.CENTER);
-        deleteBtn.setBackground(Color.decode("#0047AB"));
+        deleteBtn.setBackground(u.staffColour());
         deleteBtn.setForeground(Color.WHITE);
         deleteBtn.setOpaque(true);
         deleteBtn.setBorderPainted(false);
@@ -165,15 +166,15 @@ public class RoomManagementView {
 
         // Options
         JLabel roomNumberLabel = new JLabel("Enter Room Number:");
-        roomNumberLabel.setFont(new Font("sans serif", Font.PLAIN, 15));
+        roomNumberLabel.setFont(u.formatText(15));
         roomNumberLabel.setBounds(120, 50, 150, 40);
 
         JTextField roomNumberField = new JTextField();
-        roomNumberField.setFont(new Font("sans serif", Font.PLAIN, 15));
+        roomNumberField.setFont(u.formatText(15));
         roomNumberField.setBounds(300, 50, 150, 40);
 
         JLabel priceLabel = new JLabel("Enter Price:");
-        priceLabel.setFont(new Font("sans serif", Font.PLAIN, 15));
+        priceLabel.setFont(u.formatText(15));
         priceLabel.setBounds(120, 120, 150, 40);
 
         JTextField priceField = new JTextField();
@@ -181,7 +182,7 @@ public class RoomManagementView {
 
         JButton priceBtn = new JButton("Update Price");
         priceBtn.setBounds(160, 240, 250, 40);
-        priceBtn.setBackground(Color.decode("#0047AB"));
+        priceBtn.setBackground(u.staffColour());
         priceBtn.setForeground(Color.WHITE);
         priceBtn.setOpaque(true);
         priceBtn.setBorderPainted(false);
@@ -218,18 +219,18 @@ public class RoomManagementView {
 
         // Options
         JLabel roomNumberLabel = new JLabel("Enter Room Number:");
-        roomNumberLabel.setFont(new Font("sans serif", Font.PLAIN, 15));
+        roomNumberLabel.setFont(u.formatText(15));
         roomNumberLabel.setBounds(120, 50, 150, 40);
 
         JTextField roomNumberField = new JTextField();
-        roomNumberField.setFont(new Font("sans serif", Font.PLAIN, 15));
+        roomNumberField.setFont(u.formatText(15));
         roomNumberField.setBounds(300, 50, 150, 40);
 
         JPanel availabilityPanel = new JPanel();
         availabilityPanel.setBounds(120, 130, 330, 40);
 
         JLabel availabilityLabel = new JLabel("Availability:");
-        availabilityLabel.setFont(new Font("sans serif", Font.PLAIN, 15));
+        availabilityLabel.setFont(u.formatText(15));
         JRadioButton availableRadio = new JRadioButton("Available");
         JRadioButton unavailableRadio = new JRadioButton("Unavailable");
 
@@ -243,7 +244,7 @@ public class RoomManagementView {
 
         JButton updateBtn = new JButton("Update Room Status");
         updateBtn.setBounds(160, 240, 250, 40);
-        updateBtn.setBackground(Color.decode("#0047AB"));
+        updateBtn.setBackground(u.staffColour());
         updateBtn.setForeground(Color.WHITE);
         updateBtn.setOpaque(true);
         updateBtn.setBorderPainted(false);

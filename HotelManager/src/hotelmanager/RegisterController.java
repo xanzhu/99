@@ -18,8 +18,8 @@ public class RegisterController {
     Statement statement;
 
     RegisterController() {
-        dbManager = new DBManager();
-        conn = dbManager.getConnection();
+        this.dbManager = new DBManager();
+        this.conn = dbManager.getConnection();
     }
 
     public void connectHotelDB() {

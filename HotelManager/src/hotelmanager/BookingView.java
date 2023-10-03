@@ -31,12 +31,14 @@ import javax.swing.text.DefaultCaret;
  */
 public class BookingView {
 
-    private Booking bk;
-    private DBManager db;
+    private final Booking bk;
+    private final DBManager db;
+    private final AppUtils u;
 
     public BookingView() {
-        db = new DBManager();
-        bk = new Booking(db);
+        this.db = new DBManager();
+        this.bk = new Booking(db);
+        this.u = new AppUtils();
     }
 
     public void addBookingGUI() {
@@ -50,7 +52,7 @@ public class BookingView {
 
         // Email
         JLabel EmailLabel = new JLabel("Enter Email:");
-        EmailLabel.setFont(new Font("sans serif", Font.PLAIN, 15));
+        EmailLabel.setFont(u.formatText(15));
         EmailLabel.setBounds(130, 50, 150, 40);
 
         JTextField EmailField = new JTextField();
@@ -58,7 +60,7 @@ public class BookingView {
 
         // Room Number
         JLabel RoomLabel = new JLabel("Room Number:");
-        RoomLabel.setFont(new Font("sans serif", Font.PLAIN, 15));
+        RoomLabel.setFont(u.formatText(15));
         RoomLabel.setBounds(130, 110, 150, 40);
 
         JTextField RoomField = new JTextField();
@@ -66,7 +68,7 @@ public class BookingView {
 
         // Date 
         JLabel DateLabel = new JLabel("Booking Date:");
-        DateLabel.setFont(new Font("sans serif", Font.PLAIN, 15));
+        DateLabel.setFont(u.formatText(15));
         DateLabel.setBounds(130, 180, 300, 40);
 
         // TODO: Lookup setting date using JCalendar instead of TextField ?  
@@ -75,13 +77,13 @@ public class BookingView {
 
         JLabel DateNote = new JLabel("Format: (YYYY-MM-DD)");
         DateNote.setBounds(310, 215, 200, 40);
-        DateNote.setFont(new Font("sans serif", Font.ITALIC, 12));
+        DateNote.setFont(u.formatText(12));
 
         // Submit Button
         JButton SubmitBtn = new JButton("Book Room");
         SubmitBtn.setBounds(180, 290, 250, 40);
         SubmitBtn.setHorizontalAlignment(JButton.CENTER);
-        SubmitBtn.setBackground(Color.decode("#0096FF"));
+        SubmitBtn.setBackground(u.userColour());
         SubmitBtn.setForeground(Color.WHITE);
         SubmitBtn.setOpaque(true);
         SubmitBtn.setBorderPainted(false);
@@ -124,6 +126,7 @@ public class BookingView {
         });
     }
    
+    // TODO Reimplement db logic -> booking
     public void viewBookingGUI(String email) {
         try {
             int userId = bk.userEmailID(email);
@@ -181,6 +184,7 @@ public class BookingView {
         }
     }
     
+    // TODO Reimplement db logic -> booking
     public void cancelBookingGUI(String userEmail) {
         try {
             int userId = bk.userEmailID(userEmail);

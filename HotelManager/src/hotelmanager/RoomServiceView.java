@@ -23,11 +23,13 @@ import javax.swing.JTextField;
  */
 public class RoomServiceView {
 
-    private RoomServices rs;
+    private final RoomServices rs;
+    private final AppUtils u;
 
     public RoomServiceView() {
         DBManager dbManager = new DBManager();
-        rs = new RoomServices(dbManager);
+        this.rs = new RoomServices(dbManager);
+        this.u = new AppUtils();
     }
 
     public void addFoodGUI() {
@@ -42,21 +44,21 @@ public class RoomServiceView {
 
         // Room options
         JLabel FoodLabel = new JLabel("Enter Food Name:");
-        FoodLabel.setFont(new Font("sans serif", Font.PLAIN, 15));
+        FoodLabel.setFont(u.formatText(15));
         FoodLabel.setBounds(100, 50, 150, 40);
 
         JTextField FoodField = new JTextField();
         FoodField.setBounds(280, 50, 200, 40);
 
         JLabel FoodTypeLabel = new JLabel("Enter Food Type:");
-        FoodTypeLabel.setFont(new Font("sans serif", Font.PLAIN, 15));
+        FoodTypeLabel.setFont(u.formatText(15));
         FoodTypeLabel.setBounds(100, 110, 150, 40);
 
         JTextField FoodTypeField = new JTextField();
         FoodTypeField.setBounds(280, 110, 200, 40);
 
         JLabel FoodPriceLabel = new JLabel("Enter Food Price:");
-        FoodPriceLabel.setFont(new Font("sans serif", Font.PLAIN, 15));
+        FoodPriceLabel.setFont(u.formatText(15));
         FoodPriceLabel.setBounds(100, 170, 150, 40);
 
         JTextField FoodPriceField = new JTextField();
@@ -71,7 +73,7 @@ public class RoomServiceView {
         JButton FoodBtn = new JButton("Add Food");
         FoodBtn.setBounds(180, 300, 250, 40);
         FoodBtn.setHorizontalAlignment(JButton.CENTER);
-        FoodBtn.setBackground(Color.decode("#0047AB"));
+        FoodBtn.setBackground(u.staffColour());
         FoodBtn.setForeground(Color.WHITE);
         FoodBtn.setOpaque(true);
         FoodBtn.setBorderPainted(false);
@@ -115,22 +117,22 @@ public class RoomServiceView {
         optionsPanel.setLayout(null);
 
         JLabel FoodLabel = new JLabel("Enter Food Name:");
-        FoodLabel.setFont(new Font("sans serif", Font.PLAIN, 15));
+        FoodLabel.setFont(u.formatText(15));
         FoodLabel.setBounds(120, 70, 150, 40);
 
         JTextField FoodField = new JTextField();
-        FoodField.setFont(new Font("sans serif", Font.PLAIN, 15));
+        FoodField.setFont(u.formatText(15));
         FoodField.setBounds(300, 70, 150, 40);
 
         JLabel note = new JLabel("* Warning this deletes food items.");
-        note.setFont(new Font("sans serif", Font.PLAIN, 12));
+        note.setFont(u.formatText(12));
         note.setForeground(Color.red);
         note.setBounds(180, 240, 250, 40);
 
         JButton deleteBtn = new JButton("Delete Item");
         deleteBtn.setBounds(120, 190, 330, 40);
         deleteBtn.setHorizontalAlignment(JButton.CENTER);
-        deleteBtn.setBackground(Color.decode("#0047AB"));
+        deleteBtn.setBackground(u.staffColour());
         deleteBtn.setForeground(Color.WHITE);
         deleteBtn.setOpaque(true);
         deleteBtn.setBorderPainted(false);
@@ -164,15 +166,15 @@ public class RoomServiceView {
 
         // Options
         JLabel FoodLabel = new JLabel("Enter Food Name:");
-        FoodLabel.setFont(new Font("sans serif", Font.PLAIN, 15));
+        FoodLabel.setFont(u.formatText(15));
         FoodLabel.setBounds(120, 50, 150, 40);
 
         JTextField FoodField = new JTextField();
-        FoodField.setFont(new Font("sans serif", Font.PLAIN, 15));
+        FoodField.setFont(u.formatText(15));
         FoodField.setBounds(300, 50, 150, 40);
 
         JLabel priceLabel = new JLabel("Enter Price:");
-        priceLabel.setFont(new Font("sans serif", Font.PLAIN, 15));
+        priceLabel.setFont(u.formatText(15));
         priceLabel.setBounds(120, 120, 150, 40);
 
         JTextField priceField = new JTextField();
@@ -180,7 +182,7 @@ public class RoomServiceView {
 
         JButton priceBtn = new JButton("Update Price");
         priceBtn.setBounds(160, 240, 250, 40);
-        priceBtn.setBackground(Color.decode("#0047AB"));
+        priceBtn.setBackground(u.staffColour());
         priceBtn.setForeground(Color.WHITE);
         priceBtn.setOpaque(true);
         priceBtn.setBorderPainted(false);
@@ -216,18 +218,18 @@ public class RoomServiceView {
         optionsPanel.setLayout(null);
 
         JLabel FoodName = new JLabel("Enter Food Name:");
-        FoodName.setFont(new Font("sans serif", Font.PLAIN, 15));
+        FoodName.setFont(u.formatText(15));
         FoodName.setBounds(120, 50, 150, 40);
 
         JTextField FoodField = new JTextField();
-        FoodField.setFont(new Font("sans serif", Font.PLAIN, 15));
+        FoodField.setFont(u.formatText(15));
         FoodField.setBounds(300, 50, 150, 40);
 
         JPanel availabilityPanel = new JPanel();
         availabilityPanel.setBounds(120, 130, 330, 40);
 
         JLabel availabilityLabel = new JLabel("Availability:");
-        availabilityLabel.setFont(new Font("sans serif", Font.PLAIN, 15));
+        availabilityLabel.setFont(u.formatText(15));
         JRadioButton availableRadio = new JRadioButton("Available");
         JRadioButton unavailableRadio = new JRadioButton("Unavailable");
 
@@ -241,7 +243,7 @@ public class RoomServiceView {
 
         JButton updateBtn = new JButton("Update Item");
         updateBtn.setBounds(160, 240, 250, 40);
-        updateBtn.setBackground(Color.decode("#0047AB"));
+        updateBtn.setBackground(u.staffColour());
         updateBtn.setForeground(Color.WHITE);
         updateBtn.setOpaque(true);
         updateBtn.setBorderPainted(false);
@@ -288,12 +290,12 @@ public class RoomServiceView {
         // Label
         JLabel selectedItem = new JLabel("Selected Food: ");
         selectedItem.setBounds(160, 50, 400, 30);
-        selectedItem.setFont(new Font("sans serif", Font.PLAIN, 15));
+        selectedItem.setFont(u.formatText(15));
 
         // Order Button 
         JButton orderBtn = new JButton("Place Order");
         orderBtn.setBounds(160, 220, 250, 40);
-        orderBtn.setBackground(Color.decode("#0047AB"));
+        orderBtn.setBackground(u.staffColour());
         orderBtn.setForeground(Color.WHITE);
         orderBtn.setOpaque(true);
         orderBtn.setBorderPainted(false);
@@ -331,14 +333,11 @@ public class RoomServiceView {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
 
-        // TODO: Apply Refactor!
-        Font textFont = new Font("Arial", Font.PLAIN, 14);
-        
-        // Add Title Label ("MENU");
+        // TODO: Add Title Label ("MENU") and some design tweaks?;
         
         JTextArea textArea = new JTextArea();
         textArea.setEditable(false);
-        textArea.setFont(textFont);
+        textArea.setFont(u.formatText(14));
         JScrollPane scrollPane = new JScrollPane(textArea);
 
         StringBuilder details = new StringBuilder();

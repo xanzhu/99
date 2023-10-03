@@ -2,7 +2,6 @@ package hotelmanager;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -19,29 +18,33 @@ public class UserDashboardView extends JFrame {
     private final JButton logoutBtn;
     private final JLabel nameField;
    
-    private String loginEmail;
+    private final String loginEmail;
 
-    private BookingView bookingView;
-    private RoomServiceView roomServiceView;
+    private final BookingView bookingView;
+    private final RoomServiceView roomServiceView;
+    
+    private final AppUtils u;
 
     UserDashboardView(String userName, String userEmail) {
-        loginEmail = userEmail;
+        this.loginEmail = userEmail;
+        this.bookingView = new BookingView(); 
+        this.roomServiceView = new RoomServiceView();
         
-        bookingView = new BookingView();
-        roomServiceView = new RoomServiceView();
-        
+        // Load in reusable elements
+        this.u = new AppUtils();
+                
         setBounds(100, 80, 1280, 720);
         setResizable(false);
         setLayout(null);
 
         JLabel title = new JLabel("Dashboard");
-        title.setFont(new Font("sans serif", Font.BOLD, 30));
+        title.setFont(u.formatText(30, true));
         title.setBounds(1075, 20, 500, 30);
         add(title);
 
         JPanel Sidebar = new JPanel();
         Sidebar.setBounds(0, 0, 250, 720);
-        Sidebar.setBackground(Color.decode("#0096FF"));
+        Sidebar.setBackground(u.userColour());
         Sidebar.setLayout(null);
         add(Sidebar);
 
@@ -49,7 +52,7 @@ public class UserDashboardView extends JFrame {
         nameField.setBounds(0, 100, 250, 200);
         nameField.setVerticalAlignment(JLabel.CENTER);
         nameField.setHorizontalAlignment(JLabel.CENTER);
-        nameField.setFont(new Font("sans serif", Font.BOLD, 20));
+        nameField.setFont(u.formatText(20, true));
         nameField.setForeground(Color.WHITE);
         Sidebar.add(nameField);
 
@@ -95,7 +98,7 @@ public class UserDashboardView extends JFrame {
         // TODO: Add logic to display / My Bookings / Book room?
         BookingBtn = new JButton("My Booking");
         BookingBtn.setBounds(350, 160, 150, 150);
-        BookingBtn.setFont(new Font("sans serif", Font.PLAIN, 16));
+        BookingBtn.setFont(u.formatText(16));
         BookingBtn.setLayout(null);
         add(BookingBtn);
 
@@ -103,7 +106,7 @@ public class UserDashboardView extends JFrame {
         JButton AddBookingBtn = new JButton("Add Booking");
         AddBookingBtn.setLayout(null);
         AddBookingBtn.setBounds(350, 160, 150, 150);
-        AddBookingBtn.setFont(new Font("sans serif", Font.PLAIN, 16));
+        AddBookingBtn.setFont(u.formatText(16));
         add(AddBookingBtn);
         AddBookingBtn.setVisible(false);
 
@@ -111,7 +114,7 @@ public class UserDashboardView extends JFrame {
         JButton ViewBookingBtn = new JButton("View Booking");
         ViewBookingBtn.setLayout(null);
         ViewBookingBtn.setBounds(550, 160, 150, 150);
-        ViewBookingBtn.setFont(new Font("sans serif", Font.PLAIN, 16));
+        ViewBookingBtn.setFont(u.formatText(16));
         add(ViewBookingBtn);
         ViewBookingBtn.setVisible(false);
 
@@ -119,7 +122,7 @@ public class UserDashboardView extends JFrame {
         JButton CancelBookingBtn = new JButton("Cancel Booking");
         CancelBookingBtn.setLayout(null);
         CancelBookingBtn.setBounds(750, 160, 150, 150);
-        CancelBookingBtn.setFont(new Font("sans serif", Font.PLAIN, 16));
+        CancelBookingBtn.setFont(u.formatText(16));
         add(CancelBookingBtn);
         CancelBookingBtn.setVisible(false);
 
@@ -127,7 +130,7 @@ public class UserDashboardView extends JFrame {
         JButton ReturnBtn = new JButton("Return");
         ReturnBtn.setLayout(null);
         ReturnBtn.setBounds(350, 70, 150, 50);
-        ReturnBtn.setFont(new Font("sans serif", Font.PLAIN, 15));
+        ReturnBtn.setFont(u.formatText(16));
         add(ReturnBtn);
         ReturnBtn.setVisible(false);
 
@@ -158,7 +161,7 @@ public class UserDashboardView extends JFrame {
     private void RoomServiceGUI(){
         ServiceBtn = new JButton("Room Service");
         ServiceBtn.setBounds(550, 160, 150, 150);
-        ServiceBtn.setFont(new Font("sans serif", Font.PLAIN, 16));
+        ServiceBtn.setFont(u.formatText(16));
         ServiceBtn.setLayout(null);
         add(ServiceBtn);
         
@@ -166,7 +169,7 @@ public class UserDashboardView extends JFrame {
         JButton ViewMenu = new JButton("View Room Services");
         ViewMenu.setLayout(null);
         ViewMenu.setBounds(350, 160, 200, 100);
-        ViewMenu.setFont(new Font("sans serif", Font.PLAIN, 16));
+        ViewMenu.setFont(u.formatText(16));
         add(ViewMenu);
         ViewMenu.setVisible(false);
         
@@ -174,7 +177,7 @@ public class UserDashboardView extends JFrame {
         JButton OrderMenu = new JButton("Order Room Services");
         OrderMenu.setLayout(null);
         OrderMenu.setBounds(570, 160, 200, 100);
-        OrderMenu.setFont(new Font("sans serif", Font.PLAIN, 16));
+        OrderMenu.setFont(u.formatText(16));
         add(OrderMenu);
         OrderMenu.setVisible(false);
         
@@ -182,7 +185,7 @@ public class UserDashboardView extends JFrame {
         JButton SReturnBtn = new JButton("Return");
         SReturnBtn.setLayout(null);
         SReturnBtn.setBounds(350, 70, 150, 50);
-        SReturnBtn.setFont(new Font("sans serif", Font.PLAIN, 15));
+        SReturnBtn.setFont(u.formatText(15));
         add(SReturnBtn);
         SReturnBtn.setVisible(false);
         

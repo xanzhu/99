@@ -2,7 +2,6 @@ package hotelmanager;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -18,28 +17,36 @@ public class StaffDashboardView extends JFrame {
 
     private final JButton logoutBtn;
     private final JLabel nameField;
+    
+    // TODO: Fix Naming ex manageRoomBtn
+    private JButton ManageRoomBtn;
+    private JButton RoomServiceBtn;
+    private JButton ManageUserBtn;
+    private JButton BookingsBtn;
 
-    private RoomManagementView roomManagement;
-    private RoomServiceView roomService;
+    private final RoomManagementView roomManagement;
+    private final RoomServiceView roomService;
+    private final AppUtils u;
 
     StaffDashboardView(String userName, String userEmail) {
 
-        roomManagement = new RoomManagementView();
-        roomService = new RoomServiceView();
+        this.roomManagement = new RoomManagementView();
+        this.roomService = new RoomServiceView();
+        this.u = new AppUtils();
 
         setBounds(100, 80, 1280, 720);
         setResizable(false);
         setLayout(null);
 
         JLabel title = new JLabel("Staff Dashboard");
-        title.setFont(new Font("sans serif", Font.BOLD, 30));
+        title.setFont(u.formatText(30, true));
         title.setBounds(1000, 20, 500, 30);
         add(title);
 
         // Default Design stuffs: 
         JPanel Sidebar = new JPanel();
         Sidebar.setBounds(0, 0, 250, 720);
-        Sidebar.setBackground(Color.decode("#0047AB"));
+        Sidebar.setBackground(u.staffColour());
         Sidebar.setLayout(null);
         add(Sidebar);
 
@@ -47,7 +54,7 @@ public class StaffDashboardView extends JFrame {
         nameField.setBounds(0, 100, 250, 200);
         nameField.setVerticalAlignment(JLabel.CENTER);
         nameField.setHorizontalAlignment(JLabel.CENTER);
-        nameField.setFont(new Font("sans serif", Font.BOLD, 20));
+        nameField.setFont(u.formatText(20, true));
         nameField.setForeground(Color.WHITE);
         Sidebar.add(nameField);
 
@@ -83,16 +90,6 @@ public class StaffDashboardView extends JFrame {
         return logoutBtn;
     }
 
-    // Testing
-    public static void main(String[] args) {
-        StaffDashboardView staffDash = new StaffDashboardView("Jon Kim", "example@gmail.com");
-    }
-
-    private JButton ManageRoomBtn;
-    private JButton RoomServiceBtn;
-    private JButton ManageUserBtn;
-    private JButton BookingsBtn;
-
     private void btnState(boolean isVisible, Component... button) {
         for (Component b : button) {
             b.setVisible(isVisible);
@@ -100,10 +97,9 @@ public class StaffDashboardView extends JFrame {
     }
 
     private void ManageRoomGUI() {
-
         ManageRoomBtn = new JButton("Manage Rooms");
         ManageRoomBtn.setBounds(350, 160, 150, 150);
-        ManageRoomBtn.setFont(new Font("sans serif", Font.PLAIN, 16));
+        ManageRoomBtn.setFont(u.formatText(16));
         ManageRoomBtn.setLayout(null);
         add(ManageRoomBtn);
 
@@ -111,7 +107,7 @@ public class StaffDashboardView extends JFrame {
         JButton AddRoomBtn = new JButton("Add Room");
         AddRoomBtn.setLayout(null);
         AddRoomBtn.setBounds(350, 160, 150, 150);
-        AddRoomBtn.setFont(new Font("sans serif", Font.PLAIN, 16));
+        AddRoomBtn.setFont(u.formatText(16));
         add(AddRoomBtn);
         AddRoomBtn.setVisible(false);
 
@@ -119,7 +115,7 @@ public class StaffDashboardView extends JFrame {
         JButton RemoveRoomBtn = new JButton("Remove Room");
         RemoveRoomBtn.setLayout(null);
         RemoveRoomBtn.setBounds(550, 160, 150, 150);
-        RemoveRoomBtn.setFont(new Font("sans serif", Font.PLAIN, 16));
+        RemoveRoomBtn.setFont(u.formatText(16));
         add(RemoveRoomBtn);
         RemoveRoomBtn.setVisible(false);
 
@@ -127,7 +123,7 @@ public class StaffDashboardView extends JFrame {
         JButton PriceRoomBtn = new JButton("Price Room");
         PriceRoomBtn.setLayout(null);
         PriceRoomBtn.setBounds(750, 160, 150, 150);
-        PriceRoomBtn.setFont(new Font("sans serif", Font.PLAIN, 16));
+        PriceRoomBtn.setFont(u.formatText(16));
         add(PriceRoomBtn);
         PriceRoomBtn.setVisible(false);
 
@@ -135,7 +131,7 @@ public class StaffDashboardView extends JFrame {
         JButton RoomStatusBtn = new JButton("Room Status");
         RoomStatusBtn.setLayout(null);
         RoomStatusBtn.setBounds(350, 340, 150, 150);
-        RoomStatusBtn.setFont(new Font("sans serif", Font.PLAIN, 16));
+        RoomStatusBtn.setFont(u.formatText(16));
         add(RoomStatusBtn);
         RoomStatusBtn.setVisible(false);
 
@@ -143,7 +139,7 @@ public class StaffDashboardView extends JFrame {
         JButton ReturnBtn = new JButton("Return");
         ReturnBtn.setLayout(null);
         ReturnBtn.setBounds(350, 70, 150, 50);
-        ReturnBtn.setFont(new Font("sans serif", Font.PLAIN, 15));
+        ReturnBtn.setFont(u.formatText(15));
         add(ReturnBtn);
         ReturnBtn.setVisible(false);
 
@@ -179,7 +175,7 @@ public class StaffDashboardView extends JFrame {
 
         RoomServiceBtn = new JButton("Room Service");
         RoomServiceBtn.setBounds(550, 160, 150, 150);
-        RoomServiceBtn.setFont(new Font("sans serif", Font.PLAIN, 16));
+        RoomServiceBtn.setFont(u.formatText(16));
         RoomServiceBtn.setLayout(null);
         add(RoomServiceBtn);
 
@@ -187,7 +183,7 @@ public class StaffDashboardView extends JFrame {
         JButton addFood = new JButton("Add Food");
         addFood.setLayout(null);
         addFood.setBounds(350, 160, 150, 150);
-        addFood.setFont(new Font("sans serif", Font.PLAIN, 16));
+        addFood.setFont(u.formatText(16));
         add(addFood);
         addFood.setVisible(false);
 
@@ -195,7 +191,7 @@ public class StaffDashboardView extends JFrame {
         JButton removeFood = new JButton("Remove Food");
         removeFood.setLayout(null);
         removeFood.setBounds(550, 160, 150, 150);
-        removeFood.setFont(new Font("sans serif", Font.PLAIN, 16));
+        removeFood.setFont(u.formatText(16));
         add(removeFood);
         removeFood.setVisible(false);
 
@@ -203,7 +199,7 @@ public class StaffDashboardView extends JFrame {
         JButton menuPrice = new JButton("Food Price");
         menuPrice.setLayout(null);
         menuPrice.setBounds(750, 160, 150, 150);
-        menuPrice.setFont(new Font("sans serif", Font.PLAIN, 16));
+        menuPrice.setFont(u.formatText(16));
         add(menuPrice);
         menuPrice.setVisible(false);
 
@@ -211,7 +207,7 @@ public class StaffDashboardView extends JFrame {
         JButton menuStatus = new JButton("Menu Availability");
         menuStatus.setLayout(null);
         menuStatus.setBounds(350, 340, 150, 150);
-        menuStatus.setFont(new Font("sans serif", Font.PLAIN, 16));
+        menuStatus.setFont(u.formatText(16));
         add(menuStatus);
         menuStatus.setVisible(false);
 
@@ -219,7 +215,7 @@ public class StaffDashboardView extends JFrame {
         JButton menuDisplay = new JButton("View Menu");
         menuDisplay.setLayout(null);
         menuDisplay.setBounds(550, 340, 150, 150);
-        menuDisplay.setFont(new Font("sans serif", Font.PLAIN, 16));
+        menuDisplay.setFont(u.formatText(16));
         add(menuDisplay);
         menuDisplay.setVisible(false);
 
@@ -227,7 +223,7 @@ public class StaffDashboardView extends JFrame {
         JButton ReturnBtn = new JButton("Return");
         ReturnBtn.setLayout(null);
         ReturnBtn.setBounds(350, 70, 150, 50);
-        ReturnBtn.setFont(new Font("sans serif", Font.PLAIN, 15));
+        ReturnBtn.setFont(u.formatText(15));
         add(ReturnBtn);
         ReturnBtn.setVisible(false);
 
@@ -266,7 +262,7 @@ public class StaffDashboardView extends JFrame {
     private void BookingsGUI() {
         BookingsBtn = new JButton("Bookings");
         BookingsBtn.setBounds(750, 160, 150, 150);
-        BookingsBtn.setFont(new Font("sans serif", Font.PLAIN, 16));
+        BookingsBtn.setFont(u.formatText(16));
         BookingsBtn.setLayout(null);
         add(BookingsBtn);
     }
@@ -274,28 +270,28 @@ public class StaffDashboardView extends JFrame {
     private void ManageUserGUI() {
         ManageUserBtn = new JButton("Manage Users");
         ManageUserBtn.setBounds(950, 160, 150, 150);
-        ManageUserBtn.setFont(new Font("sans serif", Font.PLAIN, 16));
+        ManageUserBtn.setFont(u.formatText(16));
         ManageUserBtn.setLayout(null);
         add(ManageUserBtn);
 
         JButton AddUser = new JButton("Add User");
         AddUser.setLayout(null);
         AddUser.setBounds(350, 160, 150, 150);
-        AddUser.setFont(new Font("sans serif", Font.PLAIN, 16));
+        AddUser.setFont(u.formatText(16));
         add(AddUser);
         AddUser.setVisible(false);
 
         JButton RemoveUser = new JButton("Remove User");
         RemoveUser.setLayout(null);
         RemoveUser.setBounds(550, 160, 150, 150);
-        RemoveUser.setFont(new Font("sans serif", Font.PLAIN, 16));
+        RemoveUser.setFont(u.formatText(16, false));
         add(RemoveUser);
         RemoveUser.setVisible(false);
 
         JButton ReturnBtn = new JButton("Return");
         ReturnBtn.setLayout(null);
         ReturnBtn.setBounds(350, 70, 150, 50);
-        ReturnBtn.setFont(new Font("sans serif", Font.PLAIN, 15));
+        ReturnBtn.setFont(u.formatText(15, false));
         add(ReturnBtn);
         ReturnBtn.setVisible(false);
 
@@ -308,5 +304,10 @@ public class StaffDashboardView extends JFrame {
             btnState(true, AddUser, RemoveUser, ReturnBtn);
             btnState(false, RoomServiceBtn, ManageRoomBtn, ManageUserBtn, BookingsBtn);
         });
+    }
+    
+    // Testing
+    public static void main(String[] args) {
+        StaffDashboardView staffDash = new StaffDashboardView("Jon Kim", "example@gmail.com");
     }
 }

@@ -15,8 +15,12 @@ public class WelcomeView extends JFrame {
     
     private final JButton loginButton;
     private final JButton registerButton;
+    private final AppUtils u;
 
     WelcomeView() {
+        
+        this.u = new AppUtils();
+        
         setBounds(100, 80, 1280, 720);
         setResizable(false);
         
@@ -26,19 +30,19 @@ public class WelcomeView extends JFrame {
         
         JLabel text = new JLabel("Hotel System");
         text.setBounds(140, 220, 1000, 80);
-        text.setFont(new Font("sans serif", Font.BOLD, 50));
+        text.setFont(u.formatText(50, true));
         text.setHorizontalAlignment(JLabel.CENTER);
         text.setForeground(Color.WHITE);
         image.add(text);
         
         registerButton = new JButton("Register");
         registerButton.setBounds(500, 400, 270, 50);
-        registerButton.setFont(new Font("sans serif", Font.PLAIN, 15));
+        registerButton.setFont(u.formatText(15));
         image.add(registerButton);
 
         loginButton = new JButton("Login");
         loginButton.setBounds(500, 490, 270, 50);
-        loginButton.setFont(new Font("sans serif", Font.PLAIN, 15));
+        loginButton.setFont(u.formatText(15));
         image.add(loginButton);
                 
         setVisible(true);

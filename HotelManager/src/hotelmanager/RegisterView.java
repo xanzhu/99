@@ -1,7 +1,6 @@
 package hotelmanager;
 
 import java.awt.Color;
-import java.awt.Font;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -22,8 +21,12 @@ public class RegisterView extends JFrame {
     private JTextField phoneField;
     private JTextField emailField;
     private JPasswordField passwordField;
+    
+    private final AppUtils u;
 
     RegisterView() {
+        this.u = new AppUtils();
+        
         setBounds(100, 80, 1280, 720);
         setLayout(null);
         setResizable(false);
@@ -31,13 +34,13 @@ public class RegisterView extends JFrame {
 
         JLabel text = new JLabel("Hotel Register");
         text.setBounds(118, 50, 1000, 80);
-        text.setFont(new Font("sans serif", Font.BOLD, 50));
+        text.setFont(u.formatText(50, true));
         text.setForeground(Color.BLACK);
         add(text);
 
         JLabel nameLabel = new JLabel("Name:");
         nameLabel.setBounds(150, 190, 100, 40);
-        nameLabel.setFont(new Font("sans serif", Font.PLAIN, 15));
+        nameLabel.setFont(u.formatText(15));
         add(nameLabel);
 
         nameField = new JTextField();
@@ -48,7 +51,7 @@ public class RegisterView extends JFrame {
 
         JLabel ageLabel = new JLabel("Age:");
         ageLabel.setBounds(150, 250, 100, 40);
-        ageLabel.setFont(new Font("sans serif", Font.PLAIN, 15));
+        ageLabel.setFont(u.formatText(15));
         add(ageLabel);
 
         ageField = new JTextField();
@@ -59,7 +62,7 @@ public class RegisterView extends JFrame {
 
         JLabel addressLabel = new JLabel("Address:");
         addressLabel.setBounds(150, 310, 100, 40);
-        addressLabel.setFont(new Font("sans serif", Font.PLAIN, 15));
+        addressLabel.setFont(u.formatText(15));
         add(addressLabel);
 
         addressField = new JTextField();
@@ -70,7 +73,7 @@ public class RegisterView extends JFrame {
 
         JLabel phoneLabel = new JLabel("Phone:");
         phoneLabel.setBounds(150, 370, 100, 40);
-        phoneLabel.setFont(new Font("sans serif", Font.PLAIN, 15));
+        phoneLabel.setFont(u.formatText(15));
         add(phoneLabel);
 
         phoneField = new JTextField();
@@ -81,7 +84,7 @@ public class RegisterView extends JFrame {
 
         JLabel emailLabel = new JLabel("Email:");
         emailLabel.setBounds(150, 430, 100, 40);
-        emailLabel.setFont(new Font("sans serif", Font.PLAIN, 15));
+        emailLabel.setFont(u.formatText(15));
         add(emailLabel);
 
         emailField = new JTextField();
@@ -92,7 +95,7 @@ public class RegisterView extends JFrame {
 
         JLabel passwordLabel = new JLabel("Password:");
         passwordLabel.setBounds(150, 490, 100, 40);
-        passwordLabel.setFont(new Font("sans serif", Font.PLAIN, 15));
+        passwordLabel.setFont(u.formatText(15));
         add(passwordLabel);
 
         passwordField = new JPasswordField();
@@ -118,7 +121,7 @@ public class RegisterView extends JFrame {
         add(ImagePanel);
 
         // TODO: Add return button
-        // TODO: Move this to RegisterController
+        
         registerBtn.addActionListener(e -> {
             String name = nameField.getText();
             int age = Integer.parseInt(ageField.getText());
