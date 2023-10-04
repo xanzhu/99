@@ -289,7 +289,7 @@ public class BookingView {
         JLabel BookingWarning = new JLabel("Warning: This will delete a users booking.");
         BookingWarning.setFont(u.formatText(12));
         BookingWarning.setForeground(Color.red);
-        BookingWarning.setBounds(180, 240, 200, 40);
+        BookingWarning.setBounds(180, 240, 300, 40);
         
         JButton removeBtn = new JButton("Remove Booking");
         removeBtn.setBounds(180, 290, 250, 40);
