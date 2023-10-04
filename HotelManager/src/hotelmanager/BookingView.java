@@ -4,15 +4,13 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -101,165 +99,160 @@ public class BookingView {
         BookingFrame.setVisible(true);
 
         SubmitBtn.addActionListener((ActionEvent e) -> {
-        String Email = EmailField.getText();
-        String RoomNum = RoomField.getText();
-        String Date = DateField.getText();
+            String Email = EmailField.getText();
+            String RoomNum = RoomField.getText();
+            String Date = DateField.getText();
 
-        // Validate Staff !
-        boolean isStaffBooking = Email.contains("@hotel.com");
+            // Validate Staff !
+            boolean isStaffBooking = Email.contains("@hotel.com");
 
-        try {
-            int roomNumber = Integer.parseInt(RoomNum);
+            try {
+                int roomNumber = Integer.parseInt(RoomNum);
 
-            if (bk.validateAddRoom(roomNumber)) {
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                Date parsedDate = dateFormat.parse(Date);
-                java.sql.Date bookingDate = new java.sql.Date(parsedDate.getTime());
+                if (bk.validateAddRoom(roomNumber)) {
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    Date parsedDate = dateFormat.parse(Date);
+                    java.sql.Date bookingDate = new java.sql.Date(parsedDate.getTime());
 
-                if (isStaffBooking) {
-                    bk.staffAddBooking(Email, roomNumber, bookingDate);
-                } else {
-                    bk.addBooking(Email, roomNumber, bookingDate);
+                    if (isStaffBooking) {
+                        bk.staffAddBooking(Email, roomNumber, bookingDate);
+                    } else {
+                        bk.addBooking(Email, roomNumber, bookingDate);
+                    }
+
                 }
-                   
+                // TODO: Fix error messages
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "Invalid room number format.", "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (ParseException ex) {
+                JOptionPane.showMessageDialog(null, "Invalid date format. Use yyyy-MM-dd.", "Error", JOptionPane.ERROR_MESSAGE);
             }
-        // TODO: Fix error messages
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(null, "Invalid room number format.", "Error", JOptionPane.ERROR_MESSAGE);
-        } catch (ParseException ex) {
-            JOptionPane.showMessageDialog(null, "Invalid date format. Use yyyy-MM-dd.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
 
-        BookingFrame.dispose();
-    });
+            BookingFrame.dispose();
+        });
 
     }
 
-    // TODO Reimplement db logic -> booking
     public void viewBookingGUI(String email) {
-        try {
-            int userId = bk.userEmailID(email);
+        List<Records> bookingRecords = bk.getBookingRecords(email);
 
-            if (userId == -1) {
-                JOptionPane.showMessageDialog(null, "User not found.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            String viewBookingSQL = "SELECT * FROM BookingRecords WHERE UserID = ?";
-
-            Connection connection = db.getConnection();
-
-            try (PreparedStatement preparedStatement = connection.prepareStatement(viewBookingSQL,
-                    ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
-
-                preparedStatement.setInt(1, userId);
-
-                try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                    if (!resultSet.isBeforeFirst()) {
-                        JOptionPane.showMessageDialog(null, "No bookings found for this user.", "Information",
-                                JOptionPane.INFORMATION_MESSAGE);
-                        return;
-                    }
-
-                    StringBuilder bookingDetails = new StringBuilder();
-
-                    while (resultSet.next()) {
-                        int bookingID = resultSet.getInt("BookingID");
-                        int roomNumber = resultSet.getInt("RoomNumber");
-                        java.sql.Date bookingDate = resultSet.getDate("BookingDate");
-
-                        bookingDetails.append("------------------------\n");
-                        bookingDetails.append("Booking ID: ").append(bookingID).append("\n");
-                        bookingDetails.append("Room Number: ").append(roomNumber).append("\n");
-                        bookingDetails.append("Booking Date: ").append(bookingDate).append("\n");
-                        bookingDetails.append("------------------------\n");
-                    }
-
-                    JTextArea textArea = new JTextArea(bookingDetails.toString());
-                    textArea.setEditable(false);
-                    JScrollPane scrollPane = new JScrollPane(textArea);
-                    scrollPane.setPreferredSize(new Dimension(400, 300));
-                    DefaultCaret caret = (DefaultCaret) textArea.getCaret();
-                    caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
-                    JOptionPane.showMessageDialog(null, scrollPane, "Booking Details",
-                            JOptionPane.INFORMATION_MESSAGE);
-                }
-            } catch (SQLException ex) {
-                System.err.println("SQL error occurred:");
-                ex.printStackTrace();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (bookingRecords.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No bookings found for this user.", "Information", JOptionPane.INFORMATION_MESSAGE);
+            return;
         }
+
+        StringBuilder bookingDetails = new StringBuilder();
+
+        for (Records record : bookingRecords) {
+            bookingDetails.append("------------------------\n");
+            bookingDetails.append("Booking ID: ").append(record.getBookingID()).append("\n");
+            bookingDetails.append("User ID: ").append(record.getUserID()).append("\n");
+            bookingDetails.append("Room Number: ").append(record.getRoomNumber()).append("\n");
+            bookingDetails.append("Booking Date: ").append(record.getBookingDate()).append("\n");
+            bookingDetails.append("------------------------\n");
+        }
+
+        JTextArea textArea = new JTextArea(bookingDetails.toString());
+        textArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setPreferredSize(new Dimension(400, 300));
+        DefaultCaret caret = (DefaultCaret) textArea.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
+        JOptionPane.showMessageDialog(null, scrollPane, "Booking Details", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    // TODO Reimplement db logic -> booking
     public void cancelBookingGUI(String userEmail) {
         try {
-            int userId = bk.userEmailID(userEmail);
+            int userId = bk.getUserIdByEmail(userEmail);
 
             if (userId == -1) {
                 JOptionPane.showMessageDialog(null, "User not found.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
-            String selectBookingSQL = "SELECT * FROM BookingRecords WHERE UserID = ?";
+            List<Records> userBookings = bk.getBookingsForUser(userId);
 
-            Connection connection = db.getConnection();
+            if (userBookings.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "No bookings found for this user.", "Booking Cancel Menu",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
-            try (PreparedStatement preparedStatement = connection.prepareStatement(selectBookingSQL,
-                    ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
+            JPanel panel = new JPanel();
+            panel.setLayout(new BorderLayout());
 
-                preparedStatement.setInt(1, userId);
+            List<Integer> roomNumbers = new ArrayList<>();
+            for (Records booking : userBookings) {
+                roomNumbers.add(booking.getRoomNumber());
+            }
 
-                try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                    if (!resultSet.isBeforeFirst()) {
-                        JOptionPane.showMessageDialog(null, "No bookings found for this user.", "Booking Cancel Menu",
-                                JOptionPane.ERROR_MESSAGE);
-                        return;
+            JComboBox<Integer> bookingComboBox = new JComboBox<>(roomNumbers.toArray(new Integer[0]));
+
+            Map<Integer, String> bookingDetailsMap = new HashMap<>();
+            for (Records booking : userBookings) {
+                String details = "Booking ID: " + booking.getBookingID() + "\n"
+                        + "Room Number: " + booking.getRoomNumber() + "\n"
+                        + "Booking Date: " + booking.getBookingDate() + "\n"
+                        + "------------------------\n";
+                bookingDetailsMap.put(booking.getRoomNumber(), details);
+            }
+
+            JTextArea textArea = new JTextArea();
+            textArea.setEditable(false);
+
+            textArea.setRows(10);
+            JScrollPane textScrollPane = new JScrollPane(textArea);
+
+            if (!roomNumbers.isEmpty()) {
+                Integer firstRoomNumber = roomNumbers.get(0);
+                bookingComboBox.setSelectedItem(firstRoomNumber);
+                textArea.setText(bookingDetailsMap.get(firstRoomNumber));
+            }
+
+            bookingComboBox.addActionListener(e -> {
+                Integer selectedRoomNumber = (Integer) bookingComboBox.getSelectedItem();
+                if (selectedRoomNumber != null) {
+                    String details = bookingDetailsMap.get(selectedRoomNumber);
+                    if (details != null) {
+                        textArea.setText(details);
                     }
+                }
+            });
 
-                    StringBuilder bookingDetails = new StringBuilder();
-                    List<Integer> bookingIds = new ArrayList<>();
+            panel.add(bookingComboBox, BorderLayout.NORTH);
+            panel.add(textScrollPane, BorderLayout.CENTER);
 
-                    while (resultSet.next()) {
-                        int bookingID = resultSet.getInt("BookingID");
-                        int roomNumber = resultSet.getInt("RoomNumber");
-                        java.sql.Date bookingDate = resultSet.getDate("BookingDate");
+            int option = JOptionPane.showConfirmDialog(null, panel, "Select Booking to Cancel",
+                    JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
-                        bookingDetails.append("Booking ID: ").append(bookingID).append("\n");
-                        bookingDetails.append("Room Number: ").append(roomNumber).append("\n");
-                        bookingDetails.append("Booking Date: ").append(bookingDate).append("\n");
-                        bookingDetails.append("------------------------\n");
-
-                        bookingIds.add(bookingID);
-                    }
-
-                    JTextArea textArea = new JTextArea(bookingDetails.toString());
-                    textArea.setEditable(false);
-
-                    JComboBox<Integer> bookingComboBox = new JComboBox<>(bookingIds.toArray(new Integer[0]));
-
-                    JPanel panel = new JPanel();
-                    panel.setLayout(new BorderLayout());
-                    panel.add(bookingComboBox, BorderLayout.NORTH);
-                    panel.add(new JScrollPane(textArea), BorderLayout.CENTER);
-
-                    int option = JOptionPane.showConfirmDialog(null, panel, "Select Booking to Cancel",
-                            JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-
-                    if (option == JOptionPane.OK_OPTION) {
-                        int selectedBookingId = (int) bookingComboBox.getSelectedItem();
+            if (option == JOptionPane.OK_OPTION) {
+                Integer selectedRoomNumber = (Integer) bookingComboBox.getSelectedItem();
+                if (selectedRoomNumber != null) {
+                    // Use the selected room number to get the associated booking ID
+                    String details = bookingDetailsMap.get(selectedRoomNumber);
+                    if (details != null) {
+                        // Extract the booking ID from the details string
+                        int selectedBookingId = extractBookingId(details);
                         bk.cancelBooking(selectedBookingId);
                     }
                 }
-            } catch (SQLException ex) {
-                System.err.println("SQL error occurred:");
-                ex.printStackTrace();
+
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private int extractBookingId(String details) {
+        String[] lines = details.split("\n");
+
+        for (String line : lines) {
+            if (line.startsWith("Booking ID: ")) {
+                String bookingIdString = line.substring("Booking ID: ".length());
+                return Integer.parseInt(bookingIdString);
+            }
+        }
+        return -1;
     }
 
     // Check for Existing Booking
@@ -269,8 +262,7 @@ public class BookingView {
     }
 
     // TODO: Validation methods
-    
-    public void staffCancelBookingGUI(){
+    public void staffCancelBookingGUI() {
         JFrame staffCancelFrame = new JFrame("Staff Booking Remove");
         staffCancelFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         staffCancelFrame.setBounds(450, 250, 600, 400);
@@ -278,19 +270,19 @@ public class BookingView {
 
         JPanel optionsPanel = new JPanel();
         optionsPanel.setLayout(null);
-        
+
         JLabel BookingLabel = new JLabel("Enter Booking ID:");
         BookingLabel.setFont(u.formatText(15));
         BookingLabel.setBounds(120, 70, 150, 40);
-        
+
         JTextField BookingField = new JTextField();
         BookingField.setBounds(300, 70, 150, 40);
-        
+
         JLabel BookingWarning = new JLabel("Warning: This will delete a users booking.");
         BookingWarning.setFont(u.formatText(12));
         BookingWarning.setForeground(Color.red);
         BookingWarning.setBounds(180, 240, 300, 40);
-        
+
         JButton removeBtn = new JButton("Remove Booking");
         removeBtn.setBounds(180, 290, 250, 40);
         removeBtn.setHorizontalAlignment(JButton.CENTER);
@@ -298,19 +290,19 @@ public class BookingView {
         removeBtn.setForeground(Color.WHITE);
         removeBtn.setOpaque(true);
         removeBtn.setBorderPainted(false);
-        
+
         optionsPanel.add(BookingLabel);
         optionsPanel.add(BookingField);
         optionsPanel.add(BookingWarning);
         optionsPanel.add(removeBtn);
-        
+
         staffCancelFrame.add(optionsPanel);
         staffCancelFrame.setVisible(true);
-        
+
         removeBtn.addActionListener((ActionEvent e) -> {
 
             int bookingID = Integer.parseInt(BookingField.getText());
-            
+
             bk.staffCancelBooking(bookingID);
 
             staffCancelFrame.dispose();

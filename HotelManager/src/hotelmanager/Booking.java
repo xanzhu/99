@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
@@ -13,7 +15,7 @@ import javax.swing.JOptionPane;
 public class Booking {
 
     private final DBManager dbManager;
-    private RoomManagement rm;
+    private final RoomManagement rm;
 
     public Booking(DBManager dbManager) {
         this.dbManager = dbManager;
@@ -234,4 +236,95 @@ public class Booking {
             System.err.println("Error during cancellation: " + ex.getMessage());
         }
     }
+
+    public List<Records> getBookingRecords(String email) {
+        List<Records> bookingRecords = new ArrayList<>();
+
+        try {
+            int userId = getUserIdByEmail(email);
+
+            if (userId == -1) {
+                return bookingRecords; // User not found
+            }
+
+            String viewBookingSQL = "SELECT * FROM BookingRecords WHERE UserID = ?";
+            
+            Connection connection = dbManager.getConnection();
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(viewBookingSQL,
+                    ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
+
+                preparedStatement.setInt(1, userId);
+
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    while (resultSet.next()) {
+                        int bookingID = resultSet.getInt("BookingID");
+                        int roomNumber = resultSet.getInt("RoomNumber");
+                        java.sql.Date bookingDate = resultSet.getDate("BookingDate");
+
+                        Records record = new Records(bookingID, userId, roomNumber, bookingDate);
+                        bookingRecords.add(record);
+                    }
+                }
+            } catch (SQLException ex) {
+                System.err.println("Error getting Booking records: " + ex.getMessage());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return bookingRecords;
+    }
+
+    public int getUserIdByEmail(String email) {
+        int userId = -1;
+
+        String query = "SELECT ID FROM UserData WHERE Email = ?";
+
+        Connection connection = dbManager.getConnection();
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setString(1, email);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    userId = resultSet.getInt("ID");
+                }
+            }
+        } catch (SQLException ex) {
+            System.err.println("Error getting email: " + ex.getMessage());
+        }
+
+        return userId;
+    }
+
+    public List<Records> getBookingsForUser(int userId) {
+        List<Records> userBooking = new ArrayList<>();
+
+        String query = "SELECT * FROM BookingRecords WHERE UserID = ?";
+
+        Connection connection = dbManager.getConnection();
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, userId);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    int bookingID = resultSet.getInt("BookingID");
+                    int roomNumber = resultSet.getInt("RoomNumber");
+                    java.sql.Date bookingDate = resultSet.getDate("BookingDate");
+
+                    Records rc = new Records(bookingID, userId, roomNumber, bookingDate);
+                    userBooking.add(rc);
+                }
+            }
+         } catch (SQLException ex) {
+            System.err.println("Error getting user booking: " + ex.getMessage());
+        }
+
+        return userBooking;
+    }
+
 }
