@@ -241,7 +241,7 @@ public class Booking {
         List<Records> bookingRecords = new ArrayList<>();
 
         try {
-            int userId = getUserIdByEmail(email);
+            int userId = userEmailID(email);
 
             if (userId == -1) {
                 return bookingRecords; // User not found
@@ -274,29 +274,6 @@ public class Booking {
         }
 
         return bookingRecords;
-    }
-
-    public int getUserIdByEmail(String email) {
-        int userId = -1;
-
-        String query = "SELECT ID FROM UserData WHERE Email = ?";
-
-        Connection connection = dbManager.getConnection();
-
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-
-            preparedStatement.setString(1, email);
-
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                if (resultSet.next()) {
-                    userId = resultSet.getInt("ID");
-                }
-            }
-        } catch (SQLException ex) {
-            System.err.println("Error getting email: " + ex.getMessage());
-        }
-
-        return userId;
     }
 
     public List<Records> getBookingsForUser(int userId) {

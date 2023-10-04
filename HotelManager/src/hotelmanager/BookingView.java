@@ -163,7 +163,7 @@ public class BookingView {
 
     public void cancelBookingGUI(String userEmail) {
         try {
-            int userId = bk.getUserIdByEmail(userEmail);
+            int userId = bk.userEmailID(userEmail);
 
             if (userId == -1) {
                 JOptionPane.showMessageDialog(null, "User not found.", "Error", JOptionPane.ERROR_MESSAGE);
