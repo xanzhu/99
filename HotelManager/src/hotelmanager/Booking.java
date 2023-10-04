@@ -28,7 +28,6 @@ public class Booking {
         JOptionPane.showMessageDialog(null, message, "Booking Menu", JOptionPane.PLAIN_MESSAGE);
     }
 
-    // TODO: User Booking Re-write // Handle only room number and date when booking // Email for Staff Management
     public void addBooking(String userEmail, int roomNumber, java.sql.Date bookingDate) {
 
         int userId = userEmailID(userEmail);

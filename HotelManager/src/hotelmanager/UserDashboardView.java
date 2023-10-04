@@ -22,6 +22,7 @@ public class UserDashboardView extends JFrame {
 
     private final BookingView bookingView;
     private final RoomServiceView roomServiceView;
+    private final BillingView billingView;
 
     private final AppUtils u;
 
@@ -29,6 +30,7 @@ public class UserDashboardView extends JFrame {
         this.loginEmail = userEmail;
         this.bookingView = new BookingView();
         this.roomServiceView = new RoomServiceView();
+        this.billingView = new BillingView();
 
         // Load in reusable elements
         this.u = new AppUtils();
@@ -75,6 +77,7 @@ public class UserDashboardView extends JFrame {
         // Display Menu Options GUI
         BookingGUI();
         RoomServiceGUI();
+        BillingGUI();
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
@@ -87,6 +90,7 @@ public class UserDashboardView extends JFrame {
     private JButton BookingBtn;
     private JButton ServiceBtn;
     private JButton NewBookingBtn;
+    private JButton BillingBtn;
 
     private void BookingGUI() {
 
@@ -95,23 +99,26 @@ public class UserDashboardView extends JFrame {
         // Define buttons for use
         ServiceBtn = new JButton("Room Service");
         NewBookingBtn = new JButton("Book a room");
-        BookingBtn = new JButton("My Booking");
-        
+        BookingBtn = new JButton("My Bookings");
+        BillingBtn = new JButton("Charges");
+
         BookingBtn.setBounds(350, 160, 150, 150);
         BookingBtn.setFont(u.formatText(16));
         BookingBtn.setLayout(null);
         add(BookingBtn);
         BookingBtn.setVisible(hasBooking);
-        
-        if(!hasBooking){
+
+        // Hide elements for non booked
+        if (!hasBooking) {
             ServiceBtn.setVisible(false);
+            BillingBtn.setVisible(false);
         }
 
         NewBookingBtn.setBounds(350, 160, 150, 150);
         NewBookingBtn.setFont(u.formatText(16));
         NewBookingBtn.setLayout(null);
         add(NewBookingBtn);
-        
+
         // Add Booking
         JButton AddBookingBtn = new JButton("Add Booking");
         AddBookingBtn.setLayout(null);
@@ -146,7 +153,7 @@ public class UserDashboardView extends JFrame {
 
         ReturnBtn.addActionListener((ActionEvent e) -> {
 
-            boolean returnCheck = bookingView.NewBookingCheck(loginEmail);
+        boolean returnCheck = bookingView.NewBookingCheck(loginEmail);
 
             if (returnCheck) {
                 btnState(true, BookingBtn, ServiceBtn);
@@ -171,14 +178,14 @@ public class UserDashboardView extends JFrame {
 
         // Existing Bookings
         BookingBtn.addActionListener((ActionEvent e) -> {
-            btnState(false, BookingBtn, ServiceBtn, NewBookingBtn);
+            btnState(false, BookingBtn, ServiceBtn, NewBookingBtn, BillingBtn);
             btnState(true, AddBookingBtn, ViewBookingBtn, CancelBookingBtn, ReturnBtn);
         });
 
         // New Bookings
         NewBookingBtn.addActionListener((ActionEvent e) -> {
             btnState(true, AddBookingBtn, ReturnBtn);
-            btnState(false, NewBookingBtn, ServiceBtn, NewBookingBtn);
+            btnState(false, NewBookingBtn, ServiceBtn, BillingBtn);
         });
     }
 
@@ -223,13 +230,24 @@ public class UserDashboardView extends JFrame {
 
         // Button Visibility
         SReturnBtn.addActionListener((ActionEvent e) -> {
-            btnState(true, BookingBtn, ServiceBtn);
+            btnState(true, BookingBtn, ServiceBtn, BillingBtn);
             btnState(false, ViewMenu, OrderMenu, SReturnBtn);
         });
 
         ServiceBtn.addActionListener((ActionEvent e) -> {
             btnState(true, ViewMenu, OrderMenu, SReturnBtn);
-            btnState(false, BookingBtn, ServiceBtn, NewBookingBtn);
+            btnState(false, BookingBtn, ServiceBtn, NewBookingBtn, BillingBtn);
+        });
+    }
+
+    private void BillingGUI() {
+        BillingBtn.setBounds(750, 160, 150, 150);
+        BillingBtn.setFont(u.formatText(16));
+        BillingBtn.setLayout(null);
+        add(BillingBtn);
+
+        BillingBtn.addActionListener((ActionEvent e) -> {            
+            billingView.getUserBillingGUI(loginEmail);
         });
     }
 
