@@ -1,7 +1,6 @@
 package hotelmanager;
 
 import java.awt.Color;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.util.List;
 import javax.swing.BorderFactory;
@@ -92,7 +91,7 @@ public class BillingView extends JFrame {
         JScrollPane scrollPane = new JScrollPane(recordsPanel);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
        
-        JLabel recordsTitle = new JLabel("Hotel Booking Records");
+        JLabel recordsTitle = new JLabel("Booking Records");
         recordsTitle.setFont(u.formatText(20, true));
         recordsTitle.setForeground(u.staffColour());
         recordsTitle.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -100,16 +99,16 @@ public class BillingView extends JFrame {
         
         bookingRecordsFrame.add(scrollPane);
 
-        List<Book> records = billing.displayRecords();
+        List<Records> records = billing.displayRecords();
 
-        for (Book record : records) {
+        for (Records record : records) {
             JPanel entriesPanel = new JPanel();
             entriesPanel.setLayout(new BoxLayout(entriesPanel, BoxLayout.Y_AXIS));
             entriesPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
             entriesPanel.setBackground(Color.WHITE);
             
             JLabel bookingIDLabel = new JLabel("Booking ID: " + record.getBookingID());
-            bookingIDLabel.setFont(u.formatText(14));
+            bookingIDLabel.setFont(u.formatText(14, true));
             
             JLabel userIDLabel = new JLabel("User ID: " + record.getUserID());
             userIDLabel.setFont(u.formatText(14));
@@ -126,11 +125,68 @@ public class BillingView extends JFrame {
             entriesPanel.add(bookingDateLabel);
 
             recordsPanel.add(entriesPanel);
-            recordsPanel.add(Box.createVerticalStrut(20));
+            recordsPanel.add(Box.createVerticalStrut(10));
         }
 
         bookingRecordsFrame.setBounds(1045, 220, 300, 400);
         bookingRecordsFrame.setResizable(false);
         bookingRecordsFrame.setVisible(true);
+    }
+    
+    public void displayFoodRecordsGUI() {
+        JFrame foodRecordsFrame = new JFrame();
+        foodRecordsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        JPanel recordsPanel = new JPanel();
+        recordsPanel.setLayout(new BoxLayout(recordsPanel, BoxLayout.Y_AXIS));
+        recordsPanel.setBackground(Color.WHITE);
+
+        JScrollPane scrollPane = new JScrollPane(recordsPanel);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+       
+        JLabel recordsTitle = new JLabel("Room Service Records");
+        recordsTitle.setFont(u.formatText(20, true));
+        recordsTitle.setForeground(u.staffColour());
+        recordsTitle.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        recordsPanel.add(recordsTitle);
+        
+        foodRecordsFrame.add(scrollPane);
+
+        List<Records> records = billing.displayFoodRecords();
+
+        for (Records record : records) {
+            JPanel entriesPanel = new JPanel();
+            entriesPanel.setLayout(new BoxLayout(entriesPanel, BoxLayout.Y_AXIS));
+            entriesPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+            entriesPanel.setBackground(Color.WHITE);
+                        
+            JLabel orderIDLabel = new JLabel("Order ID: " + record.getOrderID());
+            orderIDLabel.setFont(u.formatText(14, true));
+            
+            JLabel userIDLabel = new JLabel("User ID: " + record.getUserID());
+            userIDLabel.setFont(u.formatText(14));
+            
+            JLabel roomNumberLabel = new JLabel("Room Number: " + record.getRoomNumber());
+            roomNumberLabel.setFont(u.formatText(14));
+            
+            JLabel foodNameLabel = new JLabel("Food Name: " + record.getFoodName());
+            foodNameLabel.setFont(u.formatText(14));
+            
+            JLabel price = new JLabel("Price: " + record.getPrice());
+            price.setFont(u.formatText(14));
+
+            entriesPanel.add(orderIDLabel);
+            entriesPanel.add(userIDLabel);
+            entriesPanel.add(roomNumberLabel);
+            entriesPanel.add(foodNameLabel);
+            entriesPanel.add(price);
+
+            recordsPanel.add(entriesPanel);
+            recordsPanel.add(Box.createVerticalStrut(10));
+        }
+
+        foodRecordsFrame.setBounds(1045, 220, 300, 400);
+        foodRecordsFrame.setResizable(false);
+        foodRecordsFrame.setVisible(true);
     }
 }

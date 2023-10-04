@@ -78,11 +78,11 @@ public class Billing {
         return totalRoomServicesPrice;
     }
 
-    public List<Book> displayRecords() {
-        List<Book> records = new ArrayList<>();
+    public List<Records> displayRecords() {
+        List<Records> records = new ArrayList<>();
 
         String query = "SELECT * FROM BookingRecords";
-        
+
         Connection connection = dbManager.getConnection();
 
         if (connection != null) {
@@ -94,7 +94,37 @@ public class Billing {
                     int roomNumber = resultSet.getInt("RoomNumber");
                     java.sql.Date bookingDate = resultSet.getDate("BookingDate");
 
-                    Book record = new Book(bookingID, userID, roomNumber, bookingDate);
+                    Records record = new Records(bookingID, userID, roomNumber, bookingDate);
+                    records.add(record);
+                }
+
+            } catch (SQLException ex) {
+                System.err.println("Error displaying records: " + ex.getMessage());
+            }
+        }
+
+        return records;
+    }
+
+    public List<Records> displayFoodRecords() {
+        List<Records> records = new ArrayList<>();
+
+        String query = "SELECT * FROM OrderRecords";
+
+        Connection connection = dbManager.getConnection();
+
+        if (connection != null) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query); ResultSet resultSet = preparedStatement.executeQuery()) {
+
+                while (resultSet.next()) {
+
+                    int orderID = resultSet.getInt("OrderID");
+                    int userID = resultSet.getInt("UserID");
+                    int roomNumber = resultSet.getInt("RoomNumber");
+                    String foodName = resultSet.getString("FoodName");
+                    double price = resultSet.getDouble("Price");
+
+                    Records record = new Records(orderID, userID, roomNumber, foodName, price);
                     records.add(record);
                 }
 
