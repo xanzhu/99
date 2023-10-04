@@ -133,6 +133,8 @@ public class RegisterView extends JFrame {
             RegisterController registerController = new RegisterController();
 
             registerController.registerUser(name, age, address, phone, email, password);
+            
+            setVisible(false);
         });
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
