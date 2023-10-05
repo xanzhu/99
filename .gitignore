@@ -33,5 +33,7 @@ dist/
 nbdist/
 .nb-gradle/
 .DS_Store
+
+# Load Derby Files!
 !/HotelManager/lib/derbyclient.jar
 !/HotelManager/lib/derby.jar
