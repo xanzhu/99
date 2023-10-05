@@ -5,20 +5,27 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author bobby
+ * @author Bobby Jenkins, Hyun il Jun
  */
 public class LoginController {
 
     private final LoginView loginView;
     private final DBManager dbManager;
 
+    // Default Constructor
     public LoginController(LoginView loginView, DBManager dbManager) {
         this.loginView = loginView;
         this.dbManager = dbManager;
+        
+        // Loads in Listeners
         LoginButtonListener();
         ReturnButtonListener();
     }
 
+    /**
+     * Login Button Listener
+     * Extracts email from db for validation.
+     */
     private void LoginButtonListener() {
         loginView.getLoginButton().addActionListener((ActionEvent e) -> {
             String email = loginView.getEmail();
@@ -28,7 +35,6 @@ public class LoginController {
             if (checkInput(email, password)) {
                 // Check input against database
                 if (validateData(email, password)) {
-                    // Get name from Database! (TODO: Add support for other variables)
                     String userName = dbManager.RetrieveName(email);
 
                     if (email.endsWith("@hotel.com")) {
@@ -43,6 +49,7 @@ public class LoginController {
         });
     }
 
+    // Validates Email and Password Against Database.
     private boolean validateData(String email, String password) {
         if (checkInput(email, password)) {
             return dbManager.checkCredentials(email, password);
@@ -51,6 +58,7 @@ public class LoginController {
         return false;
     }
 
+    // Validates Login input
     private boolean checkInput(String email, String password) {
         if (email.isEmpty()) {
             showErrorMessage("Please enter your email address.\nExample: john.smith@gmail.com");
@@ -62,10 +70,12 @@ public class LoginController {
         return true;
     }
 
+    // Reusable Error Message
     private void showErrorMessage(String message) {
         JOptionPane.showMessageDialog(null, message, "Login Error", JOptionPane.PLAIN_MESSAGE);
     }
 
+    // Returns to main menu
     private void ReturnButtonListener() {
         loginView.getReturnButton().addActionListener((ActionEvent e) -> {
             WelcomeView welcomeView = new WelcomeView();
@@ -76,6 +86,7 @@ public class LoginController {
         });
     }
 
+    // Load Staff Dashboard after logging in.
     private void openStaffDashboard(String userName, String userEmail) {
         StaffDashboardView staffDash = new StaffDashboardView(userName, userEmail);
         DashboardController dashController = new DashboardController(staffDash);
@@ -85,6 +96,7 @@ public class LoginController {
         loginView.dispose();
     }
 
+    // Load User Dashboard after logging in.
     private void openUserDashboard(String userName, String userEmail) {
         UserDashboardView userDash = new UserDashboardView(userName, userEmail);
         DashboardController dashController = new DashboardController(userDash);

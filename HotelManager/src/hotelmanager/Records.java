@@ -17,6 +17,7 @@ public class Records {
     private String foodName;
     private double price;
 
+    // Constructor for Booking Records
     public Records(int bookingID, int userID, int roomNumber, Date bookingDate) {
         this.bookingID = bookingID;
         this.userID = userID;
@@ -33,6 +34,7 @@ public class Records {
         this.price = price;
     }
 
+    // Getters
     public int getBookingID() {
         return bookingID;
     }

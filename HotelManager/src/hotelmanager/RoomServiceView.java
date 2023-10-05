@@ -18,27 +18,36 @@ import javax.swing.JTextField;
 
 /**
  *
- * @author bobby
+ * @author Bobby Jenkins, Hyun il Jun
  */
 public class RoomServiceView {
 
     private final RoomServices rs;
     private final AppUtils u;
-
+    
+    private JFrame FoodFrame;
+    private JFrame viewFrame;
+    
+    // Getters
+    public JFrame getAddFoodGUI() {
+        return FoodFrame;
+    }
+    
+    public JFrame getViewFrame() {
+        return viewFrame;
+    }
+   
+    // Default Constructor
     public RoomServiceView() {
         DBManager dbManager = new DBManager();
         this.rs = new RoomServices(dbManager);
         this.u = new AppUtils();
     }
     
-    public JFrame getAddFoodGUI() {
-        return FoodFrame;
-    }
-    
-    private JFrame FoodFrame;
-    
-    
-
+    /**
+     * Add Food Function
+     * Creates GUI for handling adding Food Items
+     */
     public void addFoodGUI() {
         FoodFrame = new JFrame("Add Food Item");
         FoodFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -111,6 +120,10 @@ public class RoomServiceView {
         });
     }
 
+    /**
+     * Remove Food Function
+     * Creates GUI to Remove food Items
+     */
     public void removeFoodGUI() {
 
         JFrame removeFoodFrame = new JFrame("Remove Food Item");
@@ -159,6 +172,10 @@ public class RoomServiceView {
         removeFoodFrame.setVisible(true);
     }
 
+    /**
+     * Update Food Price Function
+     * Creates GUI to update food price
+     */
     public void updateFoodPriceGUI() {
 
         JFrame FoodPriceFrame = new JFrame("Food Item Price");
@@ -212,6 +229,10 @@ public class RoomServiceView {
         FoodPriceFrame.setVisible(true);
     }
 
+    /**
+     * Update Food Status
+     * Creates GUI to set status of food items
+     */
     public void updateFoodStatusGUI() {
 
         JFrame FoodStatusFrame = new JFrame("Food Item Status");
@@ -330,7 +351,7 @@ public class RoomServiceView {
     }
 
     public void viewRoomServicesGUI() {
-        JFrame viewFrame = new JFrame("View Room Services");
+        viewFrame = new JFrame("View Room Services");
         viewFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         viewFrame.setBounds(450, 250, 600, 350);
         viewFrame.setResizable(false);

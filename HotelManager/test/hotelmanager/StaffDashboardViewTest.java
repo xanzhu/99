@@ -1,18 +1,14 @@
-/*
- * Hello world
- * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit4TestClass.java to edit this template
- */
 package hotelmanager;
 
 import javax.swing.JButton;
-import javax.swing.SwingUtilities;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
  *
- * @author bobby
+ * @author Bobby Jenkins, Hyun il Jun
  */
 public class StaffDashboardViewTest {
 
@@ -22,7 +18,12 @@ public class StaffDashboardViewTest {
     @Before
     public void setUp() {
         roomServiceView = new RoomServiceView();
-        SD = new StaffDashboardView("Test", "john@Hotel.com");
+        
+        // Define Staff member
+        SD = new StaffDashboardView("Hyun", "hyun@hotel.com");
+        
+        // Invalid staff example
+        // SD = new StaffDashboardView("Bobby", "bobby@gmail.com");
 
         javax.swing.SwingUtilities.invokeLater(() -> {
             SD.setVisible(true);
@@ -30,7 +31,7 @@ public class StaffDashboardViewTest {
     }
 
     /**
-     * Check 1: Verify main buttons are visible.
+     *  Verify menu buttons are visible for staff.
      */
     @Test
     public void checkRoomBtn() {
@@ -53,15 +54,30 @@ public class StaffDashboardViewTest {
         assertTrue(bookingBtn.isVisible());
     }
     
-     /**
-     * Check 2: Verify Add Food GUI Opens
+    /**
+     * Verify Add Food GUI Opens correctly.
      */
     @Test
     public void testFoodGUI() {
         SD.getRoomServiceBtn().doClick();
         
-         roomServiceView.addFoodGUI();
+        roomServiceView.addFoodGUI();
 
         assertTrue(roomServiceView.getAddFoodGUI().isVisible());
+    }
+    
+    /**
+     * Verify Staff is a staff member.
+     */
+    @Test
+    public void checkEmail(){
+        String emailCheck = SD.getEmailField(); 
+        
+        if(emailCheck.contains("@hotel.com"))
+        {
+           Assert.assertTrue(true);
+        } else {
+            Assert.fail();
+        }
     }
 }

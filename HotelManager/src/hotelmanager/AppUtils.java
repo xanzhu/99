@@ -5,7 +5,7 @@ import java.awt.Font;
 
 /**
  *
- * @author bobby
+ * @author Bobby Jenkins, Hyun il Jun
  */
 public class AppUtils {
 
@@ -15,6 +15,7 @@ public class AppUtils {
         return new Font("sans serif", style, size);
     }
 
+    // Reusable Text Format function.
     public Font formatText(int size) {
         return formatText(size, false);
     }
@@ -27,5 +28,4 @@ public class AppUtils {
     public Color userColour() {
         return Color.decode("#0096FF");
     }
-
 }

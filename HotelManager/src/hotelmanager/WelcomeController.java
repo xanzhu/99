@@ -10,12 +10,14 @@ public class WelcomeController {
 
     private final WelcomeView welcomeView;
 
+    // Default Constructor
     public WelcomeController(WelcomeView welcomeView) {
         this.welcomeView = welcomeView;
         addLoginButtonListener();
         addRegisterButtonListener();
     }
 
+    // Handle Login Button - LoadsGUI
     private void addLoginButtonListener() {
         welcomeView.getLoginButton().addActionListener((ActionEvent e) -> {
             LoginView loginView = new LoginView();
@@ -27,6 +29,7 @@ public class WelcomeController {
         });
     }
 
+    // Handle Register Button - Loads RegisterGUI
     private void addRegisterButtonListener() {
         welcomeView.getRegisterButton().addActionListener((ActionEvent e) -> {
             RegisterView registerView = new RegisterView();

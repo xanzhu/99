@@ -20,15 +20,18 @@ public class RoomManagementView {
     private final RoomManagement rm;
     private final AppUtils u;
 
+    // Default Constructor
     public RoomManagementView() {
         DBManager dbManager = new DBManager();
         this.rm = new RoomManagement(dbManager);
         this.u = new AppUtils();
     }
 
+    /**
+     * Add Room GUI Function
+     * Allows for creation of rooms
+     */
     public void addRoomGUI() {
-
-        // TODO: Add ToolTips
         JFrame addRoomFrame = new JFrame("Add a Room");
         addRoomFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         addRoomFrame.setBounds(450, 250, 600, 400);
@@ -103,9 +106,12 @@ public class RoomManagementView {
         });
     }
 
+    /**
+     * Remove Room GUI Function
+     * Removes a room based on Room number
+     */
     public void removeRoomGUI() {
 
-        // TODO: Add Tooltips
         JFrame removeRoomFrame = new JFrame("Remove Room");
         removeRoomFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         removeRoomFrame.setBounds(450, 250, 600, 350);
@@ -154,6 +160,10 @@ public class RoomManagementView {
         removeRoomFrame.setVisible(true);
     }
 
+    /**
+     * Room Price Function
+     * Updates price of a room
+     */
     public void roomPriceGUI() {
 
         JFrame roomPriceFrame = new JFrame("Update Room Price");
@@ -207,6 +217,10 @@ public class RoomManagementView {
         roomPriceFrame.setVisible(true);
     }
 
+    /**
+     * Room Status Function
+     * Updates Status of Room (Available/Unavailable)
+     */
     public void roomStatusGUI() {
 
         JFrame roomStatusFrame = new JFrame("Set Room Status");

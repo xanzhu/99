@@ -11,7 +11,7 @@ import javax.swing.JTextField;
 
 /**
  *
- * @author bobby
+ * @author Bobby Jenkins, Hyun il Jun
  */
 public class RegisterView extends JFrame {
 
@@ -24,6 +24,7 @@ public class RegisterView extends JFrame {
     
     private final AppUtils u;
 
+    // Default Constructor
     RegisterView() {
         this.u = new AppUtils();
         
@@ -120,8 +121,7 @@ public class RegisterView extends JFrame {
         ImagePanel.add(imageLabel);
         add(ImagePanel);
 
-        // TODO: Add return button
-        
+        // Handle Register Button
         registerBtn.addActionListener(e -> {
             String name = nameField.getText();
             int age = Integer.parseInt(ageField.getText());
@@ -141,7 +141,7 @@ public class RegisterView extends JFrame {
         setVisible(true);
     }
 
-// Testing
+    // DEBUG: View Register GUI
     public static void main(String[] args) {
         new RegisterView();
     }

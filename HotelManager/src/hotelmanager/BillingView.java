@@ -14,20 +14,28 @@ import javax.swing.JScrollPane;
 
 /**
  *
- * @author bobby
+ * @author Bobby Jenkins, Hyun il Jun
  */
 public class BillingView extends JFrame {
 
     private final Billing billing;
     private final DBManager db;
     private final AppUtils u;
-
+    
+    // Default Constructor
     public BillingView() {
         this.db = new DBManager();
         this.billing = new Billing(db);
         this.u = new AppUtils();
     }
 
+    /**
+     * Create User Billing GUI
+     * Based on user's email associated 
+     * with Room and Food purchases.
+     * 
+     * @param userEmail 
+     */
     public void getUserBillingGUI(String userEmail) {
         String Email = userEmail;
         double roomPrice = billing.getRoomPrice(Email);
@@ -80,6 +88,10 @@ public class BillingView extends JFrame {
         billingFrame.setVisible(true);
     }
 
+    /**
+     * Create GUI for All Booking Records
+     * Returns all active bookings for staff to view.
+     */
     public void displayBookingRecordsGUI() {
         JFrame bookingRecordsFrame = new JFrame();
         bookingRecordsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -133,6 +145,10 @@ public class BillingView extends JFrame {
         bookingRecordsFrame.setVisible(true);
     }
     
+    /**
+     * Create Food Purchases GUI
+     * Lists all active food purchases from users. 
+     */
     public void displayFoodRecordsGUI() {
         JFrame foodRecordsFrame = new JFrame();
         foodRecordsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

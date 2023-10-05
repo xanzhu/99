@@ -10,16 +10,18 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author bobby
+ * @author Bobby Jenkins, Hyun il jun
  */
 public class RoomServices {
 
     private final DBManager dbManager;
 
+    // Default Constructor 
     public RoomServices(DBManager dbManager) {
         this.dbManager = dbManager;
     }
 
+    // Reusable Error Messages
     private void showErrorMessage(String message) {
         JOptionPane.showMessageDialog(null, message, "Room Service Error", JOptionPane.ERROR_MESSAGE);
     }
@@ -28,6 +30,15 @@ public class RoomServices {
         JOptionPane.showMessageDialog(null, message, "Room Service", JOptionPane.PLAIN_MESSAGE);
     }
 
+    /**
+     * Add Food Function
+     * Saves user food input to database
+     * 
+     * @param foodName
+     * @param foodType
+     * @param price
+     * @param isAvailable 
+     */
     public void addFood(String foodName, String foodType, double price, boolean isAvailable) {
 
         String query = "INSERT INTO RoomServicesRecords (FoodName, FoodType, Price, IsAvailable) VALUES (?, ?, ?, ?)";
@@ -54,6 +65,11 @@ public class RoomServices {
         }
     }
 
+    /**
+     * Remove Food Function
+     * Deletes food entries from Database
+     * @param foodName 
+     */
     public void removeFood(String foodName) {
 
         String query = "DELETE FROM RoomServicesRecords WHERE FoodName = ?";
@@ -77,6 +93,13 @@ public class RoomServices {
         }
     }
 
+    /**
+     * Food Price Function
+     * Updates Food Price in Database
+     * 
+     * @param foodName
+     * @param newPrice 
+     */
     public void updateFoodPrice(String foodName, double newPrice) {
 
         String query = "UPDATE RoomServicesRecords SET Price = ? WHERE FoodName = ?";
@@ -102,6 +125,13 @@ public class RoomServices {
         }
     }
 
+    /**
+     * Food Status Function
+     * Sets Status of food items in db
+     * 
+     * @param foodName
+     * @param isAvailable 
+     */
     public void updateFoodStatus(String foodName, boolean isAvailable) {
 
         String query = "UPDATE RoomServicesRecords SET IsAvailable = ? WHERE FoodName = ?";
@@ -131,6 +161,7 @@ public class RoomServices {
         }
     }
 
+    // Match ID to user email in database
     public int matchIDEmail(String email) {
         int userId = -1; // Default value if no user found
 
@@ -154,6 +185,11 @@ public class RoomServices {
         return userId;
     }
 
+    /**
+     * Map Item Prices Function
+     * Uses HashMap to match Food Items and Price
+     * @return 
+     */
     public Map<String, Double> getItemsPrice() {
         Map<String, Double> foodItemsPrices = new HashMap<>();
 
@@ -176,6 +212,7 @@ public class RoomServices {
         return foodItemsPrices;
     }
 
+    // Match RoomNumber to UserID
     public int matchRoomEmail(String userEmail) {
 
         String query = "SELECT RoomNumber FROM BookingRecords WHERE UserID = (SELECT ID FROM UserData WHERE Email = ?)";
@@ -199,6 +236,15 @@ public class RoomServices {
         }
     }
 
+    /**
+     * Order Room Service Function
+     * Updates Order Records with user's order.
+     * 
+     * @param userEmail
+     * @param roomNumber
+     * @param foodName
+     * @param price 
+     */
     public void orderRoomServices(String userEmail, int roomNumber, String foodName, double price) {
 
         String query = "INSERT INTO OrderRecords (UserID, RoomNumber, FoodName, Price) VALUES (?, ?, ?, ?)";
@@ -235,6 +281,7 @@ public class RoomServices {
         }
     }
 
+    // Displays Food Item Price while available
     public void viewFoodPriceItem(StringBuilder details) {
         details.setLength(0);
 
@@ -259,5 +306,4 @@ public class RoomServices {
             System.err.println("Error viewing order: " + ex.getMessage());
         }
     }
-
 }

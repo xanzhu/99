@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 
 /**
  *
- * @author bobby
+ * @author Bobby Jenkins, Hyun il Jun
  */
 public class RegisterController {
 
@@ -17,11 +17,13 @@ public class RegisterController {
     Connection conn;
     Statement statement;
 
+    // Default Constructor
     RegisterController() {
         this.dbManager = new DBManager();
         this.conn = dbManager.getConnection();
     }
 
+    // Connect HotelDB
     public void connectHotelDB() {
         try {
             statement = conn.createStatement();
@@ -30,6 +32,18 @@ public class RegisterController {
         }
     }
 
+    /**
+     * Register User Function
+     * Handles Processing User Registration 
+     * and validates fields.
+     * 
+     * @param name
+     * @param age
+     * @param address
+     * @param phone
+     * @param email
+     * @param password 
+     */
     public void registerUser(String name, int age, String address, String phone, String email, String password) {
 
         if (verifyRegister(name, age, address, phone, email, password)) {
@@ -41,10 +55,12 @@ public class RegisterController {
         }
     }
 
+    // Validation for Registration
     public boolean verifyRegister(String name, int age, String address, String phone, String email, String password) {
         return checkAge(age) && checkFields(name, address, phone, email, password) && checkEmail(email);
     }
 
+    // Reusable Error Messages
     private void showSuccessMessage(String message) {
         JOptionPane.showMessageDialog(null, message, "Registration Success", JOptionPane.PLAIN_MESSAGE);
     }
@@ -72,7 +88,6 @@ public class RegisterController {
             return false;
         }
 
-        // TODO: Support for empty age - currently causes error!
         return true;
     }
 
@@ -95,7 +110,7 @@ public class RegisterController {
         }
     }
 
-    // Opens Login Menu
+    // Loads Login GUI after successful Register
     public static void openLoginView() {
         RegisterView rv = new RegisterView();
         rv.dispose();

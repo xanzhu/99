@@ -11,41 +11,9 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author bobby
+ * @author Bobby Jenkins, Hyun il Jun
  */
 public class StaffDashboardView extends JFrame {
-
-    /**
-     * @return the manageRoomBtn
-     */
-    public JButton getManageRoomBtn() {
-        return manageRoomBtn;
-    }
-
-    /**
-     * @return the roomServiceBtn
-     */
-    public JButton getRoomServiceBtn() {
-        return roomServiceBtn;
-    }
-
-    /**
-     * @return the manageUserBtn
-     */
-    public JButton getManageUserBtn() {
-        return manageUserBtn;
-    }
-
-    /**
-     * @return the bookingsBtn
-     */
-    public JButton getBookingsBtn() {
-        return bookingsBtn;
-    }
-    
-    public JButton getAddBookingButton() {
-        return addBooking;
-    }
 
     private final JButton logoutBtn;
     private final String emailField;
@@ -55,9 +23,7 @@ public class StaffDashboardView extends JFrame {
     private JButton roomServiceBtn;
     private JButton manageUserBtn;
     private JButton bookingsBtn;
-    
-    // Test
-   private JButton addBooking; 
+    private JButton addBooking;
 
     private final RoomManagementView roomManagement;
     private final RoomServiceView roomService;
@@ -65,6 +31,35 @@ public class StaffDashboardView extends JFrame {
     private final AppUtils u;
 
     private final BillingView billingView;
+
+    // Getters
+    public JButton getManageRoomBtn() {
+        return manageRoomBtn;
+    }
+
+    public JButton getRoomServiceBtn() {
+        return roomServiceBtn;
+    }
+
+    public JButton getManageUserBtn() {
+        return manageUserBtn;
+    }
+
+    public JButton getBookingsBtn() {
+        return bookingsBtn;
+    }
+
+    public JButton getAddBookingButton() {
+        return addBooking;
+    }
+
+    public String getEmailField() {
+        return emailField;
+    }
+
+    public JButton getLogoutButton() {
+        return logoutBtn;
+    }
 
     StaffDashboardView(String userName, String userEmail) {
 
@@ -74,24 +69,28 @@ public class StaffDashboardView extends JFrame {
         this.roomService = new RoomServiceView();
         this.bookingView = new BookingView();
         this.billingView = new BillingView();
+        
+        // Util for Design Components
         this.u = new AppUtils();
 
         setBounds(100, 80, 1280, 720);
         setResizable(false);
         setLayout(null);
 
+        // Dashboard Title
         JLabel title = new JLabel("Staff Dashboard");
         title.setFont(u.formatText(30, true));
         title.setBounds(1000, 20, 500, 30);
         add(title);
 
-        // Default Design stuffs: 
+        // Default sidebar design
         JPanel Sidebar = new JPanel();
         Sidebar.setBounds(0, 0, 250, 720);
         Sidebar.setBackground(u.staffColour());
         Sidebar.setLayout(null);
         add(Sidebar);
 
+        // Name
         nameField = new JLabel(userName);
         nameField.setBounds(0, 100, 250, 200);
         nameField.setVerticalAlignment(JLabel.CENTER);
@@ -100,6 +99,7 @@ public class StaffDashboardView extends JFrame {
         nameField.setForeground(Color.WHITE);
         Sidebar.add(nameField);
 
+        // Email
         JLabel email = new JLabel(userEmail);
         email.setBounds(0, 130, 250, 200);
         email.setVerticalAlignment(JLabel.CENTER);
@@ -107,18 +107,20 @@ public class StaffDashboardView extends JFrame {
         email.setForeground(Color.WHITE);
         Sidebar.add(email);
 
+        // Log out
         logoutBtn = new JButton("Logout");
         logoutBtn.setBounds(35, 620, 170, 40);
         logoutBtn.setForeground(Color.BLACK);
         logoutBtn.setBackground(Color.WHITE);
         Sidebar.add(logoutBtn);
 
+        // Default profile icon
         ImageIcon profileImg = new ImageIcon(ClassLoader.getSystemResource("Assets/profile.png"));
         JLabel profileLabel = new JLabel(profileImg);
         profileLabel.setBounds(75, 60, 100, 100);
         Sidebar.add(profileLabel);
 
-        // Custom Private GUIs ! :D
+        // Load in private GUIs! 
         LoadButtons();
         ManageRoomGUI();
         RoomServiceGUI();
@@ -128,17 +130,21 @@ public class StaffDashboardView extends JFrame {
         setVisible(true);
     }
 
-    public JButton getLogoutButton() {
-        return logoutBtn;
-    }
-
-    private void btnState(boolean isVisible, Component... button) {
-        for (Component b : button) {
+    // Reusable component to handle button visibility
+    private void btnState(boolean isVisible, Component... btn) {
+        for (Component b : btn) {
             b.setVisible(isVisible);
         }
     }
-    
-    private void LoadButtons(){
+
+    /**
+     * Private GUI Functions for display menu options. 
+     * Load buttons - Main menu buttons. 
+     * Manage Rooms - sub-menu options for managing rooms. 
+     * Room Service - sub-menu options for room service. 
+     * Booking      - sub-menu options for bookings.
+     */
+    private void LoadButtons() {
         manageRoomBtn = new JButton("Manage Rooms");
         roomServiceBtn = new JButton("Room Service");
         bookingsBtn = new JButton("Bookings");
@@ -191,7 +197,7 @@ public class StaffDashboardView extends JFrame {
         add(ReturnBtn);
         ReturnBtn.setVisible(false);
 
-        // Action Listeners
+        // Action Listeners to handle button clicks
         AddRoomBtn.addActionListener((ActionEvent e) -> {
             roomManagement.addRoomGUI();
         });
@@ -208,6 +214,7 @@ public class StaffDashboardView extends JFrame {
             roomManagement.roomPriceGUI();
         });
 
+        // Handle button visibility
         ReturnBtn.addActionListener((ActionEvent e) -> {
             btnState(true, getRoomServiceBtn(), getManageRoomBtn(), getBookingsBtn());
             btnState(false, AddRoomBtn, RemoveRoomBtn, ReturnBtn, RoomStatusBtn, PriceRoomBtn);
@@ -220,7 +227,6 @@ public class StaffDashboardView extends JFrame {
     }
 
     private void RoomServiceGUI() {
-
         roomServiceBtn = new JButton("Room Service");
         getRoomServiceBtn().setBounds(550, 160, 150, 150);
         getRoomServiceBtn().setFont(u.formatText(16));
@@ -274,7 +280,7 @@ public class StaffDashboardView extends JFrame {
         menuRecords.setFont(u.formatText(16));
         add(menuRecords);
         menuRecords.setVisible(false);
-        
+
         // Return button
         JButton ReturnBtn = new JButton("Return");
         ReturnBtn.setLayout(null);
@@ -282,8 +288,8 @@ public class StaffDashboardView extends JFrame {
         ReturnBtn.setFont(u.formatText(15));
         add(ReturnBtn);
         ReturnBtn.setVisible(false);
-        
-        //Action Listeners
+
+        //Action Listeners for menu options
         addFood.addActionListener((ActionEvent e) -> {
             roomService.addFoodGUI();
         });
@@ -303,11 +309,12 @@ public class StaffDashboardView extends JFrame {
         menuDisplay.addActionListener((ActionEvent e) -> {
             roomService.viewRoomServicesGUI();
         });
-        
+
         menuRecords.addActionListener((ActionEvent e) -> {
             billingView.displayFoodRecordsGUI();
         });
 
+        // Set menu option visibility state
         ReturnBtn.addActionListener((ActionEvent e) -> {
             btnState(true, getRoomServiceBtn(), getManageRoomBtn(), getBookingsBtn());
             btnState(false, addFood, removeFood, ReturnBtn, menuStatus, menuPrice, menuDisplay, menuRecords);
@@ -381,8 +388,8 @@ public class StaffDashboardView extends JFrame {
 
     }
     
-    // Testing
-    public static void main(String[] args) {
-        StaffDashboardView staffDash = new StaffDashboardView("Jon Kim", "example@gmail.com");
-    }
+    // DEBUG: Display Dashboard for designing JFrame
+    //    public static void main(String[] args) {
+    //        StaffDashboardView staffDash = new StaffDashboardView("Jon Kim", "kimjon@gmail.com");
+    //    }
 }

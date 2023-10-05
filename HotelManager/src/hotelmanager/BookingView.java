@@ -24,7 +24,7 @@ import javax.swing.text.DefaultCaret;
 
 /**
  *
- * @author bobby
+ * @author Bobby Jenkins, Hyun il Jun
  */
 public class BookingView {
 
@@ -32,14 +32,13 @@ public class BookingView {
     private final DBManager db;
     private final AppUtils u;
 
+    // Default Constructor
     public BookingView() {
         this.db = new DBManager();
         this.bk = new Booking(db);
         this.u = new AppUtils();
     }
-    
-    // Test
-    
+
     public JFrame getBookingFrame() {
         return BookingFrame;
     }
@@ -77,10 +76,10 @@ public class BookingView {
         DateLabel.setFont(u.formatText(15));
         DateLabel.setBounds(130, 180, 300, 40);
 
-        // TODO: Lookup setting date using JCalendar instead of TextField ?  
         JTextField DateField = new JTextField();
         DateField.setBounds(280, 180, 200, 40);
 
+        // Date Format Note
         JLabel DateNote = new JLabel("Format: (YYYY-MM-DD)");
         DateNote.setBounds(310, 215, 200, 40);
         DateNote.setFont(u.formatText(12));
@@ -112,7 +111,7 @@ public class BookingView {
             String RoomNum = RoomField.getText();
             String Date = DateField.getText();
 
-            // Validate Staff !
+            // Validate Staff using "@hotel.com" !
             boolean isStaffBooking = Email.contains("@hotel.com");
 
             try {
@@ -141,6 +140,13 @@ public class BookingView {
         });
     }
 
+    /**
+     * Creates Booking GUI
+     * Converts Records ArrayList into a String
+     * Iterating over each booking
+     * 
+     * @param email 
+     */
     public void viewBookingGUI(String email) {
         List<Records> bookingRecords = bk.getBookingRecords(email);
 
@@ -169,6 +175,13 @@ public class BookingView {
         JOptionPane.showMessageDialog(null, scrollPane, "Booking Details", JOptionPane.INFORMATION_MESSAGE);
     }
 
+    /**
+     * Creates Cancel Booking GUI
+     * Displays active bookings from db into
+     * drop down menu for selection.
+     * 
+     * @param userEmail 
+     */
     public void cancelBookingGUI(String userEmail) {
         try {
             int userId = bk.userEmailID(userEmail);
@@ -236,10 +249,8 @@ public class BookingView {
             if (option == JOptionPane.OK_OPTION) {
                 Integer selectedRoomNumber = (Integer) bookingComboBox.getSelectedItem();
                 if (selectedRoomNumber != null) {
-                    // Use the selected room number to get the associated booking ID
                     String details = bookingDetailsMap.get(selectedRoomNumber);
                     if (details != null) {
-                        // Extract the booking ID from the details string
                         int selectedBookingId = extractBookingId(details);
                         bk.cancelBooking(selectedBookingId);
                     }
@@ -251,6 +262,7 @@ public class BookingView {
         }
     }
 
+    // Splits up ArrayList to get Booking ID
     private int extractBookingId(String details) {
         String[] lines = details.split("\n");
 
@@ -263,13 +275,16 @@ public class BookingView {
         return -1;
     }
 
-    // Check for Existing Booking
+    // Check for Existing Booking using email
     public boolean NewBookingCheck(String userEmail) {
         int userId = bk.userEmailID(userEmail);
         return bk.hasBooking(userId);
     }
 
-    // TODO: Validation methods
+    /**
+     * Creates Cancel Booking GUI for Staff
+     * Displays input field for removing Booking.
+     */
     public void staffCancelBookingGUI() {
         JFrame staffCancelFrame = new JFrame("Staff Booking Remove");
         staffCancelFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

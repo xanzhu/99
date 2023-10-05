@@ -7,6 +7,11 @@ import java.sql.SQLException;
 
 public class Test_Users {
 
+    /**
+     * DEBUG: Database Test Function
+     * Returns all Users from Database
+     * @param args 
+     */
     public static void main(String[] args) {
         DBManager dbManager = new DBManager();
 

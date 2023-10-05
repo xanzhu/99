@@ -10,26 +10,37 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author bobby
+ * @author Bobby Jenkins, Hyun il Jun
  */
 public class Booking {
 
     private final DBManager dbManager;
     private final RoomManagement rm;
 
+    // Default constructor
     public Booking(DBManager dbManager) {
         this.dbManager = dbManager;
         rm = new RoomManagement(dbManager);
     }
 
+    // Reusable Error message component
     private void showErrorMessage(String message) {
         JOptionPane.showMessageDialog(null, message, "Booking Menu Error", JOptionPane.ERROR_MESSAGE);
     }
 
+        // Reusable Success message component
     private void showSuccessMessage(String message) {
         JOptionPane.showMessageDialog(null, message, "Booking Menu", JOptionPane.PLAIN_MESSAGE);
     }
 
+    /**
+     * Add Booking Function
+     * Stores user input into BookingRecords table.
+     * 
+     * @param userEmail
+     * @param roomNumber
+     * @param bookingDate 
+     */
     public void addBooking(String userEmail, int roomNumber, java.sql.Date bookingDate) {
 
         int userId = userEmailID(userEmail);
@@ -59,6 +70,12 @@ public class Booking {
         }
     }
 
+    /**
+     * Cancel Booking Function
+     * Uses Booking ID to cancel users booking
+     * 
+     * @param selectedBookingId 
+     */
     public void cancelBooking(int selectedBookingId) {
         String updateRoomAvailabilitySQL = "UPDATE RoomRecords SET IsAvailable = TRUE WHERE RoomNumber = "
                 + "(SELECT RoomNumber FROM BookingRecords WHERE BookingID = ?)";
@@ -89,6 +106,13 @@ public class Booking {
         }
     }
 
+    /**
+     * Obtain User Email Function
+     * Matches ID to user Email
+     * 
+     * @param email
+     * @return 
+     */
     public int userEmailID(String email) {
         int userId = -1;
 
@@ -112,6 +136,13 @@ public class Booking {
         return userId;
     }
 
+    /**
+     * Current Booking Function
+     * Returns Boolean if a booking has been found. 
+     * 
+     * @param userId
+     * @return 
+     */
     public boolean hasBooking(int userId) {
         String selectBookingSQL = "SELECT COUNT(*) FROM BookingRecords WHERE UserID = ?";
 
@@ -134,7 +165,13 @@ public class Booking {
         return false;
     }
 
-// Validation Methods
+    /**
+     * Validation Function for Adding Room
+     * Adds validation to Add room fields.
+     * 
+     * @param roomNumber
+     * @return 
+     */
     public boolean validateAddRoom(int roomNumber) {
 
         String query = "SELECT IsAvailable FROM RoomRecords WHERE RoomNumber = ?";
@@ -159,6 +196,14 @@ public class Booking {
         return false;
     }
 
+    /**
+     * Booking Function for Staff
+     * Allows staff to book a room for any user
+     * 
+     * @param guestEmail
+     * @param roomNumber
+     * @param bookingDate 
+     */
     public void staffAddBooking(String guestEmail, int roomNumber, java.sql.Date bookingDate) {
 
         String query = "INSERT INTO BookingRecords (UserID, RoomNumber, BookingDate) VALUES (?, ?, ?)";
@@ -188,6 +233,13 @@ public class Booking {
         }
     }
 
+    /**
+     * Cancel Booking Function for Staff
+     * Allows staff to delete bookings and then updates
+     * room status. 
+     * 
+     * @param bookID 
+     */
     public void staffCancelBooking(int bookID) {
         String selectRoomNumberSQL = "SELECT RoomNumber FROM BookingRecords WHERE BookingID = ?";
         String deleteBookingSQL = "DELETE FROM BookingRecords WHERE BookingID = ?";
@@ -237,6 +289,14 @@ public class Booking {
         }
     }
 
+    /**
+     * Get BookingRecords Function
+     * Selects all active booking records from table
+     * then assigns to Records ArrayList
+     * 
+     * @param email
+     * @return 
+     */
     public List<Records> getBookingRecords(String email) {
         List<Records> bookingRecords = new ArrayList<>();
 
@@ -272,10 +332,16 @@ public class Booking {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return bookingRecords;
     }
 
+    /**
+     * Get Bookings for user
+     * Selects all records for current user.
+     * 
+     * @param userId
+     * @return 
+     */
     public List<Records> getBookingsForUser(int userId) {
         List<Records> userBooking = new ArrayList<>();
 
@@ -300,8 +366,6 @@ public class Booking {
          } catch (SQLException ex) {
             System.err.println("Error getting user booking: " + ex.getMessage());
         }
-
         return userBooking;
     }
-
 }

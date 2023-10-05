@@ -9,10 +9,11 @@ import java.sql.ResultSet;
 
 /**
  *
- * @author bobby
+ * @author Bobby Jenkins, Hyun il Jun
  */
 public final class DBManager {
 
+    // Established the embedded db
     private static final String USER_NAME = "hotel";
     private static final String PASSWORD = "hotel";
     private static final String URL = "jdbc:derby:HotelDB; create=true";
@@ -32,6 +33,7 @@ public final class DBManager {
         return instance;
     }
 
+    // Debug method: Run DBManager
     public static void main(String[] args) {
         DBManager dbManager = new DBManager();
         System.out.println(dbManager.getConnection());
@@ -46,9 +48,7 @@ public final class DBManager {
         if (this.conn == null) {
             try {
                 conn = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
-                System.out.println(URL + " Get Connected Successfully ....");
             } catch (SQLException ex) {
-                // Print the error message and stack trace for debugging
                 ex.printStackTrace();
                 System.err.println("Error: " + ex.getMessage());
             }
@@ -65,38 +65,9 @@ public final class DBManager {
         }
     }
 
-    // Testing
-    public void commitPendingTransactions() {
-        try {
-            if (conn != null && !conn.isClosed()) {
-                conn.commit();
-            }
-        } catch (SQLException ex) {
-            // Handle the exception, e.g., log it or throw it
-            ex.printStackTrace();
-        }
-    }
-
-    // Test shutdown server: 
-    public void shutdown() {
-        try {
-            if (conn != null && !conn.isClosed()) {
-                // The DriverManager.getConnection method with "shutdown=true" is used to shut down Derby.
-                // This is the proper way to shut down Derby gracefully.
-                DriverManager.getConnection("jdbc:derby:;shutdown=true");
-                System.out.println("Derby shutdown successful.");
-            }
-        } catch (SQLException ex) {
-            // If you get a SQLException here, it's expected and can be ignored.
-            // Derby throws an exception when it's shut down properly.
-            if (ex.getSQLState().equals("XJ015")) {
-                System.out.println("Derby shut down successfully.");
-            } else {
-                System.err.println("Derby shutdown failed: " + ex.getMessage());
-            }
-        }
-    }
-
+    /**
+     * Creates User Data Table
+     */
     public void createHotelData() {
         try {
             Statement statement = conn.createStatement();
@@ -104,7 +75,6 @@ public final class DBManager {
             // Check if the table already exists using MetaData (Fixes already exists db issue)
             ResultSet tables = conn.getMetaData().getTables(null, null, "USERDATA", null);
             if (!tables.next()) {
-                // Table doesn't exist, so create it
                 String createTableSQL = "CREATE TABLE UserData ("
                         + "ID INT NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
                         + "Name VARCHAR(255), "
@@ -115,7 +85,6 @@ public final class DBManager {
                         + "Password VARCHAR(255), "
                         + "PRIMARY KEY (ID))";
 
-                // Execute the SQL statement to create the table
                 statement.execute(createTableSQL);
 
                 System.out.println("Table 'UserData' created successfully.");
@@ -123,7 +92,6 @@ public final class DBManager {
                 System.out.println("Table 'UserData' already exists.");
             }
 
-            // Close the statement
             statement.close();
 
         } catch (SQLException e) {
@@ -131,6 +99,9 @@ public final class DBManager {
         }
     }
 
+    /**
+    * Creates Room Records Table
+    */
     public void createRoomData() {
         try {
             try (Statement statement = conn.createStatement()) {
@@ -155,6 +126,9 @@ public final class DBManager {
         }
     }
 
+    /**
+     * Creates Room Service Records Table
+     */
     public void createRoomServiceData() {
         try {
             try (Statement statement = conn.createStatement()) {
@@ -180,6 +154,9 @@ public final class DBManager {
         }
     }
 
+    /**
+     * Creates Booking Records Table
+     */
     public void createBookingData() {
         try {
             try (Statement statement = conn.createStatement()) {
@@ -206,6 +183,9 @@ public final class DBManager {
         }
     }
 
+    /**
+     * Creates Order Records Table
+     */
     public void createOrderData() {
         try {
             try (Statement statement = conn.createStatement()) {
@@ -233,7 +213,17 @@ public final class DBManager {
         }
     }
 
-    //
+    /**
+     * Save User Data 
+     * Takes input from Register Field saves into db
+     * 
+     * @param name
+     * @param age
+     * @param address
+     * @param phone
+     * @param email
+     * @param password 
+     */
     public void saveUserData(String name, int age, String address, String phone, String email, String password) {
         try {
             if (conn != null) {
@@ -258,6 +248,14 @@ public final class DBManager {
         }
     }
 
+    /**
+     * Credentials Function
+     * Gets Email and Password from db
+     * 
+     * @param email
+     * @param password
+     * @return 
+     */
     public boolean checkCredentials(String email, String password) {
         try {
             PreparedStatement preparedStatement = conn.prepareStatement(
@@ -274,6 +272,13 @@ public final class DBManager {
         }
     }
 
+    /**
+     * Retrieve Name Function
+     * Gets Name from db
+     * 
+     * @param email
+     * @return 
+     */
     public String RetrieveName(String email) {
         String userName = null;
 
@@ -294,7 +299,6 @@ public final class DBManager {
             preparedStatement.close();
             conn.close();
         } catch (SQLException ex) {
-            // Handle any SQL exceptions
             ex.printStackTrace();
         }
         return userName;

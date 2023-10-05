@@ -20,11 +20,13 @@ public class LoginView extends JFrame {
     private JTextField email;
     private JPasswordField password;
     private JTextField name;
+    private ImageIcon loginBG;
     
     private final AppUtils u;
 
     LoginView() {
         
+        // Load Application Utils
         this.u = new AppUtils();
         
         setBounds(100, 80, 1280, 720);
@@ -76,7 +78,7 @@ public class LoginView extends JFrame {
         add(returnBtn);
         
         // Background Image!
-        ImageIcon loginBG = new ImageIcon(ClassLoader.getSystemResource("Assets/loginBG.png"));
+        loginBG = new ImageIcon(ClassLoader.getSystemResource("Assets/loginBG.png"));
         JLabel imageLabel = new JLabel(loginBG);
         JPanel ImagePanel = new JPanel();
         ImagePanel.setBounds(640, -5, 640, 720);
@@ -87,6 +89,7 @@ public class LoginView extends JFrame {
         setVisible(true);
     }
 
+    // Getters
     public JButton getLoginButton() {
         return loginBtn;
     }
@@ -103,7 +106,11 @@ public class LoginView extends JFrame {
         return new String(password.getPassword());
     }
 
-  //   Testing :D
+    public ImageIcon getLoginBG() {
+        return loginBG;
+    }
+
+    // Debug: Displays Login GUI
     public static void main(String[] args) {
         new LoginView();
     }

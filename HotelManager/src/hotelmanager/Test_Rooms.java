@@ -1,16 +1,18 @@
 package hotelmanager;
 
-/**
- *
- * @author bobby
- */
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+
 public class Test_Rooms {
 
+     /**
+     * DEBUG: Database Test Function
+     * Returns all Rooms from Database
+     * @param args 
+     */
     public static void main(String[] args) {
         DBManager dbManager = new DBManager();
 
@@ -19,7 +21,6 @@ public class Test_Rooms {
                      "SELECT * FROM RoomRecords");
              ResultSet resultSet = preparedStatement.executeQuery()) {
 
-            // Iterate through the result set and print the room records
             while (resultSet.next()) {
                 int roomNumber = resultSet.getInt("RoomNumber");
                 String roomType = resultSet.getString("RoomType");

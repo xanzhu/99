@@ -7,45 +7,72 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author junhy
+ * @author Bobby Jenkins, Hyun il Jun
  */
 public class UserDashboardViewTest {
 
-    private UserDashboardView ud;
+    private UserDashboardView ude;
+
     private BookingView bv;
+    private RoomServiceView rv;
+    
     
     @Before
     public void setUp() {
-        ud = new UserDashboardView("test", "test");
+        
+        // Define member with active booking (Existing only)
+        ude = new UserDashboardView("test", "test");
+ 
+        rv = new RoomServiceView();
         bv = new BookingView();
     }
 
+    /**
+     * Verify Buttons are Visible.
+     */
     @Test
     public void bookingBtn() {
-        JButton bookingBtn = ud.getBookingBtn();
+        JButton bookingBtn = ude.getBookingBtn();
         assertNotNull(bookingBtn);
         assertTrue(bookingBtn.isVisible());
     }
 
     @Test
     public void roomServicesBtn() {
-        JButton roomBtn = ud.getServiceBtn();
+        JButton roomBtn = ude.getServiceBtn();
         assertNotNull(roomBtn);
         assertTrue(roomBtn.isVisible());
     }
-
-    @Test
-    public void testBookingBtnActionListener() {
-        ud.simulateBookingBtnClick();
-        assertTrue(ud.isAddBookingBtnEnabled());
-    }
     
+    @Test
+    public void chargesBtn(){
+        JButton charges = ude.getBillingBtn();
+        assertNotNull(charges);
+        assertTrue(charges.isVisible());
+    }
+
+    /**
+     * Test BookingGUI opens correctly.
+     */
+    @Test
     public void testBookingBtnGUI(){
-        ud.getAddBookingBtn().doClick();
+        ude.getAddBookingBtn().doClick();
         
         bv.addBookingGUI();
         
         assertTrue(bv.getBookingFrame().isVisible());
     }
-
+    
+    /**
+     * Test RoomServices View Menu GUI Opens correctly
+     */
+    @Test
+    public void testBillingBtnGUI(){
+        ude.getServiceBtn().doClick();
+        
+        rv.viewRoomServicesGUI();
+        
+        assertTrue(rv.getViewFrame().isVisible());
+    }
+    
 }

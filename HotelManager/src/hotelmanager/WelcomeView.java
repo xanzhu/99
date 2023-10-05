@@ -1,7 +1,6 @@
 package hotelmanager;
 
 import java.awt.Color;
-import java.awt.Font;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -9,7 +8,7 @@ import javax.swing.JLabel;
 
 /**
  *
- * @author bobby
+ * @author Bobby Jenkins, Hyun il Jun
  */
 public class WelcomeView extends JFrame {
     
@@ -17,6 +16,7 @@ public class WelcomeView extends JFrame {
     private final JButton registerButton;
     private final AppUtils u;
 
+    // Default Constructor
     WelcomeView() {
         
         this.u = new AppUtils();

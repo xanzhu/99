@@ -14,10 +14,12 @@ public class RoomManagement {
 
     private final DBManager dbManager;
 
+    // Default Constructor
     public RoomManagement(DBManager dbManager) {
         this.dbManager = dbManager;
     }
 
+    // Reusable Erorr Messages
     private void showErrorMessage(String message) {
         JOptionPane.showMessageDialog(null, message, "Room Management Error", JOptionPane.ERROR_MESSAGE);
     }
@@ -26,6 +28,7 @@ public class RoomManagement {
         JOptionPane.showMessageDialog(null, message, "Room Management", JOptionPane.PLAIN_MESSAGE);
     }
 
+    // Validate Adding a Room
     public boolean validateAddRoom(String roomNumberField, String priceField, String roomTypeField) {
 
         // Check 1: Room Number
@@ -86,7 +89,8 @@ public class RoomManagement {
                 return resultSet.next();
 
             } catch (SQLException ex) {
-                System.err.println("Error checking if room exists: " + ex.getMessage());
+//                System.err.println("Error checking if room exists: " + ex.getMessage());
+                showErrorMessage("Error room exists: " + roomNumber);
                 return false;
             }
         }

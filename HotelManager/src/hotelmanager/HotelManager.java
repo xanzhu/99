@@ -4,7 +4,7 @@ import javax.swing.UIManager;
 
 /**
  *
- * @author bobby
+ * @author Bobby Jenkins, Hyun il Jun
  */
 public class HotelManager {
 
@@ -18,12 +18,15 @@ public class HotelManager {
         dbManager.createBookingData();
         dbManager.createOrderData();
 
-        // Load in default view
+        // Loads in default splash screen.
         WelcomeView welcomeView = new WelcomeView();
         WelcomeController welcomeController = new WelcomeController(welcomeView);
         welcomeView.setVisible(true);
         
-        // Use Mac Buttons! :D
+        /**
+         * Ensures Designs are reflective of
+         * Mac to Windows Systems.
+         */
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {

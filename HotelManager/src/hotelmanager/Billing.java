@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  *
- * @author bobby
+ * @author Bobby Jenkins, Hyun il Jun
  */
 public class Billing {
 
@@ -20,6 +20,14 @@ public class Billing {
         this.dbManager = dbManager;
     }
 
+    /**
+     * Room Price function
+     * Match UserID across BookingRecords and UserData
+     * then return price uses Email to match.
+     * 
+     * @param userEmail
+     * @return roomPrice
+    */
     public double getRoomPrice(String userEmail) {
         double roomPrice = 0.0;
 
@@ -50,10 +58,17 @@ public class Billing {
                 System.err.println("Error getting price of room: " + ex.getMessage());
             }
         }
-
         return roomPrice;
     }
 
+    /**
+     * Total Room Services Price
+     * Gets the total price from OrderRecords
+     * using UserID.
+     * 
+     * @param userEmail
+     * @return 
+     */
     public double getTotalRoomServicesPrice(String userEmail) {
         double totalRoomServicesPrice = 0.0;
 
@@ -78,6 +93,13 @@ public class Billing {
         return totalRoomServicesPrice;
     }
 
+    /**
+     * Display Record Function
+     * Converts db entries into Empty ArrayList
+     * for use in GUI
+     * 
+     * @return records
+     */
     public List<Records> displayRecords() {
         List<Records> records = new ArrayList<>();
 
@@ -106,6 +128,13 @@ public class Billing {
         return records;
     }
 
+     /**
+     * Display Food Records Function
+     * Converts db entries into Empty ArrayList
+     * for use in GUI
+     * 
+     * @return records
+     */
     public List<Records> displayFoodRecords() {
         List<Records> records = new ArrayList<>();
 
@@ -132,8 +161,6 @@ public class Billing {
                 System.err.println("Error displaying records: " + ex.getMessage());
             }
         }
-
         return records;
     }
-
 }

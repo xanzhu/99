@@ -11,47 +11,9 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author bobby
+ * @author Bobby Jenkins, Hyun il Jun
  */
 public class UserDashboardView extends JFrame {
-
-    private boolean isAddBookingGUIInvoked = false;
-
-    public boolean isAddBookingGUIInvoked() {
-        return isAddBookingGUIInvoked;
-    }
-
-    /**
-     * @return the BookingBtn
-     */
-    public JButton getAddBookingBtn() {
-        return AddBookingBtn;
-    }
-
-    public JButton getBookingBtn() {
-        return BookingBtn;
-    }
-
-    /**
-     * @return the ServiceBtn
-     */
-    public JButton getServiceBtn() {
-        return ServiceBtn;
-    }
-
-    /**
-     * @return the NewBookingBtn
-     */
-    public JButton getNewBookingBtn() {
-        return NewBookingBtn;
-    }
-
-    /**
-     * @return the BillingBtn
-     */
-    public JButton getBillingBtn() {
-        return BillingBtn;
-    }
 
     private final JButton logoutBtn;
     private final JLabel nameField;
@@ -61,16 +23,55 @@ public class UserDashboardView extends JFrame {
     private final BookingView bookingView;
     private final RoomServiceView roomServiceView;
     private final BillingView billingView;
+    
+    private JButton BookingBtn;
+    private JButton ServiceBtn;
+    private JButton NewBookingBtn;
+    private JButton BillingBtn;
+    
+    private JButton AddBookingBtn;
+    private JButton ViewMenu;
 
     private final AppUtils u;
+    
+    private boolean isAddBookingGUIInvoked = false;
 
+    public JButton getAddBookingBtn() {
+        return AddBookingBtn;
+    }
+
+    public JButton getBookingBtn() {
+        return BookingBtn;
+    }
+
+    public JButton getServiceBtn() {
+        return ServiceBtn;
+    }
+
+    public JButton getNewBookingBtn() {
+        return NewBookingBtn;
+    }
+
+    public JButton getBillingBtn() {
+        return BillingBtn;
+    }
+    
+    public JButton getLogoutButton() {
+        return logoutBtn;
+    }
+    
+    public JButton getViewBilling() {
+        return ViewMenu;
+    }
+
+    // Default Constructor
     UserDashboardView(String userName, String userEmail) {
         this.loginEmail = userEmail;
         this.bookingView = new BookingView();
         this.roomServiceView = new RoomServiceView();
         this.billingView = new BillingView();
 
-        // Load in reusable elements
+        // Load in reusable font elements
         this.u = new AppUtils();
 
         setBounds(100, 80, 1280, 720);
@@ -121,42 +122,40 @@ public class UserDashboardView extends JFrame {
         setVisible(true);
     }
 
-    public JButton getLogoutButton() {
-        return logoutBtn;
-    }
-
-    private JButton BookingBtn;
-    private JButton ServiceBtn;
-    private JButton NewBookingBtn;
-    private JButton BillingBtn;
-    private JButton AddBookingBtn;
-
+    /**
+     * Booking Function
+     * Creates GUI to handle bookings based 
+     * on existing or new user
+     * 
+     * New user has limited option
+     * Existing user with booking full menu
+     */
     private void BookingGUI() {
 
         boolean hasBooking = bookingView.NewBookingCheck(loginEmail);
 
-        // Define buttons for use
+        // Define main menu buttons for use
         ServiceBtn = new JButton("Room Service");
         NewBookingBtn = new JButton("Book a room");
         BookingBtn = new JButton("My Bookings");
         BillingBtn = new JButton("Charges");
 
-        getBookingBtn().setBounds(350, 160, 150, 150);
-        getBookingBtn().setFont(u.formatText(16));
-        getBookingBtn().setLayout(null);
+        BookingBtn.setBounds(350, 160, 150, 150);
+        BookingBtn.setFont(u.formatText(16));
+        BookingBtn.setLayout(null);
         add(getBookingBtn());
-        getBookingBtn().setVisible(hasBooking);
+        BookingBtn.setVisible(hasBooking);
 
-        // Hide elements for non booked
+        // Hide elements for non booked users
         if (!hasBooking) {
-            getServiceBtn().setVisible(false);
-            getBillingBtn().setVisible(false);
+            ServiceBtn.setVisible(false);
+            BillingBtn.setVisible(false);
         }
 
-        getNewBookingBtn().setBounds(350, 160, 150, 150);
-        getNewBookingBtn().setFont(u.formatText(16));
-        getNewBookingBtn().setLayout(null);
-        add(getNewBookingBtn());
+        NewBookingBtn.setBounds(350, 160, 150, 150);
+        NewBookingBtn.setFont(u.formatText(16));
+        NewBookingBtn.setLayout(null);
+        add(NewBookingBtn);
 
         // Add Booking
         AddBookingBtn = new JButton("Add Booking");
@@ -191,11 +190,10 @@ public class UserDashboardView extends JFrame {
         ReturnBtn.setVisible(false);
 
         ReturnBtn.addActionListener((ActionEvent e) -> {
-
             boolean returnCheck = bookingView.NewBookingCheck(loginEmail);
 
             if (returnCheck) {
-                btnState(true, getBookingBtn(), getServiceBtn());
+                btnState(true, BookingBtn, ServiceBtn);
                 btnState(false, AddBookingBtn, ViewBookingBtn, CancelBookingBtn, ReturnBtn);
             } else {
                 btnState(true, getNewBookingBtn());
@@ -217,14 +215,14 @@ public class UserDashboardView extends JFrame {
 
         // Existing Bookings
         getBookingBtn().addActionListener((ActionEvent e) -> {
-            btnState(false, getBookingBtn(), getServiceBtn(), getNewBookingBtn(), getBillingBtn());
+            btnState(false, BookingBtn, ServiceBtn, NewBookingBtn, BillingBtn);
             btnState(true, AddBookingBtn, ViewBookingBtn, CancelBookingBtn, ReturnBtn);
         });
 
         // New Bookings
         getNewBookingBtn().addActionListener((ActionEvent e) -> {
             btnState(true, AddBookingBtn, ReturnBtn);
-            btnState(false, getNewBookingBtn(), getServiceBtn(), getBillingBtn());
+            btnState(false, NewBookingBtn, ServiceBtn, BillingBtn);
         });
 
         AddBookingBtn.addActionListener((ActionEvent e) -> {
@@ -234,14 +232,18 @@ public class UserDashboardView extends JFrame {
 
     }
 
+    /**
+     * Room Service Function
+     * Creates Room Service GUI to order/view from menu
+     */
     private void RoomServiceGUI() {
-        getServiceBtn().setBounds(550, 160, 150, 150);
-        getServiceBtn().setFont(u.formatText(16));
-        getServiceBtn().setLayout(null);
-        add(getServiceBtn());
+        ServiceBtn.setBounds(550, 160, 150, 150);
+        ServiceBtn.setFont(u.formatText(16));
+        ServiceBtn.setLayout(null);
+        add(ServiceBtn);
 
         // View Menu
-        JButton ViewMenu = new JButton("View Room Services");
+        ViewMenu = new JButton("View Room Services");
         ViewMenu.setLayout(null);
         ViewMenu.setBounds(350, 160, 200, 100);
         ViewMenu.setFont(u.formatText(16));
@@ -275,43 +277,37 @@ public class UserDashboardView extends JFrame {
 
         // Button Visibility
         SReturnBtn.addActionListener((ActionEvent e) -> {
-            btnState(true, getBookingBtn(), getServiceBtn(), getBillingBtn());
+            btnState(true, BookingBtn, ServiceBtn, BillingBtn);
             btnState(false, ViewMenu, OrderMenu, SReturnBtn);
         });
 
         getServiceBtn().addActionListener((ActionEvent e) -> {
             btnState(true, ViewMenu, OrderMenu, SReturnBtn);
-            btnState(false, getBookingBtn(), getServiceBtn(), getNewBookingBtn(), getBillingBtn());
+            btnState(false, BookingBtn, ServiceBtn, NewBookingBtn, BillingBtn);
         });
     }
 
+    // Displays current Charges to user
     private void BillingGUI() {
-        getBillingBtn().setBounds(750, 160, 150, 150);
-        getBillingBtn().setFont(u.formatText(16));
-        getBillingBtn().setLayout(null);
-        add(getBillingBtn());
+        BillingBtn.setBounds(750, 160, 150, 150);
+        BillingBtn.setFont(u.formatText(16));
+        BillingBtn.setLayout(null);
+        add(BillingBtn);
 
-        getBillingBtn().addActionListener((ActionEvent e) -> {
+        BillingBtn.addActionListener((ActionEvent e) -> {
             billingView.getUserBillingGUI(loginEmail);
         });
     }
 
-    private void btnState(boolean isVisible, Component... buttons) {
-        for (Component button : buttons) {
-            button.setVisible(isVisible);
+    // Reusable Function for setting Button Visibility
+    private void btnState(boolean isVisible, Component... btn) {
+        for (Component b : btn) {
+            b.setVisible(isVisible);
         }
     }
-
+    
+    // DEBUG - View User Dashboard
     public static void main(String[] args) {
         UserDashboardView userDash = new UserDashboardView("test", "test");
-    }
-
-    void simulateBookingBtnClick() {
-        ActionEvent mockEvent = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "simulateBookingBtnClick");
-        getBookingBtn().getActionListeners()[0].actionPerformed(mockEvent);
-    }
-
-    boolean isAddBookingBtnEnabled() {
-        return getAddBookingBtn().isVisible();
     }
 }
