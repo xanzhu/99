@@ -15,6 +15,38 @@ import javax.swing.JPanel;
  */
 public class StaffDashboardView extends JFrame {
 
+    /**
+     * @return the manageRoomBtn
+     */
+    public JButton getManageRoomBtn() {
+        return manageRoomBtn;
+    }
+
+    /**
+     * @return the roomServiceBtn
+     */
+    public JButton getRoomServiceBtn() {
+        return roomServiceBtn;
+    }
+
+    /**
+     * @return the manageUserBtn
+     */
+    public JButton getManageUserBtn() {
+        return manageUserBtn;
+    }
+
+    /**
+     * @return the bookingsBtn
+     */
+    public JButton getBookingsBtn() {
+        return bookingsBtn;
+    }
+    
+    public JButton getAddBookingButton() {
+        return addBooking;
+    }
+
     private final JButton logoutBtn;
     private final String emailField;
     private final JLabel nameField;
@@ -23,6 +55,9 @@ public class StaffDashboardView extends JFrame {
     private JButton roomServiceBtn;
     private JButton manageUserBtn;
     private JButton bookingsBtn;
+    
+    // Test
+   private JButton addBooking; 
 
     private final RoomManagementView roomManagement;
     private final RoomServiceView roomService;
@@ -111,10 +146,10 @@ public class StaffDashboardView extends JFrame {
 
     private void ManageRoomGUI() {
         manageRoomBtn = new JButton("Manage Rooms");
-        manageRoomBtn.setBounds(350, 160, 150, 150);
-        manageRoomBtn.setFont(u.formatText(16));
-        manageRoomBtn.setLayout(null);
-        add(manageRoomBtn);
+        getManageRoomBtn().setBounds(350, 160, 150, 150);
+        getManageRoomBtn().setFont(u.formatText(16));
+        getManageRoomBtn().setLayout(null);
+        add(getManageRoomBtn());
 
         // Add Button
         JButton AddRoomBtn = new JButton("Add Room");
@@ -174,23 +209,23 @@ public class StaffDashboardView extends JFrame {
         });
 
         ReturnBtn.addActionListener((ActionEvent e) -> {
-            btnState(true, roomServiceBtn, manageRoomBtn, bookingsBtn);
+            btnState(true, getRoomServiceBtn(), getManageRoomBtn(), getBookingsBtn());
             btnState(false, AddRoomBtn, RemoveRoomBtn, ReturnBtn, RoomStatusBtn, PriceRoomBtn);
         });
 
-        manageRoomBtn.addActionListener((ActionEvent e) -> {
+        getManageRoomBtn().addActionListener((ActionEvent e) -> {
             btnState(true, AddRoomBtn, RemoveRoomBtn, ReturnBtn, RoomStatusBtn, PriceRoomBtn);
-            btnState(false, roomServiceBtn, manageRoomBtn, bookingsBtn);
+            btnState(false, getRoomServiceBtn(), getManageRoomBtn(), getBookingsBtn());
         });
     }
 
     private void RoomServiceGUI() {
 
         roomServiceBtn = new JButton("Room Service");
-        roomServiceBtn.setBounds(550, 160, 150, 150);
-        roomServiceBtn.setFont(u.formatText(16));
-        roomServiceBtn.setLayout(null);
-        add(roomServiceBtn);
+        getRoomServiceBtn().setBounds(550, 160, 150, 150);
+        getRoomServiceBtn().setFont(u.formatText(16));
+        getRoomServiceBtn().setLayout(null);
+        add(getRoomServiceBtn());
 
         // Add Menu Item
         JButton addFood = new JButton("Add Food");
@@ -274,24 +309,24 @@ public class StaffDashboardView extends JFrame {
         });
 
         ReturnBtn.addActionListener((ActionEvent e) -> {
-            btnState(true, roomServiceBtn, manageRoomBtn, bookingsBtn);
+            btnState(true, getRoomServiceBtn(), getManageRoomBtn(), getBookingsBtn());
             btnState(false, addFood, removeFood, ReturnBtn, menuStatus, menuPrice, menuDisplay, menuRecords);
         });
 
-        roomServiceBtn.addActionListener((ActionEvent e) -> {
+        getRoomServiceBtn().addActionListener((ActionEvent e) -> {
             btnState(true, addFood, removeFood, ReturnBtn, menuStatus, menuPrice, menuDisplay, menuRecords);
-            btnState(false, roomServiceBtn, manageRoomBtn, bookingsBtn);
+            btnState(false, getRoomServiceBtn(), getManageRoomBtn(), getBookingsBtn());
         });
     }
 
     private void BookingsGUI() {
-        bookingsBtn.setBounds(750, 160, 150, 150);
-        bookingsBtn.setFont(u.formatText(16));
-        bookingsBtn.setLayout(null);
-        add(bookingsBtn);
+        getBookingsBtn().setBounds(750, 160, 150, 150);
+        getBookingsBtn().setFont(u.formatText(16));
+        getBookingsBtn().setLayout(null);
+        add(getBookingsBtn());
 
         // Add Booking
-        JButton addBooking = new JButton("Add Booking");
+        addBooking = new JButton("Add Booking");
         addBooking.setLayout(null);
         addBooking.setBounds(350, 160, 150, 150);
         addBooking.setFont(u.formatText(16));
@@ -335,13 +370,13 @@ public class StaffDashboardView extends JFrame {
         });
 
         ReturnBtn.addActionListener((ActionEvent e) -> {
-            btnState(true, roomServiceBtn, manageRoomBtn, bookingsBtn);
+            btnState(true, getRoomServiceBtn(), getManageRoomBtn(), getBookingsBtn());
             btnState(false, addBooking, removeBooking, ReturnBtn, viewBooking);
         });
 
-        bookingsBtn.addActionListener((ActionEvent e) -> {
+        getBookingsBtn().addActionListener((ActionEvent e) -> {
             btnState(true, addBooking, removeBooking, ReturnBtn, viewBooking);
-            btnState(false, roomServiceBtn, manageRoomBtn, bookingsBtn);
+            btnState(false, getRoomServiceBtn(), getManageRoomBtn(), getBookingsBtn());
         });
 
     }

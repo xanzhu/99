@@ -30,9 +30,17 @@ public class RoomServiceView {
         this.rs = new RoomServices(dbManager);
         this.u = new AppUtils();
     }
+    
+    public JFrame getAddFoodGUI() {
+        return FoodFrame;
+    }
+    
+    private JFrame FoodFrame;
+    
+    
 
     public void addFoodGUI() {
-        JFrame FoodFrame = new JFrame("Add Food Item");
+        FoodFrame = new JFrame("Add Food Item");
         FoodFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         FoodFrame.setBounds(450, 250, 600, 400);
         FoodFrame.setResizable(false);
