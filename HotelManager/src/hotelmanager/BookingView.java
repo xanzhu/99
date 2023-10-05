@@ -37,9 +37,18 @@ public class BookingView {
         this.bk = new Booking(db);
         this.u = new AppUtils();
     }
+    
+    // Test
+    
+    public JFrame getBookingFrame() {
+        return BookingFrame;
+    }
+    
+    private JFrame BookingFrame;
+    
 
     public void addBookingGUI() {
-        JFrame BookingFrame = new JFrame("Add Booking");
+        BookingFrame = new JFrame("Add Booking");
         BookingFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         BookingFrame.setBounds(450, 250, 600, 400);
         BookingFrame.setResizable(false);
@@ -130,7 +139,6 @@ public class BookingView {
 
             BookingFrame.dispose();
         });
-
     }
 
     public void viewBookingGUI(String email) {
