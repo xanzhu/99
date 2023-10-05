@@ -15,6 +15,44 @@ import javax.swing.JPanel;
  */
 public class UserDashboardView extends JFrame {
 
+    private boolean isAddBookingGUIInvoked = false;
+
+    public boolean isAddBookingGUIInvoked() {
+        return isAddBookingGUIInvoked;
+    }
+
+    /**
+     * @return the BookingBtn
+     */
+    public JButton getAddBookingBtn() {
+        return AddBookingBtn;
+    }
+
+    public JButton getBookingBtn() {
+        return BookingBtn;
+    }
+
+    /**
+     * @return the ServiceBtn
+     */
+    public JButton getServiceBtn() {
+        return ServiceBtn;
+    }
+
+    /**
+     * @return the NewBookingBtn
+     */
+    public JButton getNewBookingBtn() {
+        return NewBookingBtn;
+    }
+
+    /**
+     * @return the BillingBtn
+     */
+    public JButton getBillingBtn() {
+        return BillingBtn;
+    }
+
     private final JButton logoutBtn;
     private final JLabel nameField;
 
@@ -91,6 +129,7 @@ public class UserDashboardView extends JFrame {
     private JButton ServiceBtn;
     private JButton NewBookingBtn;
     private JButton BillingBtn;
+    private JButton AddBookingBtn;
 
     private void BookingGUI() {
 
@@ -102,25 +141,25 @@ public class UserDashboardView extends JFrame {
         BookingBtn = new JButton("My Bookings");
         BillingBtn = new JButton("Charges");
 
-        BookingBtn.setBounds(350, 160, 150, 150);
-        BookingBtn.setFont(u.formatText(16));
-        BookingBtn.setLayout(null);
-        add(BookingBtn);
-        BookingBtn.setVisible(hasBooking);
+        getBookingBtn().setBounds(350, 160, 150, 150);
+        getBookingBtn().setFont(u.formatText(16));
+        getBookingBtn().setLayout(null);
+        add(getBookingBtn());
+        getBookingBtn().setVisible(hasBooking);
 
         // Hide elements for non booked
         if (!hasBooking) {
-            ServiceBtn.setVisible(false);
-            BillingBtn.setVisible(false);
+            getServiceBtn().setVisible(false);
+            getBillingBtn().setVisible(false);
         }
 
-        NewBookingBtn.setBounds(350, 160, 150, 150);
-        NewBookingBtn.setFont(u.formatText(16));
-        NewBookingBtn.setLayout(null);
-        add(NewBookingBtn);
+        getNewBookingBtn().setBounds(350, 160, 150, 150);
+        getNewBookingBtn().setFont(u.formatText(16));
+        getNewBookingBtn().setLayout(null);
+        add(getNewBookingBtn());
 
         // Add Booking
-        JButton AddBookingBtn = new JButton("Add Booking");
+        AddBookingBtn = new JButton("Add Booking");
         AddBookingBtn.setLayout(null);
         AddBookingBtn.setBounds(350, 160, 150, 150);
         AddBookingBtn.setFont(u.formatText(16));
@@ -153,14 +192,14 @@ public class UserDashboardView extends JFrame {
 
         ReturnBtn.addActionListener((ActionEvent e) -> {
 
-        boolean returnCheck = bookingView.NewBookingCheck(loginEmail);
+            boolean returnCheck = bookingView.NewBookingCheck(loginEmail);
 
             if (returnCheck) {
-                btnState(true, BookingBtn, ServiceBtn);
+                btnState(true, getBookingBtn(), getServiceBtn());
                 btnState(false, AddBookingBtn, ViewBookingBtn, CancelBookingBtn, ReturnBtn);
             } else {
-                btnState(true, NewBookingBtn);
-                btnState(false, AddBookingBtn, ReturnBtn, CancelBookingBtn, ViewBookingBtn, ServiceBtn);
+                btnState(true, getNewBookingBtn());
+                btnState(false, AddBookingBtn, ReturnBtn, CancelBookingBtn, ViewBookingBtn, getServiceBtn());
             }
         });
 
@@ -177,23 +216,29 @@ public class UserDashboardView extends JFrame {
         });
 
         // Existing Bookings
-        BookingBtn.addActionListener((ActionEvent e) -> {
-            btnState(false, BookingBtn, ServiceBtn, NewBookingBtn, BillingBtn);
+        getBookingBtn().addActionListener((ActionEvent e) -> {
+            btnState(false, getBookingBtn(), getServiceBtn(), getNewBookingBtn(), getBillingBtn());
             btnState(true, AddBookingBtn, ViewBookingBtn, CancelBookingBtn, ReturnBtn);
         });
 
         // New Bookings
-        NewBookingBtn.addActionListener((ActionEvent e) -> {
+        getNewBookingBtn().addActionListener((ActionEvent e) -> {
             btnState(true, AddBookingBtn, ReturnBtn);
-            btnState(false, NewBookingBtn, ServiceBtn, BillingBtn);
+            btnState(false, getNewBookingBtn(), getServiceBtn(), getBillingBtn());
         });
+
+        AddBookingBtn.addActionListener((ActionEvent e) -> {
+            isAddBookingGUIInvoked = true;
+            bookingView.addBookingGUI();
+        });
+
     }
 
     private void RoomServiceGUI() {
-        ServiceBtn.setBounds(550, 160, 150, 150);
-        ServiceBtn.setFont(u.formatText(16));
-        ServiceBtn.setLayout(null);
-        add(ServiceBtn);
+        getServiceBtn().setBounds(550, 160, 150, 150);
+        getServiceBtn().setFont(u.formatText(16));
+        getServiceBtn().setLayout(null);
+        add(getServiceBtn());
 
         // View Menu
         JButton ViewMenu = new JButton("View Room Services");
@@ -230,23 +275,23 @@ public class UserDashboardView extends JFrame {
 
         // Button Visibility
         SReturnBtn.addActionListener((ActionEvent e) -> {
-            btnState(true, BookingBtn, ServiceBtn, BillingBtn);
+            btnState(true, getBookingBtn(), getServiceBtn(), getBillingBtn());
             btnState(false, ViewMenu, OrderMenu, SReturnBtn);
         });
 
-        ServiceBtn.addActionListener((ActionEvent e) -> {
+        getServiceBtn().addActionListener((ActionEvent e) -> {
             btnState(true, ViewMenu, OrderMenu, SReturnBtn);
-            btnState(false, BookingBtn, ServiceBtn, NewBookingBtn, BillingBtn);
+            btnState(false, getBookingBtn(), getServiceBtn(), getNewBookingBtn(), getBillingBtn());
         });
     }
 
     private void BillingGUI() {
-        BillingBtn.setBounds(750, 160, 150, 150);
-        BillingBtn.setFont(u.formatText(16));
-        BillingBtn.setLayout(null);
-        add(BillingBtn);
+        getBillingBtn().setBounds(750, 160, 150, 150);
+        getBillingBtn().setFont(u.formatText(16));
+        getBillingBtn().setLayout(null);
+        add(getBillingBtn());
 
-        BillingBtn.addActionListener((ActionEvent e) -> {            
+        getBillingBtn().addActionListener((ActionEvent e) -> {
             billingView.getUserBillingGUI(loginEmail);
         });
     }
@@ -258,6 +303,15 @@ public class UserDashboardView extends JFrame {
     }
 
     public static void main(String[] args) {
-        UserDashboardView userDash = new UserDashboardView("Yuhwan Kim", "example@example.com");
+        UserDashboardView userDash = new UserDashboardView("test", "test");
+    }
+
+    void simulateBookingBtnClick() {
+        ActionEvent mockEvent = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "simulateBookingBtnClick");
+        getBookingBtn().getActionListeners()[0].actionPerformed(mockEvent);
+    }
+
+    boolean isAddBookingBtnEnabled() {
+        return getAddBookingBtn().isVisible();
     }
 }
