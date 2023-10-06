@@ -13,7 +13,7 @@ import javax.swing.JTextField;
 
 /**
  *
- * @author bobby
+ * @author Bobby Jenkins, Hyun il Jun
  */
 public class RoomManagementView {
 

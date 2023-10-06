@@ -32,7 +32,7 @@ public class LoginViewTest {
      * Verify Login & Return are loaded correctly.
      */
     @Test
-    public void VerifyButtons() {
+    public void verifyButtons() {
         assertNotNull(loginView.getLoginButton());
         assertNotNull(loginView.getReturnButton());
     }
@@ -41,7 +41,7 @@ public class LoginViewTest {
      * Verify Login Button.
      */
     @Test
-    public void VerifyLoginBtn() {
+    public void verifyLoginBtn() {
         JButton loginButton = loginView.getLoginButton();
         assertEquals("Login", loginButton.getText());
         assertTrue(loginButton.isVisible());

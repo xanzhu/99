@@ -35,21 +35,21 @@ public class StaffDashboardViewTest {
      */
     @Test
     public void checkRoomBtn() {
-        JButton roomBtn = SD.getManageRoomBtn();
+        JButton roomBtn = SD.manageRoomBtn; // Access directly
         assertNotNull(roomBtn);
         assertTrue(roomBtn.isVisible());
     }
 
     @Test
     public void checkServicesBtn() {
-        JButton serviceBtn = SD.getRoomServiceBtn();
+        JButton serviceBtn = SD.roomServiceBtn; // Access directly
         assertNotNull(serviceBtn);
         assertTrue(serviceBtn.isVisible());
     }
 
     @Test
     public void checkBookingBtn() {
-        JButton bookingBtn = SD.getBookingsBtn();
+        JButton bookingBtn = SD.bookingsBtn; // Access directly
         assertNotNull(bookingBtn);
         assertTrue(bookingBtn.isVisible());
     }
@@ -59,7 +59,7 @@ public class StaffDashboardViewTest {
      */
     @Test
     public void testFoodGUI() {
-        SD.getRoomServiceBtn().doClick();
+        SD.roomServiceBtn.doClick(); // Access directly
         
         roomServiceView.addFoodGUI();
 
@@ -71,13 +71,13 @@ public class StaffDashboardViewTest {
      */
     @Test
     public void checkEmail(){
-        String emailCheck = SD.getEmailField(); 
+        String emailCheck = SD.emailField; // Access directly
         
         if(emailCheck.contains("@hotel.com"))
         {
-           Assert.assertTrue(true);
+           assertTrue(true);
         } else {
-            Assert.fail();
+            fail();
         }
     }
 }

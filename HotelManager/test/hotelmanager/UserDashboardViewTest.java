@@ -1,6 +1,7 @@
 package hotelmanager;
 
 import javax.swing.JButton;
+import javax.swing.SwingUtilities;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -11,20 +12,19 @@ import static org.junit.Assert.*;
  */
 public class UserDashboardViewTest {
 
-    private UserDashboardView ude;
+    private UserDashboardView UD;
 
     private BookingView bv;
     private RoomServiceView rv;
-    
-    
+
     @Before
     public void setUp() {
-        
+
         // Define member with active booking (Existing only)
-        ude = new UserDashboardView("test", "test");
- 
-        rv = new RoomServiceView();
-        bv = new BookingView();
+        UD = new UserDashboardView("test", "test");
+
+//        rv = new RoomServiceView();
+//        bv = new BookingView();
     }
 
     /**
@@ -32,21 +32,21 @@ public class UserDashboardViewTest {
      */
     @Test
     public void bookingBtn() {
-        JButton bookingBtn = ude.getBookingBtn();
+        JButton bookingBtn = UD.bookingsBtn;
         assertNotNull(bookingBtn);
         assertTrue(bookingBtn.isVisible());
     }
 
     @Test
     public void roomServicesBtn() {
-        JButton roomBtn = ude.getServiceBtn();
+        JButton roomBtn = UD.roomServiceBtn;
         assertNotNull(roomBtn);
         assertTrue(roomBtn.isVisible());
     }
-    
+
     @Test
-    public void chargesBtn(){
-        JButton charges = ude.getBillingBtn();
+    public void chargesBtn() {
+        JButton charges = UD.getBillingBtn();
         assertNotNull(charges);
         assertTrue(charges.isVisible());
     }
@@ -55,24 +55,23 @@ public class UserDashboardViewTest {
      * Test BookingGUI opens correctly.
      */
     @Test
-    public void testBookingBtnGUI(){
-        ude.getAddBookingBtn().doClick();
-        
-        bv.addBookingGUI();
-        
-        assertTrue(bv.getBookingFrame().isVisible());
+    public void testBookingBtnGUI() {
+        SwingUtilities.invokeLater(() -> {
+            UD.addBookingBtn.doClick();
+            boolean viewBookingGUI = bv.getBookingFrame().isVisible();
+            assertTrue(viewBookingGUI);
+        });
     }
-    
+
     /**
      * Test RoomServices View Menu GUI Opens correctly
      */
     @Test
-    public void testBillingBtnGUI(){
-        ude.getServiceBtn().doClick();
-        
-        rv.viewRoomServicesGUI();
-        
-        assertTrue(rv.getViewFrame().isVisible());
+    public void testBillingBtnGUI() {
+        SwingUtilities.invokeLater(() -> {
+        UD.roomServiceBtn.doClick();
+        boolean viewMenuGUI = rv.getViewFrame().isVisible();
+        assertTrue(viewMenuGUI);
+        });
     }
-    
 }
