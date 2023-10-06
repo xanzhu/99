@@ -364,7 +364,9 @@ public class Booking {
     public void availableRooms(JComboBox<String> roomDropdown) {
         String query = "SELECT RoomNumber FROM RoomRecords WHERE IsAvailable = true";
 
-        try (Connection connection = dbManager.getConnection(); PreparedStatement statement = connection.prepareStatement(query); ResultSet resultSet = statement.executeQuery()) {
+        Connection connection = dbManager.getConnection(); 
+        
+        try (PreparedStatement statement = connection.prepareStatement(query); ResultSet resultSet = statement.executeQuery()) {
 
             roomDropdown.setSelectedIndex(-1);
 
