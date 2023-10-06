@@ -21,7 +21,7 @@ public class UserDashboardViewTest {
     public void setUp() {
 
         // Define member with active booking (Existing only)
-        UD = new UserDashboardView("test", "test");
+        UD = new UserDashboardView("peter", "peter@gmail.com");
 
 //        rv = new RoomServiceView();
 //        bv = new BookingView();
