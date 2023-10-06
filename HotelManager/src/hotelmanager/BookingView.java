@@ -42,9 +42,8 @@ public class BookingView {
     public JFrame getBookingFrame() {
         return BookingFrame;
     }
-    
+
     private JFrame BookingFrame;
-    
 
     public void addBookingGUI() {
         BookingFrame = new JFrame("Add Booking");
@@ -68,8 +67,11 @@ public class BookingView {
         RoomLabel.setFont(u.formatText(15));
         RoomLabel.setBounds(130, 110, 150, 40);
 
-        JTextField RoomField = new JTextField();
-        RoomField.setBounds(280, 110, 200, 40);
+//        JTextField RoomField = new JTextField();
+//        RoomField.setBounds(280, 110, 200, 40);
+        JComboBox<String> roomDropdown = new JComboBox<>();
+        roomDropdown.setBounds(280, 110, 200, 40);
+        bk.availableRooms(roomDropdown); 
 
         // Date 
         JLabel DateLabel = new JLabel("Booking Date:");
@@ -96,7 +98,7 @@ public class BookingView {
         optionsPanel.add(EmailLabel);
         optionsPanel.add(EmailField);
         optionsPanel.add(RoomLabel);
-        optionsPanel.add(RoomField);
+        optionsPanel.add(roomDropdown);
         optionsPanel.add(DateLabel);
         optionsPanel.add(DateField);
         optionsPanel.add(DateNote);
@@ -108,14 +110,14 @@ public class BookingView {
 
         SubmitBtn.addActionListener((ActionEvent e) -> {
             String Email = EmailField.getText();
-            String RoomNum = RoomField.getText();
+            String selectedRoom = (String) roomDropdown.getSelectedItem(); // Get selected room number
             String Date = DateField.getText();
 
             // Validate Staff using "@hotel.com" !
             boolean isStaffBooking = Email.contains("@hotel.com");
 
             try {
-                int roomNumber = Integer.parseInt(RoomNum);
+                int roomNumber = Integer.parseInt(selectedRoom); // Parse selected room number
 
                 if (bk.validateAddRoom(roomNumber)) {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -141,11 +143,10 @@ public class BookingView {
     }
 
     /**
-     * Creates Booking GUI
-     * Converts Records ArrayList into a String
-     * Iterating over each booking
-     * 
-     * @param email 
+     * Creates Booking GUI Converts Records ArrayList into a String Iterating
+     * over each booking
+     *
+     * @param email
      */
     public void viewBookingGUI(String email) {
         List<Records> bookingRecords = bk.getBookingRecords(email);
@@ -176,11 +177,10 @@ public class BookingView {
     }
 
     /**
-     * Creates Cancel Booking GUI
-     * Displays active bookings from db into
-     * drop down menu for selection.
-     * 
-     * @param userEmail 
+     * Creates Cancel Booking GUI Displays active bookings from db into drop
+     * down menu for selection.
+     *
+     * @param userEmail
      */
     public void cancelBookingGUI(String userEmail) {
         try {
@@ -282,8 +282,8 @@ public class BookingView {
     }
 
     /**
-     * Creates Cancel Booking GUI for Staff
-     * Displays input field for removing Booking.
+     * Creates Cancel Booking GUI for Staff Displays input field for removing
+     * Booking.
      */
     public void staffCancelBookingGUI() {
         JFrame staffCancelFrame = new JFrame("Staff Booking Remove");
