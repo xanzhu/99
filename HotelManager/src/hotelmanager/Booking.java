@@ -373,7 +373,6 @@ public class Booking {
             while (resultSet.next()) {
                 String roomNumber = resultSet.getString("RoomNumber");
                 roomDropdown.addItem(roomNumber);
-                System.out.println("Available Room Number: " + roomNumber); // Print room numbers to console
             }
         } catch (SQLException ex) {
             System.err.println("Error getting available rooms: " + ex.getMessage());
